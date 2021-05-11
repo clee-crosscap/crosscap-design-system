@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@assets/*": [ "src/assets/*" ],
+      "@components/*": [ "src/components/*" ],
+      "@features/*": [ "src/features/*" ],
+      "@interfaces/*": [ "src/interfaces/*" ],
+      "@slices/*": [ "src/slices/*" ],
+      "@utility/*": [ "src/utility/*" ],
+      "@loaders/*": [ "src/loaders/*" ],
+      "@workers/*": [ "src/workers/*" ],
+      "@languages/*": [ "src/languages/*" ],
+      "@root/*": [ "src/*" ],
+    }
+  }
+}

@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@formatjs/intl-pluralrules": "^4.0.17",
+    "@formatjs/intl-relativetimeformat": "^8.1.7",
     "@reduxjs/toolkit": "^1.5.1",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
@@ -12,17 +14,33 @@
     "@types/react": "^16.14.5",
     "@types/react-dom": "^16.9.12",
     "@types/react-redux": "^7.1.16",
+    "@types/styled-components": "^5.1.9",
+    "bootstrap": "^5.0.0",
+    "chroma-js": "^2.1.1",
+    "moment": "^2.29.1",
+    "moment-timezone": "^0.5.33",
     "react": "^17.0.2",
+    "react-bootstrap": "^1.5.2",
     "react-dom": "^17.0.2",
+    "react-intl": "^5.17.4",
+    "react-notifications-component": "^3.1.0",
     "react-redux": "^7.2.4",
-    "react-scripts": "4.0.3",
-    "typescript": "^4.1.5"
+    "react-scripts": "^4.0.3",
+    "react-transition-group": "^4.4.1",
+    "rxjs": "^7.0.0",
+    "styled-components": "^5.3.0",
+    "typescript": "^4.1.5",
+    "use-immer": "^0.5.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "react-app-rewired start --verbose",
+    "build": "npm run prebuild && react-app-rewired build --verbose && npm run postbuild",
+    "prebuild": "npm run build:formatjs:extract && npm run build:formatjs:compile",
+    "build:formatjs:extract": "formatjs extract --ignore='**/*.d.ts' --out-file='./src/languages/en.extract.json' './src/**/*.{js,ts,tsx}'",
+    "build:formatjs:compile": "formatjs compile ./src/languages/en.extract.json --ast --out-file ./src/languages/en.compile.json ",
+    "postbuild": "node ./scripts/writeToIndexJsp.js",
+    "test": "react-app-rewired test",
+    "eject": "react-app-rewired eject"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -39,5 +57,16 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@formatjs/cli": "^4.2.11",
+    "@types/chroma-js": "^2.1.3",
+    "@types/react-modal": "^3.12.0",
+    "@types/react-router-dom": "^5.1.7",
+    "connect-api-mocker": "^1.9.0",
+    "customize-cra": "^1.0.0",
+    "react-app-rewired": "^2.1.8",
+    "react-modal": "^3.13.1",
+    "react-router-dom": "^5.2.0"
   }
 }
