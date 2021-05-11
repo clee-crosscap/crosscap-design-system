@@ -43,7 +43,7 @@ const HR = styled.hr`
 `;
 export default function RoutingComponent() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/crosscap-design-system/build">
       <RoutingGrid>
         <RoutingGridLeft>
           <RoutingLink as={Link} to={`/buttons`}>

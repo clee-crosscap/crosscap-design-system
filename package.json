@@ -38,7 +38,8 @@
     "prebuild": "npm run build:formatjs:extract && npm run build:formatjs:compile",
     "build:formatjs:extract": "formatjs extract --ignore='**/*.d.ts' --out-file='./src/languages/en.extract.json' './src/**/*.{js,ts,tsx}'",
     "build:formatjs:compile": "formatjs compile ./src/languages/en.extract.json --ast --out-file ./src/languages/en.compile.json ",
-    "postbuild": "node ./scripts/writeToIndexJsp.js",
+    "postbuild": "",
+    "_postbuild": "node ./scripts/writeToIndexJsp.js",
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject"
   },

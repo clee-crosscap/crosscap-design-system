@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.js": "/crosscap-design-system/build/static/js/main.5b32b281.chunk.js",
-    "main.js.map": "/crosscap-design-system/build/static/js/main.5b32b281.chunk.js.map",
+    "main.js": "/crosscap-design-system/build/static/js/main.b2ce5ff0.chunk.js",
+    "main.js.map": "/crosscap-design-system/build/static/js/main.b2ce5ff0.chunk.js.map",
     "runtime-main.js": "/crosscap-design-system/build/static/js/runtime-main.59010a4c.js",
     "runtime-main.js.map": "/crosscap-design-system/build/static/js/runtime-main.59010a4c.js.map",
     "static/js/2.62ed2b3d.chunk.js": "/crosscap-design-system/build/static/js/2.62ed2b3d.chunk.js",
@@ -13,6 +13,6 @@
   "entrypoints": [
     "static/js/runtime-main.59010a4c.js",
     "static/js/2.62ed2b3d.chunk.js",
-    "static/js/main.5b32b281.chunk.js"
+    "static/js/main.b2ce5ff0.chunk.js"
   ]
 }
