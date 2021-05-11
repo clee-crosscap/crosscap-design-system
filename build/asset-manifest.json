@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.js": "/crosscap-design-system/build/static/js/main.b2ce5ff0.chunk.js",
-    "main.js.map": "/crosscap-design-system/build/static/js/main.b2ce5ff0.chunk.js.map",
+    "main.js": "/crosscap-design-system/build/static/js/main.2a1827f3.chunk.js",
+    "main.js.map": "/crosscap-design-system/build/static/js/main.2a1827f3.chunk.js.map",
     "runtime-main.js": "/crosscap-design-system/build/static/js/runtime-main.59010a4c.js",
     "runtime-main.js.map": "/crosscap-design-system/build/static/js/runtime-main.59010a4c.js.map",
-    "static/js/2.62ed2b3d.chunk.js": "/crosscap-design-system/build/static/js/2.62ed2b3d.chunk.js",
-    "static/js/2.62ed2b3d.chunk.js.map": "/crosscap-design-system/build/static/js/2.62ed2b3d.chunk.js.map",
+    "static/js/2.f074bb00.chunk.js": "/crosscap-design-system/build/static/js/2.f074bb00.chunk.js",
+    "static/js/2.f074bb00.chunk.js.map": "/crosscap-design-system/build/static/js/2.f074bb00.chunk.js.map",
     "index.html": "/crosscap-design-system/build/index.html",
-    "static/js/2.62ed2b3d.chunk.js.LICENSE.txt": "/crosscap-design-system/build/static/js/2.62ed2b3d.chunk.js.LICENSE.txt",
+    "static/js/2.f074bb00.chunk.js.LICENSE.txt": "/crosscap-design-system/build/static/js/2.f074bb00.chunk.js.LICENSE.txt",
     "static/media/trash.c1faff0a.svg": "/crosscap-design-system/build/static/media/trash.c1faff0a.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.59010a4c.js",
-    "static/js/2.62ed2b3d.chunk.js",
-    "static/js/main.b2ce5ff0.chunk.js"
+    "static/js/2.f074bb00.chunk.js",
+    "static/js/main.2a1827f3.chunk.js"
   ]
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
+import { HashRouter, Switch, Route, Link } from 'react-router-dom';
 import styled from 'styled-components/macro';
 
 import * as FU from '@utility/Form.utility';
@@ -43,7 +43,7 @@ const HR = styled.hr`
 `;
 export default function RoutingComponent() {
   return (
-    <BrowserRouter basename="/crosscap-design-system/build">
+    <HashRouter>
       <RoutingGrid>
         <RoutingGridLeft>
           <RoutingLink as={Link} to={`/buttons`}>
@@ -193,7 +193,7 @@ export default function RoutingComponent() {
           </Switch>
         </RoutingGridRight>
       </RoutingGrid>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
