@@ -3,6 +3,11 @@ import { Dropdown } from 'react-bootstrap';
 import chroma from 'chroma-js';
 
 import * as CU from '@utility/Color.utility'
+import * as SU from '@utility/Svg.utility';
+
+import '@components/Tooltip/Tooltip.scss';
+
+import BaseTheme from '@components/Theme/BaseTheme';
 
 interface ValidProp {
   $valid?: boolean,
@@ -35,6 +40,19 @@ export const Input = styled.input<ValidProp>`
     color: ${p => p.theme.TEXT_DARK};
   }
 `;
+interface TextareaProps {
+  $lines: number,
+  $resize: boolean | 'both' | 'horizontal' | 'vertical' | 'none',
+}
+export const Textarea = styled(Input).attrs({ as: 'textarea' })<TextareaProps>`
+  min-height: 36px;
+  height: ${p => Math.round(p.$lines * 15 * 1.2) + 8 + 8}px;
+  max-width: 100%;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  resize: ${p => ((p.$resize === true) && 'both') || ((p.$resize === false) && 'none') || `${p.$resize}`};
+`;
+
 interface ButtonTypeProp {
   $type: 'primary' | 'secondary' | 'custom',
 }
@@ -182,13 +200,19 @@ export const TextButton = styled.button<TextButtonProps>`
     opacity: 0.5;
   }
 `;
-export const DropdownToggle = styled(Dropdown.Toggle)`
+interface RemoveBorderProp {
+  $removeBorder?: boolean,
+}
+export const DropdownToggle = styled(Dropdown.Toggle)<RemoveBorderProp>`
+  padding: ${p => p.$removeBorder ? `0px` : `7px 8px`};
   display: grid;
   grid-column-gap: 8px;
   grid-auto-flow: column;
   align-items: center;
   cursor: pointer;
   font-family: 'Roboto','Arial',sans-serif;
+  font-size: 15px;
+  border-radius: 6px;
 
   &:after {
     content: initial;
@@ -203,7 +227,7 @@ export const DropdownToggle = styled(Dropdown.Toggle)`
   &:focus {
     outline: none;
     background: transparent;
-    border: 0px solid transparent;
+    border: ${p => p.$removeBorder ? 0 : 2}px solid ${p => p.theme.GRAY_E6};
     color: ${p => p.theme.TEXT_DARK};
     box-shadow: none;
   }
@@ -227,7 +251,10 @@ export const DropdownMenu = styled(Dropdown.Menu)`
     z-index: 1000;
   }
 `;
-export const DropdownItem = styled(Dropdown.Item)`
+interface DisableChildrenProp {
+  $disableChildren?: boolean,
+}
+export const DropdownItem = styled(Dropdown.Item)<DisableChildrenProp>`
   width: 100%;
   padding: 5px 18px 5px 18px;
   display: block;
@@ -264,9 +291,41 @@ export const DropdownItem = styled(Dropdown.Item)`
     text-decoration: initial;
   }
   &[aria-disabled="true"] {
-    pointer-events: auto;
-    cursor: not-allowed;
-    background-color: transparent;
-    opacity: 0.5;
+    ${p => p.$disableChildren ? `
+      > * {
+        pointer-events: auto;
+        cursor: not-allowed;
+        background-color: transparent;
+        opacity: 0.5;
+      }
+    ` : `
+      pointer-events: auto;
+      cursor: not-allowed;
+      background-color: transparent;
+      opacity: 0.5;
+    `}
   }
+`;
+interface CheckboxProp {
+  $checkbox: boolean | undefined,
+}
+interface DisabledProp {
+  $disabled?: boolean,
+}
+export const Checkbox = styled(SU.styledSvg({ $fillStroke: BaseTheme.ICON_DARK }))<CheckboxProp & DisabledProp>`
+  cursor: ${p => p.$disabled ? 'not-allowed' : 'pointer'};
+  opacity: ${p => p.$disabled ? 0.5 : 1};
+
+  & {
+    transition: opacity 0.3s ease-out;
+  }
+  .checkbox-yes,
+  .checkbox-no,
+  .checkbox-maybe {
+    transition: opacity 0.1s ease-out;
+  }
+
+  .checkbox-yes   { opacity: ${p => (p.$checkbox === true     ) ? 1 : 0}; }
+  .checkbox-no    { opacity: ${p => (p.$checkbox === false    ) ? 1 : 0}; }
+  .checkbox-maybe { opacity: ${p => (p.$checkbox === undefined) ? 1 : 0}; }
 `;

@@ -1,10 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { HashRouter, Switch, Route, Link } from 'react-router-dom';
 import styled from 'styled-components/macro';
+import { Dropdown } from 'react-bootstrap';
 
 import * as FU from '@utility/Form.utility';
-import ButtonGallery from '@components/ButtonGallery/ButtonGallery';
+import * as SU from '@utility/Svg.utility';
+import BaseTheme from '@components/Theme/BaseTheme';
+import ButtonGallery from '@features/ButtonGallery/ButtonGallery';
+import TooltipGallery from '@features/TooltipGallery/TooltipGallery';
+import TextFieldGallery from '@features/TextFieldGallery/TextFieldGallery';
 
+import { ReactComponent as ChevronSvg } from '@assets/chevron.svg';
+
+const CommonBlackSvg = styled(SU.styledSvg({ $fillStroke: BaseTheme.ICON_DARK }))`
+  cursor: pointer;
+`;
 const RoutingGrid = styled.div`
   width: 100%;
   height: 100%;
@@ -22,8 +32,12 @@ const RoutingGridLeft = styled.div`
   grid-row-gap: 0px;
   align-content: start;
 `;
-const RoutingGridRight = styled.div`
+interface BGProp {
+  $bg: string,
+}
+const RoutingGridRight = styled.div<BGProp>`
   overflow: hidden;
+  background-color: ${p => p.$bg};
 `;
 const RoutingLink = styled(FU.DropdownItem)`
   width: calc(100% + 100px);
@@ -42,25 +56,54 @@ const HR = styled.hr`
   border-top: 1px solid ${p => p.theme.DIVIDER};
 `;
 export default function RoutingComponent() {
+  const [ galleryBG, setGalleryBG ] = useState<string>('#FFFFFF');
   return (
     <HashRouter>
       <RoutingGrid>
         <RoutingGridLeft>
-          <RoutingLink as={Link} to={`/buttons`}>
-            Buttons
-          </RoutingLink>
+          <Dropdown style={{ marginBottom: '4px' }}>
+            <FU.DropdownToggle $removeBorder={true}>
+              <span>Palette: Calendar</span>
+              <CommonBlackSvg as={ChevronSvg} width={10} height={8} />
+            </FU.DropdownToggle>
+            <FU.DropdownMenu>
+              <FU.DropdownItem onClick={() => {}}>
+                Calendar
+              </FU.DropdownItem>
+            </FU.DropdownMenu>
+          </Dropdown>
+
+          <Dropdown>
+            <FU.DropdownToggle $removeBorder={true}>
+              <span>BG: {galleryBG}</span>
+              <CommonBlackSvg as={ChevronSvg} width={10} height={8} />
+            </FU.DropdownToggle>
+            <FU.DropdownMenu>
+            <FU.DropdownItem onClick={() => setGalleryBG('#FFFFFF')}>
+              #FFFFFF
+            </FU.DropdownItem>
+            <FU.DropdownItem onClick={() => setGalleryBG('#F8F8F8')}>
+              #F8F8F8
+            </FU.DropdownItem>
+            </FU.DropdownMenu>
+          </Dropdown>
 
           <HR />
 
+          <RoutingLink as={Link} to={`/buttons`}>Buttons</RoutingLink>
+          <RoutingLink as={Link} to={`/tooltips`}>Tooltips</RoutingLink>
+          <RoutingLink as={Link} to={`/text-fields`}>Text Fields</RoutingLink>
 
-          <RoutingLink as={Link} to={`/text-fields`}>
-            TODO: Text Fields
-          </RoutingLink>
+          <HR />
+
+          <RoutingLink as={Link} to={`/footers`}>Footers</RoutingLink>
+          <RoutingLink as={Link} to={`/palettes`}>Palettes</RoutingLink>
+          <RoutingLink as={Link} to={`/dropdowns`}>Dropdowns</RoutingLink>
+
+          <HR />
+
           <RoutingLink as={Link} to={`/selectors`}>
             TODO: Selectors
-          </RoutingLink>
-          <RoutingLink as={Link} to={`/dropdowns`}>
-            TODO: Dropdowns
           </RoutingLink>
           <RoutingLink as={Link} to={`/modals`}>
             TODO: Modals
@@ -68,36 +111,38 @@ export default function RoutingComponent() {
           <RoutingLink as={Link} to={`/drawers`}>
             TODO: Drawers
           </RoutingLink>
-          <RoutingLink as={Link} to={`/palettes`}>
-            TODO: Palettes
-          </RoutingLink>
           <RoutingLink as={Link} to={`/icons`}>
             TODO: Icons
           </RoutingLink>
+          <RoutingLink as={Link} to={`/loading-indicator`}>
+            TODO: Loading Indicator
+          </RoutingLink>
+          <RoutingLink as={Link} to={`/notifications`}>
+            TODO: Notifications
+          </RoutingLink>
+          <RoutingLink as={Link} to={`/trees`}>
+            TODO: Trees
+          </RoutingLink>
+          <RoutingLink as={Link} to={`/searchables`}>
+            TODO: Searchables
+          </RoutingLink>
         </RoutingGridLeft>
-        <RoutingGridRight>
+        <RoutingGridRight $bg={galleryBG}>
           <Switch>
             <Route path="/buttons" component={ButtonGallery} />
+            <Route path="/tooltips" component={TooltipGallery} />
+            <Route path="/text-fields" component={TextFieldGallery} />
 
-            <Route path="/text-fields">
+            <Route path="/palettes">
               <pre>
                 {
                   `
-                    TODO: Text Fields
+                    TODO: Palettes
 
-                    Single line text field
-                    Single line text field with icon (e.g. search)
-                    Single line text field with placeholder text
-                    Single line text field with focused state
-                    Single line text field with invalid state
-                    Single line text field in disabled state
-                    Single line text field with built-in navigation (&lt; &gt; arrows)
-                    Multiple line text field
-                    Multiple line text field with placeholder text
-                    Multiple line text field with focused state
-                    Multiple line text field with invalid state
-                    Multiple line text field in disabled state
-                    Validation error messaging
+                    Calendar
+                    Distro
+                    Platform Admin
+                    Common
                   `.split('\n').map(s => s.trim()).join('\n')
                 }
               </pre>
@@ -165,16 +210,14 @@ export default function RoutingComponent() {
                 }
               </pre>
             </Route>
-            <Route path="/palettes">
+
+            <Route path="/icons">
               <pre>
                 {
                   `
-                    TODO: Palettes
+                    TODO: Icons
 
-                    Calendar
-                    Distro
-                    Platform Admin
-                    Common
+                    Gallery of all SVG icons checked into repository
                   `.split('\n').map(s => s.trim()).join('\n')
                 }
               </pre>
@@ -183,9 +226,12 @@ export default function RoutingComponent() {
               <pre>
                 {
                   `
-                    TODO: Icons
+                    TODO: Loading indicator
 
-                    Gallery of all SVG icons checked into repository
+                    Loading indicator for full-screen workflows
+                    Loading indicator for multi-pane workflows
+                    Loading indicator for modal workflows
+                    Loading indicator for individual components
                   `.split('\n').map(s => s.trim()).join('\n')
                 }
               </pre>

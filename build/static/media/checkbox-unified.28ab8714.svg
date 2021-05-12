@@ -1,0 +1,13 @@
+<svg viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+  <g class="checkbox-yes" transform="translate(.5 .5)">
+    <rect stroke="#000" stroke-width="2" fill="#FFF" x="1" y="1" width="15" height="15" rx="3"/>
+    <path d="M6.592 13.222l8.52-8.123-1.341-1.321-7.18 6.866L3.23 7.417 1.89 8.695l4.703 4.527zM15.096 0c.529 0 .978.189 1.349.567.37.377.555.823.555 1.337v13.192c0 .514-.185.96-.555 1.337-.37.378-.82.567-1.349.567H1.904c-.529 0-.978-.189-1.349-.567A1.847 1.847 0 0 1 0 15.096V1.904C0 1.39.185.944.555.567.925.189 1.375 0 1.904 0h13.192z" fill="#000"/>
+  </g>
+  <g class="checkbox-no">
+    <rect x="1" y="1" width="16" height="16" rx="3" fill="#FFF" stroke="#000" stroke-width="2" fill-rule="evenodd" />
+  </g>
+  <g class="checkbox-maybe" fill="none" fill-rule="evenodd">
+    <rect stroke="#000" stroke-width="2" fill="#FFF" x="1" y="1" width="16" height="16" rx="3"/>
+    <path fill="#000" d="M16 1.707V16H2z"/>
+  </g>
+</svg>

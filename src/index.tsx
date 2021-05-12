@@ -5,6 +5,7 @@ import * as styled from 'styled-components';
 import * as ReactIntl from 'react-intl';
 import * as ReactBootstrap from 'react-bootstrap';
 import { enableMapSet } from 'immer';
+import ReactNotification from 'react-notifications-component';
 
 import { store } from '@slices/store';
 import BaseTheme from '@components/Theme/BaseTheme';
@@ -53,6 +54,7 @@ ReactDOM.render(
         <GlobalStyle />
         <ReactBootstrap.ThemeProvider prefixes={reactNamespacedPrefixes}>
           <styled.ThemeProvider theme={BaseTheme}>
+            <ReactNotification />
             <RoutingComponent />
           </styled.ThemeProvider>
         </ReactBootstrap.ThemeProvider>
