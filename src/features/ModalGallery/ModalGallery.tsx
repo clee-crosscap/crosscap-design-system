@@ -83,16 +83,15 @@ export default function GenericGallery() {
       </GallerySection>
 
       <pre>{`
-        TODO: Dropdowns
+        TODO: Modals
 
-        Actions Dropdown
-        Single-Selection Dropdown
-        Multi-Selection Dropdown
-        Dropdowns with Dividers
-        Dropdowns with Icons
-        Dropdowns without frames
-        Icon Toggle Dropdowns
-        Autocomplete searchable dropdowns`
+        Alert Modal + Icon
+        Unsaved Changes Modal
+        Yes/No Confirmation Modal
+        Workflow Modal
+        Scrolling in modals
+        Modals with footers
+        Modals where ESC / Backdrop dismissal should be disabled`
       }</pre>
     </Gallery>
   );

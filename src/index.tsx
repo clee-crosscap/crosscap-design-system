@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { HashRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import * as styled from 'styled-components';
 import * as ReactIntl from 'react-intl';
@@ -8,7 +9,7 @@ import { enableMapSet } from 'immer';
 import ReactNotification from 'react-notifications-component';
 
 import { store } from '@slices/store';
-import BaseTheme from '@components/Theme/BaseTheme';
+import CrosscapTheme from '@components/Theme/CrosscapTheme';
 import RoutingComponent from '@components/RoutingComponent/RoutingComponent';
 import { locale, messages } from '@utility/Intl.utility';
 
@@ -53,9 +54,11 @@ ReactDOM.render(
       <Provider store={store}>
         <GlobalStyle />
         <ReactBootstrap.ThemeProvider prefixes={reactNamespacedPrefixes}>
-          <styled.ThemeProvider theme={BaseTheme}>
+          <styled.ThemeProvider theme={CrosscapTheme}>
             <ReactNotification />
-            <RoutingComponent />
+            <HashRouter>
+              <RoutingComponent />
+            </HashRouter>
           </styled.ThemeProvider>
         </ReactBootstrap.ThemeProvider>
       </Provider>

@@ -3,11 +3,10 @@ import styled from 'styled-components/macro';
 
 import * as FU from '@utility/Form.utility';
 import * as SU from '@utility/Svg.utility';
-import BaseTheme from '@components/Theme/BaseTheme';
+import CrosscapTheme from '@components/Theme/CrosscapTheme';
+import * as Assets from '@assets/.';
 
-import { ReactComponent as TrashSvg } from '@assets/trash.svg';
-
-const CommonRedSvg = styled(SU.styledSvg({ $fillStroke: BaseTheme.INVALID }))``;
+const CommonRedSvg = styled(SU.styledSvg({ $fillStroke: CrosscapTheme.INVALID }))``;
 
 const Gallery = styled.div`
   width: 100%;
@@ -47,7 +46,7 @@ const SectionContent = styled.div`
   align-items: center;
 `;
 const RedButton = styled(FU.Button).attrs({
-  theme: { BUTTON: { custom: { FG: BaseTheme.INVALID, BG: 'rgba(0, 0, 0, 0)' } } }
+  theme: { BUTTON: { custom: { FG: CrosscapTheme.INVALID, BG: 'rgba(0, 0, 0, 0)' } } }
 })`
   display: inline-grid;
   align-items: center;
@@ -79,7 +78,7 @@ export default function ButtonGallery() {
         </SectionHeader>
         <SectionContent>
           <RedButton $type="custom">
-            <CommonRedSvg as={TrashSvg} width={19} height={19} />
+            <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
             <span>Delete</span>
           </RedButton>
           <FU.Button $type="secondary">Cancel</FU.Button>
@@ -87,7 +86,7 @@ export default function ButtonGallery() {
         </SectionContent>
         <SectionContent>
           <RedButton $type="custom">
-            <CommonRedSvg as={TrashSvg} width={19} height={19} />
+            <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
             <span>Generously Sized</span>
           </RedButton>
           <FU.Button $type="secondary">Generously Sized</FU.Button>
@@ -102,7 +101,7 @@ export default function ButtonGallery() {
 
         <SectionContent>
           <RedButton $type="custom" className={`hover`}>
-            <CommonRedSvg as={TrashSvg} width={19} height={19} />
+            <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
             <span>Hovered</span>
           </RedButton>
           <FU.Button $type="secondary" className={`hover`}>Hovered</FU.Button>
@@ -110,7 +109,7 @@ export default function ButtonGallery() {
         </SectionContent>
         <SectionContent>
           <RedButton $type="custom" className={`active`}>
-            <CommonRedSvg as={TrashSvg} width={19} height={19} />
+            <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
             <span>Active</span>
           </RedButton>
           <FU.Button $type="secondary" className={`active`}>Active</FU.Button>
@@ -118,7 +117,7 @@ export default function ButtonGallery() {
         </SectionContent>
         <SectionContent>
           <RedButton $type="custom" disabled>
-            <CommonRedSvg as={TrashSvg} width={19} height={19} />
+            <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
             <span>Disabled</span>
           </RedButton>
           <FU.Button $type="secondary" disabled>Disabled</FU.Button>

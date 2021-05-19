@@ -47,12 +47,12 @@ export const styledSvg = (s?: Settings) => styled.div.attrs(props => s ?? {})<Se
   ${p => getConditionalRule('[stroke="#000"]', 'stroke', p.$disabled ? (p.$disabledStroke || p.$disabledFillStroke) : undefined)}
 
   &:hover {
-    ${p => getConditionalRule('[fill="#000"]',   'fill',   p.$hoverFill   || p.$hoverFillStroke)}
-    ${p => getConditionalRule('[stroke="#000"]', 'stroke', p.$hoverStroke || p.$hoverFillStroke)}
+    ${p => getConditionalRule('[fill="#000"]',   'fill',   p.$disabled ? undefined : (p.$hoverFill   || p.$hoverFillStroke))}
+    ${p => getConditionalRule('[stroke="#000"]', 'stroke', p.$disabled ? undefined : (p.$hoverStroke || p.$hoverFillStroke))}
   }
   &.active {
-    ${p => getConditionalRule('[fill="#000"]',   'fill',   p.$activeFill   || p.$activeFillStroke)}
-    ${p => getConditionalRule('[stroke="#000"]', 'stroke', p.$activeStroke || p.$activeFillStroke)}
+    ${p => getConditionalRule('[fill="#000"]',   'fill',   p.$disabled ? undefined : (p.$activeFill   || p.$activeFillStroke))}
+    ${p => getConditionalRule('[stroke="#000"]', 'stroke', p.$disabled ? undefined : (p.$activeStroke || p.$activeFillStroke))}
   }
 `;
 

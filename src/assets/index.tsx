@@ -1,0 +1,11 @@
+export { ReactComponent as AlertSvg } from '@assets/alert.svg';
+export { ReactComponent as CheckSvg } from '@assets/check.svg';
+export { ReactComponent as CheckboxUnifiedSvg } from '@assets/checkbox-unified.svg';
+export { ReactComponent as ChevronSvg } from '@assets/chevron.svg';
+export { ReactComponent as CloseSvg } from '@assets/close.svg';
+export { ReactComponent as ExportSvg } from '@assets/export.svg';
+export { ReactComponent as FilterSvg } from '@assets/filter.svg';
+export { ReactComponent as GearFilledSvg } from '@assets/gear-filled.svg';
+export { ReactComponent as InfoSvg } from '@assets/info.svg';
+export { ReactComponent as MagnifyingGlassSvg } from '@assets/magnifying-glass.svg';
+export { ReactComponent as TrashSvg } from '@assets/trash.svg';

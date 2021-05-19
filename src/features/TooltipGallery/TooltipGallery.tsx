@@ -4,20 +4,13 @@ import { Tooltip, OverlayTrigger, Dropdown } from 'react-bootstrap';
 
 import * as FU from '@utility/Form.utility';
 import * as SU from '@utility/Svg.utility';
-import BaseTheme from '@components/Theme/BaseTheme';
+import CrosscapTheme from '@components/Theme/CrosscapTheme';
+import * as Assets from '@assets/.';
 
-import { ReactComponent as InfoSvg } from '@assets/info.svg';
-import { ReactComponent as ChevronSvg } from '@assets/chevron.svg';
-import { ReactComponent as GearSvg } from '@assets/gear-filled.svg';
-import { ReactComponent as FilterSvg } from '@assets/filter.svg';
-import { ReactComponent as ExportSvg } from '@assets/export.svg';
-import { ReactComponent as CheckSvg } from '@assets/check.svg';
-import { ReactComponent as CheckboxSvg } from '@assets/checkbox-unified.svg';
-
-const CommonBlackSvg = styled(SU.styledSvg({ $fillStroke: BaseTheme.ICON_DARK }))`
+const CommonBlackSvg = styled(SU.styledSvg({ $fillStroke: CrosscapTheme.ICON_DARK }))`
   cursor: pointer;
 `;
-const CommonModuleLightSvg = styled(SU.styledSvg({ $fillStroke: BaseTheme.MODULE_LIGHT }))`
+const CommonModuleLightSvg = styled(SU.styledSvg({ $fillStroke: CrosscapTheme.MODULE_LIGHT }))`
 `;
 const PaddedCommonBlackSvg = styled(CommonBlackSvg)`
   padding: 6px;
@@ -147,35 +140,35 @@ export default function ButtonGallery() {
           <LabelledTooltip>
             <span>Auto</span>
             <OverlayTrigger placement="auto" overlay={<Tooltip id="IconTooltips-auto">Tooltip Content</Tooltip>}>
-              <Info as={InfoSvg} width={14} height={14} />
+              <Info as={Assets.InfoSvg} width={14} height={14} />
             </OverlayTrigger>
           </LabelledTooltip>
 
           <LabelledTooltip>
             <span>Above</span>
             <OverlayTrigger placement="top" overlay={<Tooltip id="IconTooltips-top">Tooltip Content</Tooltip>}>
-              <Info as={InfoSvg} width={14} height={14} />
+              <Info as={Assets.InfoSvg} width={14} height={14} />
             </OverlayTrigger>
           </LabelledTooltip>
 
           <LabelledTooltip>
             <span>Below</span>
             <OverlayTrigger placement="bottom" overlay={<Tooltip id="IconTooltips-bottom">Tooltip Content</Tooltip>}>
-              <Info as={InfoSvg} width={14} height={14} />
+              <Info as={Assets.InfoSvg} width={14} height={14} />
             </OverlayTrigger>
           </LabelledTooltip>
 
           <LabelledTooltip>
             <span>Left</span>
             <OverlayTrigger placement="left" overlay={<Tooltip id="IconTooltips-left">Tooltip Content</Tooltip>}>
-              <Info as={InfoSvg} width={14} height={14} />
+              <Info as={Assets.InfoSvg} width={14} height={14} />
             </OverlayTrigger>
           </LabelledTooltip>
         
           <LabelledTooltip>
             <span>Tooltip Right</span>
             <OverlayTrigger placement="right" overlay={<Tooltip id="IconTooltips-right">Tooltip Content</Tooltip>}>
-              <Info as={InfoSvg} width={14} height={14} />
+              <Info as={Assets.InfoSvg} width={14} height={14} />
             </OverlayTrigger>
           </LabelledTooltip>
         </SectionContent>
@@ -187,7 +180,7 @@ export default function ButtonGallery() {
                 {LOREM_IPSUM}
               </Tooltip>
             }>
-              <Info as={InfoSvg} width={14} height={14} />
+              <Info as={Assets.InfoSvg} width={14} height={14} />
             </OverlayTrigger>
           </LabelledTooltip>
         </SectionContent>
@@ -202,13 +195,13 @@ export default function ButtonGallery() {
         </SectionHeader>
         <SectionContent>
           <OverlayTrigger placement="bottom" overlay={<Tooltip id="IconTooltips-filter">Filters</Tooltip>}>
-            <PaddedCommonBlackSvg as={FilterSvg} width={18} height={18} />
+            <PaddedCommonBlackSvg as={Assets.FilterSvg} width={18} height={18} />
           </OverlayTrigger>
           <OverlayTrigger placement="bottom" overlay={<Tooltip id="IconTooltips-gear">Settings</Tooltip>}>
-            <PaddedCommonBlackSvg as={GearSvg} width={22} height={22} />
+            <PaddedCommonBlackSvg as={Assets.GearFilledSvg} width={22} height={22} />
           </OverlayTrigger>
           <OverlayTrigger placement="bottom" overlay={<Tooltip id="IconTooltips-export">Export</Tooltip>}>
-            <PaddedCommonBlackSvg as={ExportSvg} width={22} height={22} />
+            <PaddedCommonBlackSvg as={Assets.ExportSvg} width={22} height={22} />
           </OverlayTrigger>
         </SectionContent>
       </GallerySection>
@@ -225,7 +218,7 @@ export default function ButtonGallery() {
           <Dropdown>
             <FU.DropdownToggle>
               Dropdow Actions
-              <CommonBlackSvg as={ChevronSvg} width={10} height={8} />
+              <CommonBlackSvg as={Assets.ChevronSvg} width={10} height={8} />
             </FU.DropdownToggle>
             <FU.DropdownMenu>
               <DropdownItemWithTooltip>
@@ -235,7 +228,7 @@ export default function ButtonGallery() {
                     This action does something.
                   </Tooltip>
                 }>
-                  <Info as={InfoSvg} width={14} height={14} />
+                  <Info as={Assets.InfoSvg} width={14} height={14} />
                 </OverlayTrigger>
               </DropdownItemWithTooltip>
               <FU.DropdownItem>Action 2</FU.DropdownItem>
@@ -246,7 +239,7 @@ export default function ButtonGallery() {
                     This action does a different thing.
                   </Tooltip>
                 }>
-                  <Info as={InfoSvg} width={14} height={14} />
+                  <Info as={Assets.InfoSvg} width={14} height={14} />
                 </OverlayTrigger>
               </DropdownItemWithTooltip>
             </FU.DropdownMenu>
@@ -266,7 +259,7 @@ export default function ButtonGallery() {
               }>
                 <OverflowToggle>
                   <EllipsisContainer $maxWidth={250}>{LOREM_IPSUM}</EllipsisContainer>
-                  <CommonBlackSvg as={ChevronSvg} width={10} height={8} />
+                  <CommonBlackSvg as={Assets.ChevronSvg} width={10} height={8} />
                 </OverflowToggle>
               </OverlayTrigger>
             </FU.DropdownToggle>
@@ -300,34 +293,34 @@ export default function ButtonGallery() {
           <Dropdown>
             <FU.DropdownToggle>
               Dropdown Selections
-              <CommonBlackSvg as={ChevronSvg} width={10} height={8} />
+              <CommonBlackSvg as={Assets.ChevronSvg} width={10} height={8} />
             </FU.DropdownToggle>
             <FU.DropdownMenu>
-              <DropdownItemWithTooltip>
-                Selection 1
+              <DropdownItemWithTooltip disabled $disableChildren={true}>
+                <span>Selection 1</span>
                 <OverlayTrigger placement="auto" overlay={
                   <Tooltip id="IconTooltips-selection1">
                     This item may not be selected right now.
                   </Tooltip>
                 }>
-                  <Info as={InfoSvg} width={14} height={14} />
+                  <Info as={Assets.InfoSvg} width={14} height={14} />
                 </OverlayTrigger>
               </DropdownItemWithTooltip>
               <DropdownItemWithTooltip>
                 <span>Selection 2</span>
-                <CommonModuleLightSvg as={CheckSvg} width={12} height={12} />
+                <CommonModuleLightSvg as={Assets.CheckSvg} width={12} height={12} />
               </DropdownItemWithTooltip>
               <DropdownItemWithTooltip>
                 <span>Selection 3</span>
               </DropdownItemWithTooltip>
-              <DropdownItemWithTooltip>
-                Selection 4
+              <DropdownItemWithTooltip disabled $disableChildren={true}>
+                <span>Selection 4</span>
                 <OverlayTrigger placement="auto" overlay={
                   <Tooltip id="IconTooltips-selection4">
                     This item is unavailable.
                   </Tooltip>
                 }>
-                  <Info as={InfoSvg} width={14} height={14} />
+                  <Info as={Assets.InfoSvg} width={14} height={14} />
                 </OverlayTrigger>
               </DropdownItemWithTooltip>
 
@@ -340,7 +333,7 @@ export default function ButtonGallery() {
                     This action is unavailable.
                   </Tooltip>
                 }>
-                  <Info as={InfoSvg} width={14} height={14} />
+                  <Info as={Assets.InfoSvg} width={14} height={14} />
                 </OverlayTrigger>
               </DeleteAction>
             </FU.DropdownMenu>
@@ -359,8 +352,8 @@ export default function ButtonGallery() {
           <Line>
             <Line $marginTop={6}>
               <LabelledCheckbox onClick={() => setOverflowSmall(!overflowSmall)}>
-                <FU.Checkbox as={CheckboxSvg} width={20} height={20} $checkbox={overflowSmall} />
-                <span>Truncated Content</span>
+                <FU.Checkbox $checkbox={overflowSmall} />
+                <span>Truncate Content</span>
               </LabelledCheckbox>
             </Line>
             <Line $marginTop={12}>

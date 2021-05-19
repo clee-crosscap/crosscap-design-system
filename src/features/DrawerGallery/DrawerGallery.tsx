@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components/macro';
 
 import * as SU from '@utility/Svg.utility';
+import * as FU from '@utility/Form.utility';
 import CrosscapTheme from '@components/Theme/CrosscapTheme';
 
 const Gallery = styled.div`
@@ -55,45 +56,44 @@ const Line = styled.div<MarginProps>`
   margin-top: ${p => p.$marginTop ?? 0}px;
   margin-bottom: ${p => p.$marginBottom ?? 0}px;
 `;
-export default function GenericGallery() {
+export default function DrawerGallery() {
   return (
     <Gallery>
       <GallerySection>
-        <Title>Section Title</Title>
+        <Title>TODO: Inline Drawers</Title>
         <SectionHeader>
-          Section Text
+          Inline drawers appear share content flow with the page's contents.
+          <em>
+            <strong>
+              &nbsp;
+              The left drawer is anchored to the module toolbar if present.  (?)
+            </strong>
+          </em>
         </SectionHeader>
         <SectionGallery>
-          <span>Item</span>
-          <span>Item</span>
+          <FU.Button $type="primary">Open Left Inline Drawer</FU.Button>
+          <FU.Button $type="primary">Open Right Inline Drawer</FU.Button>
         </SectionGallery>
       </GallerySection>
 
       <HR/>
 
       <GallerySection>
-        <Title>Section Title</Title>
+        <Title>TODO: Overlay Drawers</Title>
         <SectionHeader>
-          Section Text
+          Overlay drawers appear above content and does not reflow existing content.
+          <em>
+            <strong>
+              &nbsp;
+              The left drawer is anchored to the module toolbar if present.  (?)
+            </strong>
+          </em>
         </SectionHeader>
         <SectionGallery>
-          <span>Item</span>
-          <span>Item</span>
+          <FU.Button $type="primary">Open Left Overlay Drawer</FU.Button>
+          <FU.Button $type="primary">Open Right Overlay Drawer</FU.Button>
         </SectionGallery>
       </GallerySection>
-
-      <pre>{`
-        TODO: Dropdowns
-
-        Actions Dropdown
-        Single-Selection Dropdown
-        Multi-Selection Dropdown
-        Dropdowns with Dividers
-        Dropdowns with Icons
-        Dropdowns without frames
-        Icon Toggle Dropdowns
-        Autocomplete searchable dropdowns`
-      }</pre>
     </Gallery>
   );
 }

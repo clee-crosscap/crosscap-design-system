@@ -1,13 +1,10 @@
 import React from 'react';
-import styled from 'styled-components/macro';
+import styled, { DefaultTheme } from 'styled-components/macro';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import chroma from 'chroma-js';
 
-import * as FU from '@utility/Form.utility';
 import * as SU from '@utility/Svg.utility';
-import BaseTheme from '@components/Theme/BaseTheme';
-
-import { ReactComponent as TrashSvg } from '@assets/trash.svg';
-
-const CommonRedSvg = styled(SU.styledSvg({ $fillStroke: BaseTheme.INVALID }))``;
+import * as Themes from '@components/Theme';
 
 const Gallery = styled.div`
   width: 100%;
@@ -39,25 +36,29 @@ const SectionHeader = styled.div`
   color: ${p => p.theme.TEXT_DARK};
   display: block;
 `;
-const SectionButtons = styled.div`
+const SectionGallery = styled.div`
   display: inline-grid;
-  grid-auto-flow: column;
-  grid-column-gap: 12px;
+  grid-auto-flow: row;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
   justify-content: start;
-  align-items: center;
-`;
-const RedButton = styled(FU.Button).attrs({
-  theme: { BUTTON: { custom: { FG: BaseTheme.INVALID, BG: 'rgba(0, 0, 0, 0)' } } }
-})`
-  display: inline-grid;
-  align-items: center;
-  grid-auto-flow: column;
-  grid-column-gap: 6px;
+  grid-template-columns: repeat(6, 80px);
+  grid-auto-rows: 80px;
 `;
 const HR = styled.hr`
   width: 100%;
   border: none;
   border-top: 1px solid ${p => p.theme.DIVIDER};
+`;
+interface ColorProp {
+  $color: string,
+}
+const PaletteColor = styled.div<ColorProp>`
+  background-color: ${p => p.$color};
+  display: grid;
+  place-content: center;
+  text-align: center;
+  color: ${p => (chroma(p.$color).luminance() >= 0.5) ? '#000' : '#FFF'};
 `;
 interface MarginProps {
   $marginTop?: number,
@@ -68,94 +69,73 @@ const Line = styled.div<MarginProps>`
   margin-top: ${p => p.$marginTop ?? 0}px;
   margin-bottom: ${p => p.$marginBottom ?? 0}px;
 `;
-export default function ButtonGallery() {
+interface PaletteColor {
+  color: string,
+  text: string,
+  tooltip: string,
+}
+type UncommonPaletteConfig = [ PaletteColor, ...PaletteColor[] ];
+type CommonPaletteConfig = UncommonPaletteConfig & { length: 13 };
+
+const createThemeConfig = ((theme: DefaultTheme): CommonPaletteConfig => [
+  { color: theme.MODULE_PRIMARY, text: 'Primary', tooltip: 'Module Primary' },
+  { color: theme.MODULE_DARK, text: 'Dark', tooltip: 'Module Color Dark' },
+  { color: theme.MODULE_LIGHT, text: 'Light', tooltip: 'Module Color Light' },
+  { color: theme.HOVER, text: 'Hover', tooltip: 'Module Selection Hover' },
+  { color: theme.TEXT_DARK, text: 'Text', tooltip: 'Text Dark' },
+  { color: theme.ICON_DARK, text: 'Icon', tooltip: 'Icon Dark' },
+  { color: theme.GRAY_E6, text: 'Gray E6', tooltip: 'Gray Light' },
+  { color: theme.GRAY_84, text: 'Gray 84', tooltip: 'Gray Dark' },
+  { color: theme.DIVIDER, text: 'Divider', tooltip: 'Divider' },
+  { color: theme.HIGHLIGHT, text: 'Highlight', tooltip: 'Highlight' },
+  { color: theme.HIGHLIGHT_FOCUS, text: 'Highlight Focus', tooltip: 'Highlight Focus' },
+  { color: theme.BANNER, text: 'Banner', tooltip: 'Banner' },
+  { color: theme.INVALID, text: 'Invalid', tooltip: 'Invalid' },
+]);
+
+export default function PaletteGallery() {
+  const createPalette = ((theme: DefaultTheme): JSX.Element => (
+    <>
+      {
+        createThemeConfig(theme).map(({ color, text, tooltip }, i) => (
+          <OverlayTrigger
+            key={i}
+            placement="bottom"
+            overlay={<Tooltip id={`Palette-${text}`}>{tooltip}</Tooltip>}
+          >
+            <PaletteColor $color={color}>
+              <Line>
+                <Line>{color}</Line>
+                <Line>{text}</Line>
+              </Line>
+            </PaletteColor>
+          </OverlayTrigger>
+        ))
+      }
+    </>
+  ));
+
   return (
     <Gallery>
-      <GallerySection>
-        <Title>Form Buttons</Title>
-        <SectionHeader>
-          Usually tied to changes within the application data. Often results in navigation on confirming or discarding the changes.
-          May be accompanied by icons.
-        </SectionHeader>
-        <SectionButtons>
-          <RedButton $type="custom">
-            <CommonRedSvg as={TrashSvg} width={19} height={19} />
-            <span>Delete</span>
-          </RedButton>
-          <FU.Button $type="secondary">Cancel</FU.Button>
-          <FU.Button $type="primary">Submit</FU.Button>
-        </SectionButtons>
-        <SectionButtons>
-          <RedButton $type="custom">
-            <CommonRedSvg as={TrashSvg} width={19} height={19} />
-            <span>Generously Sized</span>
-          </RedButton>
-          <FU.Button $type="secondary">Generously Sized</FU.Button>
-          <FU.Button $type="primary">Generously Sized</FU.Button>
-        </SectionButtons>
-        <SectionHeader>
-          <Line $marginBottom={6}>Has hovered, active, and disabled treatments.</Line>
-          <Line>Hovered: -5% lightness of BG (absolute) if non-transparent/white - otherwise 97.0% lightness of FG (absolute)</Line>
-          <Line>Active: -12% lightess of BG (absolute) if non-transparent/white - otherwise 92.5% lightness of FG (absolute)</Line>
-          <Line>Disabled: 50% opacity</Line>
-        </SectionHeader>
-
-        <SectionButtons>
-          <RedButton $type="custom" className={`hover`}>
-            <CommonRedSvg as={TrashSvg} width={19} height={19} />
-            <span>Hovered</span>
-          </RedButton>
-          <FU.Button $type="secondary" className={`hover`}>Hovered</FU.Button>
-          <FU.Button $type="primary" className={`hover`}>Hovered</FU.Button>
-        </SectionButtons>
-        <SectionButtons>
-          <RedButton $type="custom" className={`active`}>
-            <CommonRedSvg as={TrashSvg} width={19} height={19} />
-            <span>Active</span>
-          </RedButton>
-          <FU.Button $type="secondary" className={`active`}>Active</FU.Button>
-          <FU.Button $type="primary" className={`active`}>Active</FU.Button>
-        </SectionButtons>
-        <SectionButtons>
-          <RedButton $type="custom" disabled>
-            <CommonRedSvg as={TrashSvg} width={19} height={19} />
-            <span>Disabled</span>
-          </RedButton>
-          <FU.Button $type="secondary" disabled>Disabled</FU.Button>
-          <FU.Button $type="primary" disabled>Disabled</FU.Button>
-        </SectionButtons>
-
-        <SectionHeader>
-          No RTL treatments have currently been defined.
-        </SectionHeader>
-      </GallerySection>
+      {
+        Object.values(Themes).map((theme,i,arr) => (
+          <>
+            <Title>{ theme.NAME }</Title>
+            <SectionGallery>{ createPalette(theme) }</SectionGallery>
+            {
+              (i < (arr.length-1)) &&
+              <HR />
+            }
+          </>
+        ))
+      }
 
       <HR/>
 
       <GallerySection>
-        <Title>Text Buttons</Title>
-        <SectionHeader>
-          Used to handle batch selections.
-          No special treatments for hover or pressed states.
-        </SectionHeader>
-        <SectionButtons>
-          <FU.TextButton>Select All</FU.TextButton>
-          <FU.TextButton>Clear</FU.TextButton>
-        </SectionButtons>
-        <SectionHeader>
-          Disabled state is used when no action would be performed, for example, when no items are available.
-        </SectionHeader>
-        <SectionButtons>
-          <FU.TextButton disabled>Select All</FU.TextButton>
-          <FU.TextButton disabled>Clear</FU.TextButton>
-        </SectionButtons>
-
-        <HR/>
-
-        <SectionHeader>
-          <Title>Icon Buttons</Title>
-          TODO
-        </SectionHeader>
+        <Title>TODO: Proofing Palette</Title>
+        <SectionGallery>
+        </SectionGallery>
       </GallerySection>
     </Gallery>
   );

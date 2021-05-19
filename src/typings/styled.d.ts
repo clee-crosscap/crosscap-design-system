@@ -10,6 +10,9 @@ declare module 'styled-components' {
     ACTIVE?: string,
   }
   export interface DefaultTheme {
+    NAME: string,
+
+    MODULE_PRIMARY: string,
     MODULE_DARK: string,
     MODULE_LIGHT: string,
 
@@ -17,17 +20,21 @@ declare module 'styled-components' {
     ICON_DARK: string,
     
     INPUT_DISABLED: string,
-
+    
     INVALID: string,
-
+    
     GRAY_E6: string,
     GRAY_84: string,
-
+    
     HOVER: string,
-
+    
     DIVIDER: string,
-
+    
     FOOTER_HOVER: string,
+    
+    HIGHLIGHT: string,
+    HIGHLIGHT_FOCUS: string,
+    BANNER: string,
 
     BUTTON: {
       primary: ButtonConfig,

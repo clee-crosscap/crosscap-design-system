@@ -1,18 +1,31 @@
 import React, { useState } from 'react';
-import { HashRouter, Switch, Route, Link } from 'react-router-dom';
-import styled from 'styled-components/macro';
+import { useLocation, Switch, Route, Link } from 'react-router-dom';
+import styled, { DefaultTheme, ThemeProvider } from 'styled-components/macro';
 import { Dropdown } from 'react-bootstrap';
 
 import * as FU from '@utility/Form.utility';
 import * as SU from '@utility/Svg.utility';
-import BaseTheme from '@components/Theme/BaseTheme';
+import * as Assets from '@assets/.';
+import * as Themes from '@components/Theme';
 import ButtonGallery from '@features/ButtonGallery/ButtonGallery';
 import TooltipGallery from '@features/TooltipGallery/TooltipGallery';
 import TextFieldGallery from '@features/TextFieldGallery/TextFieldGallery';
+import FooterGallery from '@features/FooterGallery/FooterGallery';
+import PaletteGallery from '@features/PaletteGallery/PaletteGallery';
+import DropdownGallery from '@features/DropdownGallery/DropdownGallery';
+import SelectionGallery from '@features/SelectionGallery/SelectionGallery';
+import ModalGallery from '@features/ModalGallery/ModalGallery';
+import DrawerGallery from '@features/DrawerGallery/DrawerGallery';
+import IconGallery from '@features/IconGallery/IconGallery';
+import LoadingIndicatorGallery from '@features/LoadingIndicatorGallery/LoadingIndicatorGallery';
+import NotificationGallery from '@features/NotificationGallery/NotificationGallery';
+import TreeGallery from '@features/TreeGallery/TreeGallery';
+import SearchableGallery from '@features/SearchableGallery/SearchableGallery';
+import BrandingGallery from '@features/BrandingGallery/BrandingGallery';
+import TabGallery from '@features/TabGallery/TabGallery';
+import TableGallery from '@features/TableGallery/TableGallery';
 
-import { ReactComponent as ChevronSvg } from '@assets/chevron.svg';
-
-const CommonBlackSvg = styled(SU.styledSvg({ $fillStroke: BaseTheme.ICON_DARK }))`
+const CommonBlackSvg = styled(SU.styledSvg({ $fillStroke: Themes.CrosscapTheme.ICON_DARK }))`
   cursor: pointer;
 `;
 const RoutingGrid = styled.div`
@@ -31,6 +44,12 @@ const RoutingGridLeft = styled.div`
   grid-auto-flow: row;
   grid-row-gap: 0px;
   align-content: start;
+  overflow-y: auto;
+
+  &:after {
+    content: '';
+    padding-bottom: 30px;
+  }
 `;
 interface BGProp {
   $bg: string,
@@ -49,6 +68,9 @@ const RoutingLink = styled(FU.DropdownItem)`
     text-decoration: none;
   }
 `;
+const Heading = styled.h3`
+  margin: 10px 0;
+`;
 const HR = styled.hr`
   width: 100%;
   margin: 20px 0;
@@ -56,172 +78,118 @@ const HR = styled.hr`
   border-top: 1px solid ${p => p.theme.DIVIDER};
 `;
 export default function RoutingComponent() {
+  const location = useLocation();
+  const [ theme, setTheme ] = useState<DefaultTheme>(Themes.CrosscapTheme);
   const [ galleryBG, setGalleryBG ] = useState<string>('#FFFFFF');
+
+  interface LinkConfig {
+    type: 'link',
+    path: string,
+    text: string,
+    component: React.ComponentType,
+  }
+  interface HrConfig {
+    type: 'hr',
+  }
+  interface HeadingConfig {
+    type: 'heading',
+    text: string,
+  }
+  type SectionConfig = LinkConfig | HrConfig | HeadingConfig;
+  const sectionsConfig: SectionConfig[] = [
+    { type: 'hr' },
+    { type: 'heading', text: 'Components' },
+    { type: 'link',    text: 'Text Fields',             path: '/text-fields',        component: TextFieldGallery },
+    { type: 'link',    text: 'TODO: Dropdowns',         path: `/dropdowns`,          component: DropdownGallery },
+    { type: 'link',    text: 'Selections',              path: `/selections`,         component: SelectionGallery },
+    { type: 'link',    text: 'Buttons',                 path: '/buttons',            component: ButtonGallery },
+    { type: 'link',    text: 'Icons',                   path: `/icons`,              component: IconGallery },
+    { type: 'hr' },
+    { type: 'heading', text: 'Structural' },
+    { type: 'link',    text: 'TODO: Modals',            path: `/modals`,             component: ModalGallery },
+    { type: 'link',    text: 'TODO: Tabs',              path: `/tabs`,               component: TabGallery },
+    { type: 'link',    text: 'TODO: Drawers',           path: `/drawers`,            component: DrawerGallery },
+    { type: 'link',    text: 'TOOD: Footers',           path: `/footers`,            component: FooterGallery },
+    { type: 'hr' },
+    { type: 'heading', text: 'Data' },
+    { type: 'link',    text: 'TODO: Trees',             path: `/trees`,              component: TreeGallery },
+    { type: 'link',    text: 'TODO: Tables',            path: `/tables`,             component: TableGallery },
+    { type: 'link',    text: 'TODO: Searchables',       path: `/searchables`,        component: SearchableGallery },
+    { type: 'hr' },
+    { type: 'heading', text: 'Informational' },
+    { type: 'link',    text: 'Tooltips',                path: '/tooltips',           component: TooltipGallery },
+    { type: 'link',    text: 'TODO: Notifications',     path: `/notifications`,      component: NotificationGallery },
+    { type: 'link',    text: 'TODO: Loading Indicator', path: `/loading-indicator`,  component: LoadingIndicatorGallery },
+    { type: 'link',    text: 'Palettes',                path: `/palettes`,           component: PaletteGallery },
+    { type: 'link',    text: 'TODO: Branding',          path: `/branding`,           component: BrandingGallery },
+  ];
+
   return (
-    <HashRouter>
+    <ThemeProvider theme={theme}>
       <RoutingGrid>
         <RoutingGridLeft>
           <Dropdown style={{ marginBottom: '4px' }}>
             <FU.DropdownToggle $removeBorder={true}>
-              <span>Palette: Calendar</span>
-              <CommonBlackSvg as={ChevronSvg} width={10} height={8} />
+              <span>Palette: {theme.NAME}</span>
+              <CommonBlackSvg as={Assets.ChevronSvg} width={10} height={8} />
             </FU.DropdownToggle>
             <FU.DropdownMenu>
-              <FU.DropdownItem onClick={() => {}}>
-                Calendar
-              </FU.DropdownItem>
+              {
+                Object.values(Themes).map((theme: DefaultTheme, i) => (
+                  <FU.DropdownItem key={i} onClick={() => setTheme(theme)}>
+                    { theme.NAME }
+                  </FU.DropdownItem>
+                ))
+              }
             </FU.DropdownMenu>
           </Dropdown>
 
           <Dropdown>
             <FU.DropdownToggle $removeBorder={true}>
               <span>BG: {galleryBG}</span>
-              <CommonBlackSvg as={ChevronSvg} width={10} height={8} />
+              <CommonBlackSvg as={Assets.ChevronSvg} width={10} height={8} />
             </FU.DropdownToggle>
             <FU.DropdownMenu>
-            <FU.DropdownItem onClick={() => setGalleryBG('#FFFFFF')}>
-              #FFFFFF
-            </FU.DropdownItem>
-            <FU.DropdownItem onClick={() => setGalleryBG('#F8F8F8')}>
-              #F8F8F8
-            </FU.DropdownItem>
+              <FU.DropdownItem onClick={() => setGalleryBG('#FFFFFF')}>#FFFFFF</FU.DropdownItem>
+              <FU.DropdownItem onClick={() => setGalleryBG('#F8F8F8')}>#F8F8F8</FU.DropdownItem>
             </FU.DropdownMenu>
           </Dropdown>
 
-          <HR />
-
-          <RoutingLink as={Link} to={`/buttons`}>Buttons</RoutingLink>
-          <RoutingLink as={Link} to={`/tooltips`}>Tooltips</RoutingLink>
-          <RoutingLink as={Link} to={`/text-fields`}>Text Fields</RoutingLink>
-
-          <HR />
-
-          <RoutingLink as={Link} to={`/footers`}>Footers</RoutingLink>
-          <RoutingLink as={Link} to={`/palettes`}>Palettes</RoutingLink>
-          <RoutingLink as={Link} to={`/dropdowns`}>Dropdowns</RoutingLink>
-
-          <HR />
-
-          <RoutingLink as={Link} to={`/selectors`}>
-            TODO: Selectors
-          </RoutingLink>
-          <RoutingLink as={Link} to={`/modals`}>
-            TODO: Modals
-          </RoutingLink>
-          <RoutingLink as={Link} to={`/drawers`}>
-            TODO: Drawers
-          </RoutingLink>
-          <RoutingLink as={Link} to={`/icons`}>
-            TODO: Icons
-          </RoutingLink>
-          <RoutingLink as={Link} to={`/loading-indicator`}>
-            TODO: Loading Indicator
-          </RoutingLink>
-          <RoutingLink as={Link} to={`/notifications`}>
-            TODO: Notifications
-          </RoutingLink>
-          <RoutingLink as={Link} to={`/trees`}>
-            TODO: Trees
-          </RoutingLink>
-          <RoutingLink as={Link} to={`/searchables`}>
-            TODO: Searchables
-          </RoutingLink>
+          {
+            sectionsConfig.map((linkConfig, i) => {
+              switch(linkConfig.type) {
+                case 'hr':
+                  return <HR key={i} />;
+                case 'heading':
+                  return <Heading key={i}>{linkConfig.text}</Heading>;
+                case 'link':
+                default:
+                  return (
+                    <RoutingLink
+                      as={Link}
+                      key={linkConfig.path}
+                      to={linkConfig.path}
+                      className={location.pathname === linkConfig.path ? 'hover' : ''}
+                    >
+                      {linkConfig.text}
+                    </RoutingLink>
+                  );
+              }
+            })
+          }
         </RoutingGridLeft>
         <RoutingGridRight $bg={galleryBG}>
           <Switch>
-            <Route path="/buttons" component={ButtonGallery} />
-            <Route path="/tooltips" component={TooltipGallery} />
-            <Route path="/text-fields" component={TextFieldGallery} />
-
-            <Route path="/palettes">
-              <pre>
-                {
-                  `
-                    TODO: Palettes
-
-                    Calendar
-                    Distro
-                    Platform Admin
-                    Common
-                  `.split('\n').map(s => s.trim()).join('\n')
+            {
+              sectionsConfig.map(linkConfig => {
+                if(linkConfig.type === 'link') {
+                  return <Route key={linkConfig.path} path={linkConfig.path} component={linkConfig.component} />
                 }
-              </pre>
-            </Route>
-            <Route path="/selectors">
-              <pre>
-                {
-                  `
-                    TODO: Selectors
+                return undefined;
+              })
+            }
 
-                    Radio Buttons
-                    Toggle Selectors
-                    Yes/No Checkboxes
-                    Yes/No + Indeterminate Checkboxes
-                  `.split('\n').map(s => s.trim()).join('\n')
-                }
-              </pre>
-            </Route>
-            <Route path="/dropdowns">
-              <pre>
-                {
-                  `
-                    TODO: Dropdowns
 
-                    Actions Dropdown
-                    Single-Selection Dropdown
-                    Multi-Selection Dropdown
-                    Dropdowns with Dividers
-                    Dropdowns with Icons
-                    Dropdowns without frames
-                    Icon Toggle Dropdowns
-                    Autocomplete searchable dropdowns
-                  `.split('\n').map(s => s.trim()).join('\n')
-                }
-              </pre>
-            </Route>
-            <Route path="/modals">
-              <pre>
-                {
-                  `
-                    TODO: Modals
-
-                    Alert Modal + Icon
-                    Unsaved Changes Modal
-                    Yes/No Confirmation Modal
-                    Workflow Modal
-                    Scrolling in modals
-                    Modals with footers
-                    Modals where ESC / Backdrop dismissal should be disabled
-                  `.split('\n').map(s => s.trim()).join('\n')
-                }
-              </pre>
-            </Route>
-            <Route path="/drawers">
-              <pre>
-                {
-                  `
-                    TODO: Drawers
-
-                    Left Drawer
-                    Right Drawer
-                    Inline Drawer
-                    Overlay Drawer
-                  `.split('\n').map(s => s.trim()).join('\n')
-                }
-              </pre>
-            </Route>
-
-            <Route path="/icons">
-              <pre>
-                {
-                  `
-                    TODO: Icons
-
-                    Gallery of all SVG icons checked into repository
-                  `.split('\n').map(s => s.trim()).join('\n')
-                }
-              </pre>
-            </Route>
             <Route path="/icons">
               <pre>
                 {
@@ -239,7 +207,7 @@ export default function RoutingComponent() {
           </Switch>
         </RoutingGridRight>
       </RoutingGrid>
-    </HashRouter>
+    </ThemeProvider>
   );
 }
 

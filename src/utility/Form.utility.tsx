@@ -4,17 +4,22 @@ import chroma from 'chroma-js';
 
 import * as CU from '@utility/Color.utility'
 import * as SU from '@utility/Svg.utility';
-
+import * as Assets from '@assets/.';
+import CrosscapTheme from '@components/Theme/CrosscapTheme';
 import '@components/Tooltip/Tooltip.scss';
 
-import BaseTheme from '@components/Theme/BaseTheme';
-
+interface WidthProp {
+  $width?: number | string,
+}
+interface MaxWidthProp {
+  $maxWidth?: number | string,
+}
 interface ValidProp {
   $valid?: boolean,
 }
-export const Input = styled.input<ValidProp>`
-  max-width: 312px;
-  width: 100%;
+export const Input = styled.input<ValidProp & WidthProp & MaxWidthProp>`
+  max-width: ${p => ((typeof p.$maxWidth === 'string') && p.$maxWidth) || `${p.$maxWidth ?? 312}px`};
+  width: ${p => ((typeof p.$width === 'string') && p.$width) || `${p.$width ?? 274}px`};
   height: 36px;
   padding: 0px 18px;
   border: 2px solid ${p => p.$valid !== false ? p.theme.GRAY_E6 : p.theme.INVALID};
@@ -28,7 +33,7 @@ export const Input = styled.input<ValidProp>`
 
   &.focus,
   &:focus {
-    border-color: ${p => p.$valid !== false ? p.theme.MODULE_LIGHT : p.theme.INVALID}
+    border-color: ${p => p.$valid !== false ? p.theme.MODULE_PRIMARY : p.theme.INVALID}
   }
   &.disabled,
   &:disabled {
@@ -312,9 +317,15 @@ interface CheckboxProp {
 interface DisabledProp {
   $disabled?: boolean,
 }
-export const Checkbox = styled(SU.styledSvg({ $fillStroke: BaseTheme.ICON_DARK }))<CheckboxProp & DisabledProp>`
+interface WidthHeightProp {
+  width?: number,
+  height?: number,
+}
+export const Checkbox = styled(SU.styledSvg({ $fillStroke: CrosscapTheme.ICON_DARK })).attrs({ as: Assets.CheckboxUnifiedSvg })<CheckboxProp & DisabledProp & WidthHeightProp>`
   cursor: ${p => p.$disabled ? 'not-allowed' : 'pointer'};
   opacity: ${p => p.$disabled ? 0.5 : 1};
+  width: ${p => p.width ?? '20px'};
+  height: ${p => p.height ?? '20px'};
 
   & {
     transition: opacity 0.3s ease-out;
@@ -328,4 +339,45 @@ export const Checkbox = styled(SU.styledSvg({ $fillStroke: BaseTheme.ICON_DARK }
   .checkbox-yes   { opacity: ${p => (p.$checkbox === true     ) ? 1 : 0}; }
   .checkbox-no    { opacity: ${p => (p.$checkbox === false    ) ? 1 : 0}; }
   .checkbox-maybe { opacity: ${p => (p.$checkbox === undefined) ? 1 : 0}; }
+`;
+interface ToggleProp {
+  $toggle: boolean,
+}
+export const Toggle = styled.button<ToggleProp & DisabledProp>`
+  width: 60px;
+  height: 30px;
+  border-radius: 15px;
+  background-color: ${p => chroma.mix('#FFFFFF', '#90B6C2', p.$toggle ? 1 : 0.24).hex().toUpperCase()};
+  position: relative;
+  cursor: ${p => p.$disabled ? 'not-allowed' : 'pointer'};
+  opacity: ${p => p.$disabled ? 0.5 : 1};
+  transition: background-color 300ms ease-in-out;
+
+  &,
+  &:hover,
+  &:focus,
+  &:active {
+    outline: none;
+    border: none;
+    background-image: none;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background-color: #FFFFFF;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.17);
+    transform: translate3d(${p => p.$toggle ? 30 : 0}px, 0, 0);
+    transition: transform 300ms ease-in-out;
+  }
 `;

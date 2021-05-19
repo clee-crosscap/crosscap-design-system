@@ -80,20 +80,16 @@ export default function GenericGallery() {
           <span>Item</span>
           <span>Item</span>
         </SectionGallery>
+
+        <pre>{`
+          TODO: Loading indicator
+
+          Loading indicator for full-screen workflows
+          Loading indicator for multi-pane workflows
+          Loading indicator for modal workflows
+          Loading indicator for individual components`
+        }</pre>
       </GallerySection>
-
-      <pre>{`
-        TODO: Dropdowns
-
-        Actions Dropdown
-        Single-Selection Dropdown
-        Multi-Selection Dropdown
-        Dropdowns with Dividers
-        Dropdowns with Icons
-        Dropdowns without frames
-        Icon Toggle Dropdowns
-        Autocomplete searchable dropdowns`
-      }</pre>
     </Gallery>
   );
 }

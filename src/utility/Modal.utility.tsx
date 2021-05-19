@@ -3,7 +3,7 @@ import styled from 'styled-components/macro';
 import ReactModal from 'react-modal';
 
 import * as SU from '@utility/Svg.utility';
-import { ReactComponent as AlertSvg } from '@assets/alert.svg';
+import * as Assets from '@assets/.';
 
 export const TIMEOUT_MS = 200;
 
@@ -93,7 +93,7 @@ export const ModalProps = {
   overlayElement: ((props: any, contentElement: React.ReactNode) => <ModalOverlay {...props}>{contentElement}</ModalOverlay>),
   contentElement: ((props: any, children: React.ReactNode) => <ModalContent {...props}>{children}</ModalContent>),
 };
-export const ModalAlert = styled(SU.styledSvg()).attrs({ as: AlertSvg })`
+export const ModalAlert = styled(SU.styledSvg()).attrs({ as: Assets.AlertSvg })`
   width: 30px;
   height: 27px;
   margin-bottom: 15px;
