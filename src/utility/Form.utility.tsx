@@ -343,14 +343,14 @@ export const Checkbox = styled(SU.styledSvg({ $fillStroke: CrosscapTheme.ICON_DA
 interface ToggleProp {
   $toggle: boolean,
 }
-export const Toggle = styled.button<ToggleProp & DisabledProp>`
+export const Toggle = styled.button<ToggleProp>`
   width: 60px;
   height: 30px;
   border-radius: 15px;
-  background-color: ${p => chroma.mix('#FFFFFF', '#90B6C2', p.$toggle ? 1 : 0.24).hex().toUpperCase()};
+  background-color: ${p => chroma.mix('#FFFFFF', p.theme.MODULE_DARK, p.$toggle ? 1 : 0.24).hex().toUpperCase()};
   position: relative;
-  cursor: ${p => p.$disabled ? 'not-allowed' : 'pointer'};
-  opacity: ${p => p.$disabled ? 0.5 : 1};
+  cursor: pointer;
+  opacity: 1;
   transition: background-color 300ms ease-in-out;
 
   &,

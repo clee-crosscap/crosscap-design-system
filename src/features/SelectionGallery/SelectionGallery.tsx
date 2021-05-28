@@ -107,7 +107,7 @@ export default function GenericGallery() {
           <SectionHeader>Enabled</SectionHeader>
           <FU.Toggle $toggle={binaryToggleState} onClick={() => setBinaryToggleState(!binaryToggleState)} />
           <SectionHeader>Disabled</SectionHeader>
-          <FU.Toggle $toggle={binaryToggleState} $disabled={true} />
+          <FU.Toggle $toggle={binaryToggleState} disabled={true} />
         </SectionGallery>
       </GallerySection>
 

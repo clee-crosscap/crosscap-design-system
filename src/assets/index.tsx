@@ -8,4 +8,5 @@ export { ReactComponent as FilterSvg } from '@assets/filter.svg';
 export { ReactComponent as GearFilledSvg } from '@assets/gear-filled.svg';
 export { ReactComponent as InfoSvg } from '@assets/info.svg';
 export { ReactComponent as MagnifyingGlassSvg } from '@assets/magnifying-glass.svg';
+export { ReactComponent as PencilSvg } from '@assets/pencil.svg';
 export { ReactComponent as TrashSvg } from '@assets/trash.svg';

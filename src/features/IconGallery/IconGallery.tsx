@@ -17,6 +17,7 @@ const {
   GearFilledSvg,
   InfoSvg,
   MagnifyingGlassSvg,
+  PencilSvg,
   TrashSvg,
   ..._otherSvgs
 } = Assets;
@@ -31,6 +32,7 @@ const iconConfigs: Array<{ component: React.ComponentType, text: string }> = [
   { component: FilterSvg,          text: 'Filter'             },
   { component: GearFilledSvg,      text: 'Gear (Filled)'      },
   { component: InfoSvg,            text: 'Info'               },
+  { component: PencilSvg,          text: 'Pencil'             },
   { component: MagnifyingGlassSvg, text: 'Magnifying Glass'   },
   { component: TrashSvg,           text: 'Trash'              },
 ];

@@ -137,6 +137,10 @@ export default function PaletteGallery() {
         <SectionGallery>
         </SectionGallery>
       </GallerySection>
+
+      <HR />
+
+      Note: #00000019 on #FFFFFF composites to #E6E6E6
     </Gallery>
   );
 }

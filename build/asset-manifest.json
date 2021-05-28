@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/crosscap-design-system/build/static/css/main.7be99854.chunk.css",
-    "main.js": "/crosscap-design-system/build/static/js/main.236ce855.chunk.js",
-    "main.js.map": "/crosscap-design-system/build/static/js/main.236ce855.chunk.js.map",
+    "main.js": "/crosscap-design-system/build/static/js/main.8324219e.chunk.js",
+    "main.js.map": "/crosscap-design-system/build/static/js/main.8324219e.chunk.js.map",
     "runtime-main.js": "/crosscap-design-system/build/static/js/runtime-main.59010a4c.js",
     "runtime-main.js.map": "/crosscap-design-system/build/static/js/runtime-main.59010a4c.js.map",
-    "static/js/2.dbbd6218.chunk.js": "/crosscap-design-system/build/static/js/2.dbbd6218.chunk.js",
-    "static/js/2.dbbd6218.chunk.js.map": "/crosscap-design-system/build/static/js/2.dbbd6218.chunk.js.map",
+    "static/js/2.bbf8160f.chunk.js": "/crosscap-design-system/build/static/js/2.bbf8160f.chunk.js",
+    "static/js/2.bbf8160f.chunk.js.map": "/crosscap-design-system/build/static/js/2.bbf8160f.chunk.js.map",
     "index.html": "/crosscap-design-system/build/index.html",
     "static/css/main.7be99854.chunk.css.map": "/crosscap-design-system/build/static/css/main.7be99854.chunk.css.map",
-    "static/js/2.dbbd6218.chunk.js.LICENSE.txt": "/crosscap-design-system/build/static/js/2.dbbd6218.chunk.js.LICENSE.txt",
+    "static/js/2.bbf8160f.chunk.js.LICENSE.txt": "/crosscap-design-system/build/static/js/2.bbf8160f.chunk.js.LICENSE.txt",
     "static/media/alert.425a049a.svg": "/crosscap-design-system/build/static/media/alert.425a049a.svg",
     "static/media/check.87649c88.svg": "/crosscap-design-system/build/static/media/check.87649c88.svg",
     "static/media/checkbox-unified.28ab8714.svg": "/crosscap-design-system/build/static/media/checkbox-unified.28ab8714.svg",
@@ -20,12 +20,13 @@
     "static/media/gear-filled.724b357c.svg": "/crosscap-design-system/build/static/media/gear-filled.724b357c.svg",
     "static/media/info.c0f7b058.svg": "/crosscap-design-system/build/static/media/info.c0f7b058.svg",
     "static/media/magnifying-glass.53fbd290.svg": "/crosscap-design-system/build/static/media/magnifying-glass.53fbd290.svg",
+    "static/media/pencil.52db8c7b.svg": "/crosscap-design-system/build/static/media/pencil.52db8c7b.svg",
     "static/media/trash.c1faff0a.svg": "/crosscap-design-system/build/static/media/trash.c1faff0a.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.59010a4c.js",
-    "static/js/2.dbbd6218.chunk.js",
+    "static/js/2.bbf8160f.chunk.js",
     "static/css/main.7be99854.chunk.css",
-    "static/js/main.236ce855.chunk.js"
+    "static/js/main.8324219e.chunk.js"
   ]
 }

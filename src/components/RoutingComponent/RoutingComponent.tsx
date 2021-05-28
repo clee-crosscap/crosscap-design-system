@@ -58,10 +58,14 @@ const RoutingGridRight = styled.div<BGProp>`
   overflow: hidden;
   background-color: ${p => p.$bg};
 `;
-const RoutingLink = styled(FU.DropdownItem)`
+interface WIPProp {
+  $isWip: boolean,
+}
+const RoutingLink = styled(FU.DropdownItem)<WIPProp>`
   width: calc(100% + 100px);
   margin-left: -40px;
   padding-left: 40px;
+  ${p => !p.$isWip ? '' : `color: #CCCCCC;`}
 
   &,
   &:visited {
@@ -98,30 +102,30 @@ export default function RoutingComponent() {
   type SectionConfig = LinkConfig | HrConfig | HeadingConfig;
   const sectionsConfig: SectionConfig[] = [
     { type: 'hr' },
+    { type: 'heading', text: 'Informational' },
+    { type: 'link',    text: 'Palettes',                path: `/palettes`,           component: PaletteGallery },
+    { type: 'link',    text: 'Tooltips',                path: '/tooltips',           component: TooltipGallery },
+    { type: 'link',    text: 'TODO: Notifications',     path: `/notifications`,      component: NotificationGallery },
+    { type: 'link',    text: 'TODO: Loading Indicator', path: `/loading-indicator`,  component: LoadingIndicatorGallery },
+    { type: 'link',    text: 'TODO: Branding',          path: `/branding`,           component: BrandingGallery },
+    { type: 'hr' },
     { type: 'heading', text: 'Components' },
     { type: 'link',    text: 'Text Fields',             path: '/text-fields',        component: TextFieldGallery },
-    { type: 'link',    text: 'TODO: Dropdowns',         path: `/dropdowns`,          component: DropdownGallery },
     { type: 'link',    text: 'Selections',              path: `/selections`,         component: SelectionGallery },
     { type: 'link',    text: 'Buttons',                 path: '/buttons',            component: ButtonGallery },
     { type: 'link',    text: 'Icons',                   path: `/icons`,              component: IconGallery },
+    { type: 'link',    text: 'TODO: Dropdowns',         path: `/dropdowns`,          component: DropdownGallery },
     { type: 'hr' },
     { type: 'heading', text: 'Structural' },
+    { type: 'link',    text: 'Footers',                 path: `/footers`,            component: FooterGallery },
     { type: 'link',    text: 'TODO: Modals',            path: `/modals`,             component: ModalGallery },
     { type: 'link',    text: 'TODO: Tabs',              path: `/tabs`,               component: TabGallery },
     { type: 'link',    text: 'TODO: Drawers',           path: `/drawers`,            component: DrawerGallery },
-    { type: 'link',    text: 'TOOD: Footers',           path: `/footers`,            component: FooterGallery },
     { type: 'hr' },
     { type: 'heading', text: 'Data' },
     { type: 'link',    text: 'TODO: Trees',             path: `/trees`,              component: TreeGallery },
     { type: 'link',    text: 'TODO: Tables',            path: `/tables`,             component: TableGallery },
     { type: 'link',    text: 'TODO: Searchables',       path: `/searchables`,        component: SearchableGallery },
-    { type: 'hr' },
-    { type: 'heading', text: 'Informational' },
-    { type: 'link',    text: 'Tooltips',                path: '/tooltips',           component: TooltipGallery },
-    { type: 'link',    text: 'TODO: Notifications',     path: `/notifications`,      component: NotificationGallery },
-    { type: 'link',    text: 'TODO: Loading Indicator', path: `/loading-indicator`,  component: LoadingIndicatorGallery },
-    { type: 'link',    text: 'Palettes',                path: `/palettes`,           component: PaletteGallery },
-    { type: 'link',    text: 'TODO: Branding',          path: `/branding`,           component: BrandingGallery },
   ];
 
   return (
@@ -169,6 +173,7 @@ export default function RoutingComponent() {
                       as={Link}
                       key={linkConfig.path}
                       to={linkConfig.path}
+                      $isWip={linkConfig.text.indexOf('TODO') === 0}
                       className={location.pathname === linkConfig.path ? 'hover' : ''}
                     >
                       {linkConfig.text}

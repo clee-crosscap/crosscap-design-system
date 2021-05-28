@@ -5,7 +5,7 @@ const CalendarTheme: DefaultTheme = {
   NAME:            "Calendar",
 
   MODULE_PRIMARY:  "#3A8CFE",
-  MODULE_DARK:     "#1189B0",
+  MODULE_DARK:     "#008AC9",
   MODULE_LIGHT:    "#38C6F4",
 
   TEXT_DARK:       "#3B3B3B",
@@ -31,7 +31,7 @@ const CalendarTheme: DefaultTheme = {
   BUTTON: {
     primary: {
       FG:           "#FFFFFF",
-      BG:           "#1189B0",
+      BG:           "#008AC9",
     },
     secondary: {
       FG:           "#3B3B3B",
