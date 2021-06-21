@@ -20,9 +20,8 @@ $tooltip-shadow: 2px;
   
   .arrow {
     bottom: 0;
-    padding-bottom: $tooltip-shadow;
     height: $tooltip-arrow-height + $tooltip-shadow;
-    width: $tooltip-arrow-width + 2*$tooltip-shadow;
+    width: $tooltip-arrow-width + $tooltip-shadow;
   
     &::before {
       top: 0;
@@ -31,29 +30,13 @@ $tooltip-shadow: 2px;
     }
   }
 }
-@mixin TooltipRight {
-  padding: 0 $tooltip-arrow-height;
-
-  .arrow {
-    left: 0;
-    width: $tooltip-arrow-height;
-    height: $tooltip-arrow-width;
-
-    &::before {
-      right: 0;
-      border-width: ($tooltip-arrow-width / 2) $tooltip-arrow-height ($tooltip-arrow-width / 2) 0;
-      border-right-color: $tooltip-arrow-color;
-    }
-  }
-}
 @mixin TooltipBottom {
   padding: $tooltip-arrow-height + $tooltip-shadow 0;
 
   .arrow {
     top: 0;
-    padding-top: $tooltip-shadow;
     height: $tooltip-arrow-height + $tooltip-shadow;
-    width: $tooltip-arrow-width + 2*$tooltip-shadow;
+    width: $tooltip-arrow-width + $tooltip-shadow;
 
     &::before {
       bottom: 0;
@@ -63,12 +46,12 @@ $tooltip-shadow: 2px;
   }
 }
 @mixin TooltipLeft {
-  padding: 0 $tooltip-arrow-height;
+  padding: 0 $tooltip-arrow-height + $tooltip-shadow;
 
   .arrow {
     right: 0;
-    width: $tooltip-arrow-height;
-    height: $tooltip-arrow-width;
+    width: $tooltip-arrow-height + $tooltip-shadow;
+    height: $tooltip-arrow-width + $tooltip-shadow;
 
     &::before {
       left: 0;
@@ -77,6 +60,22 @@ $tooltip-shadow: 2px;
     }
   }
 }
+@mixin TooltipRight {
+  padding: 0 $tooltip-arrow-height + $tooltip-shadow;
+
+  .arrow {
+    left: 0;
+    width: $tooltip-arrow-height + $tooltip-shadow;
+    height: $tooltip-arrow-width + $tooltip-shadow;
+
+    &::before {
+      right: 0;
+      border-width: ($tooltip-arrow-width / 2) $tooltip-arrow-height ($tooltip-arrow-width / 2) 0;
+      border-right-color: $tooltip-arrow-color;
+    }
+  }
+}
+
 .ccbs-tooltip {
   position: absolute;
   z-index: 1070;

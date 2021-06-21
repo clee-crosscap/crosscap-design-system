@@ -1,41 +1,72 @@
 import chroma from "chroma-js";
 import { DefaultTheme } from "styled-components/macro";
 
-const CalendarTheme: DefaultTheme = {
-  NAME:            "Calendar",
+import * as GU from '@utility/General.utility';
 
-  MODULE_PRIMARY:  "#3A8CFE",
-  MODULE_DARK:     "#008AC9",
-  MODULE_LIGHT:    "#38C6F4",
+const WHITE = "#FFFFFF";
+const TRANSPARENT_WHITE = 'rgba(255, 255, 255, 0)';
+const GRAY_3B = '#3B3B3B';
+const GRAY_84 = '#848484';
+const GRAY_D8 = '#D8D8D8';
+const GRAY_E6 = '#E6E6E6';
+const PRIMARY = "#3A8CFE";
+const DARK    = "#2F70CC";
+const LIGHT   = "#D8E8FF";
 
-  TEXT_DARK:       "#3B3B3B",
-  ICON_DARK:       "#3B3B3B",
+const CalendarTheme: DefaultTheme<typeof PRIMARY, typeof DARK, typeof LIGHT> = {
+  NAME:              "Calendar",
 
-  INPUT_DISABLED:  "#F7F7F7",
+  MODULE_PRIMARY:    PRIMARY,
+  MODULE_DARK:       DARK,
+  MODULE_LIGHT:      LIGHT,
 
-  INVALID:         "#F35955",
+  TEXT_DARK:         GRAY_3B,
+  ICON_DARK:         GRAY_3B,
 
-  GRAY_E6:         "#E6E6E6",
-  GRAY_84:         "#848484",
+  BADGE_ACTIVE_BG:   DARK,
+  BADGE_ACTIVE_FG:   "#FFFFFF",
+  BADGE_INACTIVE_BG: GRAY_E6,
+  BADGE_INACTIVE_FG: GRAY_3B,
 
-  DIVIDER:         "#D8D8D8",
+  TAB_ACTIVE:        DARK,
+  TAB_INACTIVE:      GRAY_3B,
 
-  FOOTER_HOVER:    "#E4EBED",
+  INVALID:           "#BF4743",
 
-  HOVER:           chroma.mix("#38C6F4", "#FFFFFF", 0.8).hex().toUpperCase(),
+  GRAY_84:           GRAY_84,
+  GRAY_D8:           GRAY_D8,
+  GRAY_E6:           GRAY_E6,
 
-  HIGHLIGHT:       "#FFDF00",
-  HIGHLIGHT_FOCUS: "#FF9100",
-  BANNER:          "#FFE3A6",
+  DIVIDER:           GRAY_D8,
+
+  FOOTER_HOVER:      "#E4EBED",
+
+  HOVER:             chroma(PRIMARY).set('hsl.l', GU.lerp(0.80, chroma(PRIMARY).get('hsl.l'), 1)).hex().toUpperCase(),
+
+  HIGHLIGHT:         "#FFDF00",
+  HIGHLIGHT_FOCUS:   "#FF9100",
+  BANNER:            "#FFE3A6",
 
   BUTTON: {
     primary: {
-      FG:           "#FFFFFF",
-      BG:           "#008AC9",
+      FG:            WHITE,
+      BG:            PRIMARY,
     },
     secondary: {
-      FG:           "#3B3B3B",
-      BG:           "rgba(255, 255, 255, 0)", // Avoid transparent since chroma rejects it
+      BG:            GRAY_E6,
+      FG:            GRAY_3B,
+    },
+    tertiary: {
+      BG:            TRANSPARENT_WHITE, // Avoid transparent since chroma rejects it
+      FG:            GRAY_3B,
+    },
+    text: {
+      BG:            TRANSPARENT_WHITE, // Avoid transparent since chroma rejects it
+      FG:            DARK,
+    },
+    icon: {
+      BG:            TRANSPARENT_WHITE, // Avoid transparent since chroma rejects it
+      FG:            GRAY_3B,
     },
   },
 };

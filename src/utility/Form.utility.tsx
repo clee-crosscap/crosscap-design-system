@@ -17,28 +17,43 @@ interface MaxWidthProp {
 interface ValidProp {
   $valid?: boolean,
 }
-export const Input = styled.input<ValidProp & WidthProp & MaxWidthProp>`
+interface InlineIconProp {
+  $inlineIcon?: boolean,
+}
+export const ComponentLabel = styled.div`
+  font-size: 13px;
+  font-weight: 500;
+  color: ${p => p.theme.TEXT_DARK};
+  margin-bottom: 11px;
+`;
+export const Input = styled.input<ValidProp & WidthProp & MaxWidthProp & InlineIconProp>`
   max-width: ${p => ((typeof p.$maxWidth === 'string') && p.$maxWidth) || `${p.$maxWidth ?? 312}px`};
   width: ${p => ((typeof p.$width === 'string') && p.$width) || `${p.$width ?? 274}px`};
   height: 36px;
-  padding: 0px 18px;
-  border: 2px solid ${p => p.$valid !== false ? p.theme.GRAY_E6 : p.theme.INVALID};
+  padding: 0px 18px 0 ${p => p.$inlineIcon ? 42 : 18}px;
+  border: 2px solid ${p => p.$valid !== false ? p.theme.GRAY_D8 : p.theme.INVALID};
   border-radius: 6px;
   color: ${p => p.theme.TEXT_DARK};
   outline: none;
-  transition: border-color 0.15s ease-out, background-color 0.15s ease-out;
+  transition: border-color 0.15s ease-out, background-color 0.15s ease-out, padding-left 0.15s ease-out;
   font-size: 15px;
   line-height: 1.2;
   font-family: 'Roboto', 'Arial', 'sans-serif';
+  background-color: #FFFFFF;
 
+  &.hover,
+  &:hover {
+    border-color: ${p => p.$valid !== false ? '#999999' : p.theme.INVALID};
+  }
   &.focus,
   &:focus {
-    border-color: ${p => p.$valid !== false ? p.theme.MODULE_PRIMARY : p.theme.INVALID}
+    ${p => p.$inlineIcon ? 'padding-left: 18px;' : ''}
+    border-color: ${p => p.$valid !== false ? p.theme.TEXT_DARK : p.theme.INVALID}
   }
   &.disabled,
   &:disabled {
-    background-color: ${p => p.theme.INPUT_DISABLED};
-    border-color: ${p => chroma.hex(p.theme.GRAY_E6).alpha(0.3).css()};
+    color: ${p => chroma.hex(p.theme.GRAY_84).alpha(0.3).css()};
+    border-color: ${p => chroma.hex(p.theme.GRAY_D8).alpha(0.3).css()};
   }
   &::placeholder {
     opacity: 0.3;
@@ -59,7 +74,7 @@ export const Textarea = styled(Input).attrs({ as: 'textarea' })<TextareaProps>`
 `;
 
 interface ButtonTypeProp {
-  $type: 'primary' | 'secondary' | 'custom',
+  $type: 'primary' | 'secondary' | 'tertiary' | 'custom',
 }
 
 export const Button = styled.button<ButtonTypeProp>`
@@ -379,5 +394,46 @@ export const Toggle = styled.button<ToggleProp>`
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.17);
     transform: translate3d(${p => p.$toggle ? 30 : 0}px, 0, 0);
     transition: transform 300ms ease-in-out;
+  }
+`;
+const badgeFormatter: Intl.NumberFormat = new Intl.NumberFormat('en-US', {
+  style: 'decimal',
+  useGrouping: true,
+  maximumFractionDigits: 0,
+});
+const badgeValueMap: Map<number, string> = new Map();
+const getBadgeValue = ((v: number): string => {
+  if(!badgeValueMap.has(v)) {
+    badgeValueMap.set(v, badgeFormatter.format(v));
+  }
+  return badgeValueMap.get(v)!;
+});
+interface BadgeProps {
+  $active: boolean,
+  $count: number,
+  $countAnimationId?: number | string,
+}
+export const Badge = styled.div<BadgeProps>`
+  display: inline-block;
+  padding: 0 8px;
+  background-color: ${p => p.$active ? p.theme.MODULE_DARK : p.theme.GRAY_E6  };
+  color:            ${p => p.$active ? '#FFFFFF'           : p.theme.TEXT_DARK};
+  border-radius: 9px;
+  line-height: 18px;
+  font-size: 13px;
+  font-weight: 500;
+
+  ${p => p.$active || (p.$countAnimationId === undefined) ? '' : `
+    @keyframes cdsBadgePulse-${p.$countAnimationId} {
+      ${(100 * 0    / 1600).toFixed(3)}%  { background-color: ${p.theme.GRAY_E6};     color: ${p.theme.TEXT_DARK}; }
+      ${(100 * 150  / 1600).toFixed(3)}%  { background-color: ${p.theme.MODULE_DARK}; color: #FFFFFF;              }
+      ${(100 * 250  / 1600).toFixed(3)}%  { background-color: ${p.theme.MODULE_DARK}; color: #FFFFFF;              }
+      ${(100 * 1600 / 1600).toFixed(3)}%  { background-color: ${p.theme.GRAY_E6};     color: ${p.theme.TEXT_DARK}; }
+    }
+    animation: 1600ms cubic-bezier(0.5, 0, 0.5, 1.0) cdsBadgePulse-${p.$countAnimationId} 1;
+  `}
+
+  &:before {
+    content: '${p => getBadgeValue(p.$count)}';
   }
 `;

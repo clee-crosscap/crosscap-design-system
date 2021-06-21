@@ -81,7 +81,6 @@ const Footer = styled(CTU.FooterTransition)`
   grid-area: footer;
   height: 75px;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.5);
-  border-top: 1px solid ${p => p.theme.DIVIDER};
   display: grid;
   grid-auto-flow: column;
   background-color: #FFFFFF;
@@ -89,7 +88,7 @@ const Footer = styled(CTU.FooterTransition)`
   justify-content: start;
   grid-template-columns: auto auto 1fr auto;
   z-index: 1;
-  grid-template-areas: " information local-actions . form-actions ";
+  grid-template-areas: " group1 group2 . group3 ";
 `;
 const FooterInformation = styled.div`
   padding: 0 34px;
@@ -97,19 +96,21 @@ const FooterInformation = styled.div`
   border-right: 1px solid ${p => p.theme.DIVIDER};
   margin-right: -1px;
   display: inline-grid;
-  grid-area: information;
+  grid-area: group1;
   place-content: center;
+  font-size: 13px;
+  color: ${p => p.theme.GRAY_84};
 `;
 const FooterLocalActions = styled.div`
   display: grid;
-  grid-area: local-actions;
+  grid-area: group2;
   grid-auto-flow: column;
   align-content: stretch;
   overflow-x: auto;
 `;
 const FooterFormActions = styled.div`
   display: grid;
-  grid-area: form-actions;
+  grid-area: group3;
   grid-auto-flow: column;
   grid-column-gap: 12px;
   align-items: center;
@@ -173,6 +174,10 @@ export default function GenericGallery() {
             </FU.Button>
           </SectionGallery>
         </GallerySection>
+
+        <HR/>
+
+        TODO: Add a tooltip to disabled local actions
       </Gallery>
 
       <CSSTransition

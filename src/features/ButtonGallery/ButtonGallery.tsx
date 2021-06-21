@@ -77,51 +77,56 @@ export default function ButtonGallery() {
           May be accompanied by icons.
         </SectionHeader>
         <SectionContent>
+          <FU.Button $type="primary">Primary</FU.Button>
+          <FU.Button $type="secondary">Secondary</FU.Button>
+          <FU.Button $type="tertiary">Tertiary</FU.Button>
           <RedButton $type="custom">
             <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
-            <span>Delete</span>
+            <span>Custom</span>
           </RedButton>
-          <FU.Button $type="secondary">Cancel</FU.Button>
-          <FU.Button $type="primary">Submit</FU.Button>
         </SectionContent>
         <SectionContent>
+          <FU.Button $type="primary">Generously Sized</FU.Button>
+          <FU.Button $type="secondary">Generously Sized</FU.Button>
+          <FU.Button $type="tertiary">Generously Sized</FU.Button>
           <RedButton $type="custom">
             <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
             <span>Generously Sized</span>
           </RedButton>
-          <FU.Button $type="secondary">Generously Sized</FU.Button>
-          <FU.Button $type="primary">Generously Sized</FU.Button>
         </SectionContent>
         <SectionHeader>
           <Line $marginBottom={6}>Has hovered, active, and disabled treatments.</Line>
-          <Line>Hovered: -5% lightness of BG (absolute) if non-transparent/white - otherwise 97.0% lightness of FG (absolute)</Line>
-          <Line>Active: -12% lightess of BG (absolute) if non-transparent/white - otherwise 92.5% lightness of FG (absolute)</Line>
+          <Line>Hovered BG: 80% relative lightness of BG if non-transparent or white - otherwise 97.0% absolute lightness of FG</Line>
+          <Line>Active BG: 60% relative lightess of BG if non-transparent or white - otherwise 92.5% absolute lightness of FG</Line>
           <Line>Disabled: 50% opacity</Line>
         </SectionHeader>
 
         <SectionContent>
+          <FU.Button $type="primary" className={`hover`}>Hovered</FU.Button>
+          <FU.Button $type="secondary" className={`hover`}>Hovered</FU.Button>
+          <FU.Button $type="tertiary" className={`hover`}>Hovered</FU.Button>
           <RedButton $type="custom" className={`hover`}>
             <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
             <span>Hovered</span>
           </RedButton>
-          <FU.Button $type="secondary" className={`hover`}>Hovered</FU.Button>
-          <FU.Button $type="primary" className={`hover`}>Hovered</FU.Button>
         </SectionContent>
         <SectionContent>
+          <FU.Button $type="primary" className={`active`}>Active</FU.Button>
+          <FU.Button $type="secondary" className={`active`}>Active</FU.Button>
+          <FU.Button $type="tertiary" className={`active`}>Active</FU.Button>
           <RedButton $type="custom" className={`active`}>
             <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
             <span>Active</span>
           </RedButton>
-          <FU.Button $type="secondary" className={`active`}>Active</FU.Button>
-          <FU.Button $type="primary" className={`active`}>Active</FU.Button>
         </SectionContent>
         <SectionContent>
+          <FU.Button $type="primary" disabled>Disabled</FU.Button>
+          <FU.Button $type="secondary" disabled>Disabled</FU.Button>
+          <FU.Button $type="tertiary" disabled>Disabled</FU.Button>
           <RedButton $type="custom" disabled>
             <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
             <span>Disabled</span>
           </RedButton>
-          <FU.Button $type="secondary" disabled>Disabled</FU.Button>
-          <FU.Button $type="primary" disabled>Disabled</FU.Button>
         </SectionContent>
 
         <SectionHeader>

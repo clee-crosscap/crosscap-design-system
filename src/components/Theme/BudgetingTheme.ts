@@ -1,41 +1,70 @@
 import chroma from "chroma-js";
 import { DefaultTheme } from "styled-components/macro";
 
-const BudgetingTheme: DefaultTheme = {
-  NAME :           "Budgeting",
+const WHITE = "#FFFFFF";
+const TRANSPARENT_WHITE = 'rgba(255, 255, 255, 0)';
+const GRAY_3B = '#3B3B3B';
+const GRAY_84 = '#848484';
+const GRAY_D8 = '#D8D8D8';
+const GRAY_E6 = '#E6E6E6';
+const PRIMARY = "#0B8389";
+const DARK    = "#097075";
+const LIGHT   = "#0B8389";
 
-  MODULE_PRIMARY : "#0B8389",
-  MODULE_DARK :    "#097075",
-  MODULE_LIGHT :   "#0B8389",
+const BudgetingTheme: DefaultTheme<typeof PRIMARY, typeof DARK, typeof LIGHT> = {
+  NAME:              "Budgeting",
 
-  TEXT_DARK :      "#3B3B3B",
-  ICON_DARK :      "#3B3B3B",
+  MODULE_PRIMARY:    PRIMARY,
+  MODULE_DARK:       DARK,
+  MODULE_LIGHT:      LIGHT,
 
-  INPUT_DISABLED : "#F7F7F7",
+  TEXT_DARK:         GRAY_3B,
+  ICON_DARK:         GRAY_3B,
 
-  INVALID :        "#EB4747",
+  BADGE_ACTIVE_BG:   DARK,
+  BADGE_ACTIVE_FG:   "#FFFFFF",
+  BADGE_INACTIVE_BG: GRAY_E6,
+  BADGE_INACTIVE_FG: GRAY_3B,
 
-  GRAY_E6 :        "#E6E6E6",
-  GRAY_84 :        "#848484",
+  TAB_ACTIVE:        DARK,
+  TAB_INACTIVE:      GRAY_3B,
 
-  DIVIDER :        "#D8D8D8",
+  INVALID:           "#BF4743",
+    
+  GRAY_84:           GRAY_84,
+  GRAY_D8:           GRAY_D8,
+  GRAY_E6:           GRAY_E6,
 
-  FOOTER_HOVER :   "#E4EBED",
+  DIVIDER:           GRAY_D8,
 
-  HOVER :          "#D4EBEC",
+  FOOTER_HOVER:      "#E4EBED",
 
-  HIGHLIGHT:       "#FFDF00",
-  HIGHLIGHT_FOCUS: "#FF9100",
-  BANNER:          "#FFF2D9",
+  HOVER:             "#D4EBEC",
+
+  HIGHLIGHT:         "#FFDF00",
+  HIGHLIGHT_FOCUS:   "#FF9100",
+  BANNER:            "#FFE3A6",
 
   BUTTON: {
     primary: {
-      FG:          "#FFFFFF",
-      BG:          "#0B8389",
+      FG:          WHITE,
+      BG:          PRIMARY,
     },
     secondary: {
-      FG:          "#3B3B3B",
-      BG:          "rgba(255, 255, 255, 0)", // Avoid transparent since chroma rejects it
+      BG:          GRAY_E6,
+      FG:          GRAY_3B,
+    },
+    tertiary: {
+      BG:          TRANSPARENT_WHITE, // Avoid transparent since chroma rejects it
+      FG:          GRAY_3B,
+    },
+    text: {
+      BG:          TRANSPARENT_WHITE, // Avoid transparent since chroma rejects it
+      FG:          DARK,
+    },
+    icon: {
+      BG:          TRANSPARENT_WHITE, // Avoid transparent since chroma rejects it
+      FG:          GRAY_3B,
     },
   },
 };

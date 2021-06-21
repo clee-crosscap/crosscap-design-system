@@ -1,21 +1,16 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "CDS",
+  "name": "Crosscap Design System",
   "icons": [
     {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "src": "cc-logo-green-260.png",
+      "sizes": "260x260",
+      "type": "image/png"
     },
     {
-      "src": "logo192.png",
+      "src": "cc-logo-green-260.png",
       "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "logo512.png",
-      "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "260x260"
     }
   ],
   "start_url": ".",

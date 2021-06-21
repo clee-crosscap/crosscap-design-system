@@ -37,16 +37,54 @@ const SectionHeader = styled.div`
   display: block;
 `;
 const SectionContent = styled.div`
-  display: inline-grid;
-  grid-auto-flow: column;
-  grid-column-gap: 12px;
+`;
+interface GridProps {
+  $columns: number,
+  $inline?: boolean,
+  $columnGap?: number,
+  $rowGap?: number,
+  $justifyContent?: string,
+  $alignContent?: string,
+  $placeContent?: string,
+  $justifyItems?: string,
+  $alignItems?: string,
+  $placeItems?: string,
+}
+const SectionGrid = styled.div<GridProps>`
+  display: ${p => p.$inline ? 'inline-grid' : 'grid'};
+  grid-template-columns: ${p => 'auto '.repeat(p.$columns)};
+  grid-auto-flow: row;
+  ${p => p.$columnGap      ? `grid-column-gap: ${p.$columnGap}px;`    : ''}
+  ${p => p.$rowGap         ? `grid-row-gap:    ${p.$rowGap}px;`       : ''}
+  ${p => p.$justifyContent ? `justify-content: ${p.$justifyContent};` : ''}
+  ${p => p.$alignContent   ? `align-content:   ${p.$alignContent};`   : ''}
+  ${p => p.$placeContent   ? `place-content:   ${p.$placeContent};`   : ''}
+  ${p => p.$justifyItems   ? `justify-items:   ${p.$justifyItems};`   : ''}
+  ${p => p.$alignItems     ? `align-items:     ${p.$alignItems};`     : ''}
+  ${p => p.$placeItems     ? `place-items:     ${p.$placeItems};`     : ''}
+`;
+const InputWithIconGrid = styled.div`
+  display: grid;
   justify-content: start;
   align-items: center;
 `;
 const InputWithIcon = styled(FU.Input)`
-  padding-left: 42px;
   grid-column: 1;
   grid-row: 1;
+
+  + svg {
+    transition: opacity 0.15s ease-out;
+    pointer-events: none;
+  }
+  &:focus + svg {
+    opacity: 0;
+  }
+  &:hover ~ svg {
+    border-color: #999999;
+  }
+  &:focus ~ svg {
+    border-color: ${p => p.theme.TEXT_DARK};
+  }
 `;
 const SearchIcon = styled(SU.styledSvg({ $fillStroke: '#C2C2C2' }))`
   margin-left: ${0.5*(42 - 16)}px;
@@ -60,11 +98,7 @@ interface HasInputProp {
   $hasInput: boolean
 }
 const InputWithNavigation = styled(InputWithIcon)<HasInputProp>`
-  ${p => !p.$hasInput ? `` : `padding-right: 115px;`}
-
-  &:focus ~ svg {
-    border-color: ${p => p.theme.MODULE_PRIMARY};
-  }
+  ${p => !p.$hasInput ? `` : `padding-right: 120px;`}
 `;
 const InputNavigationCursor = styled(FU.TextButton)`
   padding: 0 7px;
@@ -180,105 +214,114 @@ export default function ButtonGallery() {
       <GallerySection>
         <Title>Single Line Text Field</Title>
 
-        <SectionHeader>Basic Input</SectionHeader>
         <SectionContent>
+          <FU.ComponentLabel>Basic Input</FU.ComponentLabel>
           <FU.Input />
         </SectionContent>
 
-        <SectionHeader>Placeholder Text</SectionHeader>
         <SectionContent>
+          <FU.ComponentLabel>Placeholder Text</FU.ComponentLabel>
           <FU.Input placeholder={`Default Value`} />
         </SectionContent>
 
-        <SectionHeader>Focused Input</SectionHeader>
         <SectionContent>
+          <FU.ComponentLabel>Hovered Input</FU.ComponentLabel>
+          <FU.Input className={'hover'} />
+        </SectionContent>
+
+        <SectionContent>
+          <FU.ComponentLabel>Focused Input</FU.ComponentLabel>
           <FU.Input className={'focus'} />
         </SectionContent>
 
-        <SectionHeader>Invalid Input</SectionHeader>
         <SectionContent>
-
-          <Line>
-            <FU.Input $valid={false} value={inputValue} onChange={e => setInputValue(e.target.value)} />
-            <InputError>
-              {
-                (0 >= inputLen) &&
-                `Value may not be empty.`
-              }
-              {
-                ((0 < inputLen) && (inputLen < 3)) &&
-                `Value must be unique.`
-              }
-              {
-                (inputLen >= 3) &&
-                `Value must be be 3 characters or less.`
-              }
-            </InputError>
-          </Line>
+          <FU.ComponentLabel>Invalid Input</FU.ComponentLabel>
+          <FU.Input $valid={false} value={inputValue} onChange={e => setInputValue(e.target.value)} />
+          <InputError>
+            {
+              (0 >= inputLen) &&
+              `Value may not be empty.`
+            }
+            {
+              ((0 < inputLen) && (inputLen < 3)) &&
+              `Value must be unique.`
+            }
+            {
+              (inputLen >= 3) &&
+              `Value must be be 3 characters or less.`
+            }
+          </InputError>
         </SectionContent>
 
-        <SectionHeader>Disabled Input</SectionHeader>
         <SectionContent>
+          <FU.ComponentLabel>Disabled Input</FU.ComponentLabel>
           <FU.Input disabled value={'Content'} />
         </SectionContent>
 
-        <SectionHeader>Input With Icon</SectionHeader>
         <SectionContent>
-          <InputWithIcon />
-          <SearchIcon
-            as={Assets.MagnifyingGlassSvg}
-            width={16}
-            height={16}
-          />
+          <FU.ComponentLabel>Input With Icon</FU.ComponentLabel>
+          <InputWithIconGrid>
+            <InputWithIcon $inlineIcon={true} />
+            <SearchIcon
+              as={Assets.MagnifyingGlassSvg}
+              width={16}
+              height={16}
+            />
+          </InputWithIconGrid>
         </SectionContent>
 
-        <SectionHeader>Input With Navigation</SectionHeader>
         <SectionContent>
-          <InputWithNavigation
-            value={navigationInput}
-            onChange={e => setNavigationInput(e.target.value)}
-            $width={300}
-            $hasInput={navigationInput.trim().length > 0}
-          />
-          <SearchIcon
-            as={Assets.MagnifyingGlassSvg}
-            width={16}
-            height={16}
-          />
-          {
-            navigationInput.trim().length > 0 &&
-            <>
-              <InputNavigationCursor onClick={onNavigationFocus}>
-                {
-                  hasNavigationResults &&
-                  <>{ navigationIndex+1 } / {NAVIGATION_MAX}</>
-                }
-                {
-                  !hasNavigationResults &&
-                  <>0 / 0</>
-                }
-              </InputNavigationCursor>
-              <InputNavigationLeft as={Assets.ChevronSvg} width={6} height={10} onClick={onNavigationLeft} $disabled={!hasNavigationResults} />
-              <InputNavigationRight as={Assets.ChevronSvg} width={6} height={10} onClick={onNavigationRight} $disabled={!hasNavigationResults} />
-            </>
-          }
+          <FU.ComponentLabel>Input With Navigation</FU.ComponentLabel>
+          <InputWithIconGrid>
+            <InputWithNavigation
+              value={navigationInput}
+              onChange={e => setNavigationInput(e.target.value)}
+              $width={300}
+              $hasInput={navigationInput.trim().length > 0}
+              $inlineIcon={true}
+            />
+            <SearchIcon
+              as={Assets.MagnifyingGlassSvg}
+              width={16}
+              height={16}
+            />
+            {
+              navigationInput.trim().length > 0 &&
+              <>
+                <InputNavigationCursor onClick={onNavigationFocus}>
+                  {
+                    hasNavigationResults &&
+                    <>{ navigationIndex+1 } / {NAVIGATION_MAX}</>
+                  }
+                  {
+                    !hasNavigationResults &&
+                    <>0 / 0</>
+                  }
+                </InputNavigationCursor>
+                <InputNavigationLeft as={Assets.ChevronSvg} width={6} height={10} onClick={onNavigationLeft} $disabled={!hasNavigationResults} />
+                <InputNavigationRight as={Assets.ChevronSvg} width={6} height={10} onClick={onNavigationRight} $disabled={!hasNavigationResults} />
+              </>
+            }
+          </InputWithIconGrid>
         </SectionContent>
         <SectionContent>
-          <InputNavigationCursorValueContainer>
-            {
-              Array(NAVIGATION_MAX).fill(0).map((v,i) => (
-                <InputNavigationCursorValue
-                  $selected={hasNavigationResults && (navigationIndex === i)}
-                  ref={ref => ref ? (navigationRef.current[i] = ref) : (delete navigationRef.current[i])}
-                >
-                  {i+1}
-                </InputNavigationCursorValue>
-              ))
-            }
-          </InputNavigationCursorValueContainer>
-          &nbsp;&nbsp;&nbsp;&nbsp;
-          <span>Toggle Matches</span>
-          <FU.Toggle $toggle={hasNavigationResults} onClick={() => setHasNavigationResults(!hasNavigationResults)} />
+          <SectionGrid $columns={3} $columnGap={10} $alignItems={'center'}>
+            <InputNavigationCursorValueContainer>
+              {
+                Array(NAVIGATION_MAX).fill(0).map((v,i) => (
+                  <InputNavigationCursorValue
+                    $selected={hasNavigationResults && (navigationIndex === i)}
+                    ref={ref => ref ? (navigationRef.current[i] = ref) : (delete navigationRef.current[i])}
+                  >
+                    {i+1}
+                  </InputNavigationCursorValue>
+                ))
+              }
+            </InputNavigationCursorValueContainer>
+            <span></span>
+            <span>Toggle Matches</span>
+            <FU.Toggle $toggle={hasNavigationResults} onClick={() => setHasNavigationResults(!hasNavigationResults)} />
+          </SectionGrid>
         </SectionContent>
       </GallerySection>
 
@@ -286,60 +329,53 @@ export default function ButtonGallery() {
 
       <GallerySection>
         <Title>Multiple Line Text Field</Title>
-        <SectionHeader>
-          Single Line (1 line)
-        </SectionHeader>
         <SectionContent>
+          <FU.ComponentLabel>Single Line (1 line)</FU.ComponentLabel>
           <FU.Textarea $lines={1} $resize={true} />
         </SectionContent>
 
-        <SectionHeader>
-          Multiple Lines (3 lines)
-        </SectionHeader>
         <SectionContent>
+          <FU.ComponentLabel>Multiple Lines (3 lines)</FU.ComponentLabel>
           <FU.Textarea $lines={3} $resize={true} />
         </SectionContent>
 
-        <SectionHeader>
-          Multiple Lines (5 lines)
-        </SectionHeader>
         <SectionContent>
+          <FU.ComponentLabel>Multiple Lines (5 lines)</FU.ComponentLabel>
           <FU.Textarea $lines={5} $resize={true} />
         </SectionContent>
 
-        <SectionHeader>
-          Non-resizable
-        </SectionHeader>
         <SectionContent>
+          <FU.ComponentLabel>Non-resizable</FU.ComponentLabel>
           <FU.Textarea $lines={3} $resize={false} />
         </SectionContent>
 
-        <SectionHeader>
-          Vertically Resizable
-        </SectionHeader>
         <SectionContent>
+          <FU.ComponentLabel>Vertically Resizable</FU.ComponentLabel>
           <FU.Textarea $lines={3} $resize={'vertical'} />
         </SectionContent>
 
-        <SectionHeader>
-          Horizontally Resizable
-        </SectionHeader>
         <SectionContent>
+          <FU.ComponentLabel>Horizontally Resizable</FU.ComponentLabel>
           <FU.Textarea $lines={3} $resize={'horizontal'} />
         </SectionContent>
 
-        <SectionHeader>Placeholder Text</SectionHeader>
         <SectionContent>
+          <FU.ComponentLabel>Placeholder Text</FU.ComponentLabel>
           <FU.Textarea $lines={3} $resize={true} placeholder={`Default Value`} />
         </SectionContent>
 
-        <SectionHeader>Focused Input</SectionHeader>
         <SectionContent>
+          <FU.ComponentLabel>Hovered Input</FU.ComponentLabel>
+          <FU.Textarea $lines={3} $resize={true} className={'hover'} />
+        </SectionContent>
+
+        <SectionContent>
+          <FU.ComponentLabel>Focused Input</FU.ComponentLabel>
           <FU.Textarea $lines={3} $resize={true} className={'focus'} />
         </SectionContent>
 
-        <SectionHeader>Invalid Input</SectionHeader>
         <SectionContent>
+          <FU.ComponentLabel>Invalid Input</FU.ComponentLabel>
           <Line>
             <FU.Textarea value={textareaValue} onChange={e => setTextareaValue(e.target.value)} $lines={3} $resize={true} $valid={false} />
             <InputError>
@@ -359,8 +395,8 @@ export default function ButtonGallery() {
           </Line>
         </SectionContent>
 
-        <SectionHeader>Disabled Input</SectionHeader>
         <SectionContent>
+          <FU.ComponentLabel>Disabled Input</FU.ComponentLabel>
           <FU.Textarea value={'Content'} $lines={3} $resize={true} disabled />
         </SectionContent>
       </GallerySection>

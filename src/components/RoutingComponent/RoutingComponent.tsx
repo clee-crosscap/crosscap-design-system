@@ -7,23 +7,32 @@ import * as FU from '@utility/Form.utility';
 import * as SU from '@utility/Svg.utility';
 import * as Assets from '@assets/.';
 import * as Themes from '@components/Theme';
-import ButtonGallery from '@features/ButtonGallery/ButtonGallery';
-import TooltipGallery from '@features/TooltipGallery/TooltipGallery';
-import TextFieldGallery from '@features/TextFieldGallery/TextFieldGallery';
-import FooterGallery from '@features/FooterGallery/FooterGallery';
+
+// Informational Galleries
 import PaletteGallery from '@features/PaletteGallery/PaletteGallery';
-import DropdownGallery from '@features/DropdownGallery/DropdownGallery';
-import SelectionGallery from '@features/SelectionGallery/SelectionGallery';
-import ModalGallery from '@features/ModalGallery/ModalGallery';
-import DrawerGallery from '@features/DrawerGallery/DrawerGallery';
-import IconGallery from '@features/IconGallery/IconGallery';
-import LoadingIndicatorGallery from '@features/LoadingIndicatorGallery/LoadingIndicatorGallery';
+import TooltipGallery from '@features/TooltipGallery/TooltipGallery';
 import NotificationGallery from '@features/NotificationGallery/NotificationGallery';
-import TreeGallery from '@features/TreeGallery/TreeGallery';
-import SearchableGallery from '@features/SearchableGallery/SearchableGallery';
+import LoadingIndicatorGallery from '@features/LoadingIndicatorGallery/LoadingIndicatorGallery';
 import BrandingGallery from '@features/BrandingGallery/BrandingGallery';
+
+// Component Galleries
+import TextFieldGallery from '@features/TextFieldGallery/TextFieldGallery';
+import SelectionGallery from '@features/SelectionGallery/SelectionGallery';
+import BadgeGallery from '@features/BadgeGallery/BadgeGallery';
+import ButtonGallery from '@features/ButtonGallery/ButtonGallery';
+import IconGallery from '@features/IconGallery/IconGallery';
+import DropdownGallery from '@features/DropdownGallery/DropdownGallery';
+
+// Structural Galleries
+import FooterGallery from '@features/FooterGallery/FooterGallery';
+import ModalGallery from '@features/ModalGallery/ModalGallery';
 import TabGallery from '@features/TabGallery/TabGallery';
+import DrawerGallery from '@features/DrawerGallery/DrawerGallery';
+
+// Data Galleries
+import TreeGallery from '@features/TreeGallery/TreeGallery';
 import TableGallery from '@features/TableGallery/TableGallery';
+import SearchableGallery from '@features/SearchableGallery/SearchableGallery';
 
 const CommonBlackSvg = styled(SU.styledSvg({ $fillStroke: Themes.CrosscapTheme.ICON_DARK }))`
   cursor: pointer;
@@ -81,16 +90,50 @@ const HR = styled.hr`
   border: none;
   border-top: 1px solid ${p => p.theme.DIVIDER};
 `;
+const CommonRedSvg = styled(SU.styledSvg({ $fillStroke: Themes.CrosscapTheme.INVALID }))``;
+const RedButton = styled(FU.Button).attrs({
+  theme: { BUTTON: { custom: { FG: Themes.CrosscapTheme.INVALID, BG: 'rgba(0, 0, 0, 0)' } } }
+})`
+  display: inline-grid;
+  align-items: center;
+  grid-auto-flow: column;
+  grid-column-gap: 6px;
+`;
+interface GridProps {
+  $columns: number,
+  $inline?: boolean,
+  $columnGap?: number,
+  $rowGap?: number,
+  $justifyContent?: string,
+  $alignContent?: string,
+  $placeContent?: string,
+  $justifyItems?: string,
+  $alignItems?: string,
+  $placeItems?: string,
+}
+const SectionGrid = styled.div<GridProps>`
+  display: ${p => p.$inline ? 'inline-grid' : 'grid'};
+  grid-template-columns: ${p => 'auto '.repeat(p.$columns)};
+  grid-auto-flow: row;
+  ${p => p.$columnGap      ? `grid-column-gap: ${p.$columnGap}px;`    : ''}
+  ${p => p.$rowGap         ? `grid-row-gap:    ${p.$rowGap}px;`       : ''}
+  ${p => p.$justifyContent ? `justify-content: ${p.$justifyContent};` : ''}
+  ${p => p.$alignContent   ? `align-content:   ${p.$alignContent};`   : ''}
+  ${p => p.$placeContent   ? `place-content:   ${p.$placeContent};`   : ''}
+  ${p => p.$justifyItems   ? `justify-items:   ${p.$justifyItems};`   : ''}
+  ${p => p.$alignItems     ? `align-items:     ${p.$alignItems};`     : ''}
+  ${p => p.$placeItems     ? `place-items:     ${p.$placeItems};`     : ''}
+`;
 export default function RoutingComponent() {
   const location = useLocation();
-  const [ theme, setTheme ] = useState<DefaultTheme>(Themes.CrosscapTheme);
+  const [ theme, setTheme ] = useState<DefaultTheme<string, string, string>>(Themes.CalendarTheme);
   const [ galleryBG, setGalleryBG ] = useState<string>('#FFFFFF');
 
   interface LinkConfig {
     type: 'link',
     path: string,
     text: string,
-    component: React.ComponentType,
+    component?: React.ComponentType,
   }
   interface HrConfig {
     type: 'hr',
@@ -101,6 +144,8 @@ export default function RoutingComponent() {
   }
   type SectionConfig = LinkConfig | HrConfig | HeadingConfig;
   const sectionsConfig: SectionConfig[] = [
+    { type: 'hr' },
+    { type: 'link',    text: 'Notes For Design',    path: `/notes-for-design` },
     { type: 'hr' },
     { type: 'heading', text: 'Informational' },
     { type: 'link',    text: 'Palettes',                path: `/palettes`,           component: PaletteGallery },
@@ -113,6 +158,7 @@ export default function RoutingComponent() {
     { type: 'link',    text: 'Text Fields',             path: '/text-fields',        component: TextFieldGallery },
     { type: 'link',    text: 'Selections',              path: `/selections`,         component: SelectionGallery },
     { type: 'link',    text: 'Buttons',                 path: '/buttons',            component: ButtonGallery },
+    { type: 'link',    text: 'Badges',                  path: '/badges',             component: BadgeGallery },
     { type: 'link',    text: 'Icons',                   path: `/icons`,              component: IconGallery },
     { type: 'link',    text: 'TODO: Dropdowns',         path: `/dropdowns`,          component: DropdownGallery },
     { type: 'hr' },
@@ -139,7 +185,7 @@ export default function RoutingComponent() {
             </FU.DropdownToggle>
             <FU.DropdownMenu>
               {
-                Object.values(Themes).map((theme: DefaultTheme, i) => (
+                Object.values(Themes).map((theme: DefaultTheme<string, string, string>, i) => (
                   <FU.DropdownItem key={i} onClick={() => setTheme(theme)}>
                     { theme.NAME }
                   </FU.DropdownItem>
@@ -184,30 +230,103 @@ export default function RoutingComponent() {
           }
         </RoutingGridLeft>
         <RoutingGridRight $bg={galleryBG}>
+          {
+            sectionsConfig.map(linkConfig => {
+              if(linkConfig.type === 'link') {
+                return <Route key={linkConfig.path} path={linkConfig.path} component={linkConfig.component ?? undefined} />
+              }
+              return undefined;
+            })
+          }
           <Switch>
-            {
-              sectionsConfig.map(linkConfig => {
-                if(linkConfig.type === 'link') {
-                  return <Route key={linkConfig.path} path={linkConfig.path} component={linkConfig.component} />
-                }
-                return undefined;
-              })
-            }
+            <Route path="/notes-for-design">
+              <ul>
+                <li>
+                  The red color was changed to make invalid text have more contrast.  However, the "Delete" button is also tied to this red.
+                  After the change, the button looks much dimmer.  Should these two reds be split for these different use cases?
 
+                  <div style={{ padding: '20px', borderLeft: '2px solid #d8d8d8', margin: '10px 0 40px 0' }}>
+                    <div>
+                      <FU.ComponentLabel>Invalid Input</FU.ComponentLabel>
+                      <FU.Input $valid={false} defaultValue={'Sample Value'} />
+                      <div style={{ marginTop: '8px', color: Themes.CrosscapTheme.INVALID, fontSize: '12px', letterSpacing: "0.18px" }}>
+                        Value must be unique.
+                      </div>
+                    </div>
 
-            <Route path="/icons">
-              <pre>
-                {
-                  `
-                    TODO: Loading indicator
+                    <hr />
 
-                    Loading indicator for full-screen workflows
-                    Loading indicator for multi-pane workflows
-                    Loading indicator for modal workflows
-                    Loading indicator for individual components
-                  `.split('\n').map(s => s.trim()).join('\n')
-                }
-              </pre>
+                    <SectionGrid $inline={true} $columns={5} $columnGap={15}>
+                      <RedButton $type="custom">
+                        <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
+                        <span>Custom</span>
+                      </RedButton>
+
+                      <RedButton $type="custom">
+                        <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
+                        <span>Generously Sized</span>
+                      </RedButton>
+
+                      <RedButton $type="custom" className={`hover`}>
+                        <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
+                        <span>Hovered</span>
+                      </RedButton>
+
+                      <RedButton $type="custom" className={`active`}>
+                        <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
+                        <span>Active</span>
+                      </RedButton>
+
+                      <RedButton $type="custom" disabled>
+                        <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
+                        <span>Disabled</span>
+                      </RedButton>
+                    </SectionGrid>                
+                  </div>
+                </li>
+              </ul>
+
+              <ul>
+                <li>
+                  While not a major issue, I've also displayed a sample of the Tertiary and Custom buttons using the new systemized
+                  values (90%, 70% absolute lightness of FG) for review.
+
+                  <div style={{ padding: '20px', borderLeft: '2px solid #d8d8d8', margin: '10px 0 40px 0' }}>
+                    <SectionGrid $inline={true} $columns={5} $columnGap={15} $rowGap={12}>
+                      <FU.Button $type="tertiary">Custom</FU.Button>
+                      <FU.Button $type="tertiary">Generously Sized</FU.Button>
+                      <FU.Button $type="tertiary" className={`hover`}>Hovered</FU.Button>
+                      <FU.Button $type="tertiary" className={`active`}>Active</FU.Button>
+                      <FU.Button $type="tertiary" disabled>Disabled</FU.Button>
+
+                      <RedButton $type="custom">
+                        <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
+                        <span>Custom</span>
+                      </RedButton>
+
+                      <RedButton $type="custom">
+                        <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
+                        <span>Generously Sized</span>
+                      </RedButton>
+
+                      <RedButton $type="custom" className={`hover`}>
+                        <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
+                        <span>Hovered</span>
+                      </RedButton>
+
+                      <RedButton $type="custom" className={`active`}>
+                        <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
+                        <span>Active</span>
+                      </RedButton>
+
+                      <RedButton $type="custom" disabled>
+                        <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
+                        <span>Disabled</span>
+                      </RedButton>
+                    </SectionGrid>                
+                  </div>
+                </li>
+              </ul>
             </Route>
           </Switch>
         </RoutingGridRight>

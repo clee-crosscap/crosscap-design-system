@@ -1,11 +1,13 @@
 import chroma, { Color } from 'chroma-js';
 import { DefaultTheme } from 'styled-components/macro';
 
-const HoverVariantSettings: VariantSettings  = { customColorProp: 'HOVER',  autoAdjustment: { dark: '-0.05', light: 1-0.030 } };
-const FocusVariantSettings: VariantSettings  = { customColorProp: 'FOCUS',  autoAdjustment: { dark: '-0.05', light: 1-0.030 } };
-const ActiveVariantSettings: VariantSettings = { customColorProp: 'ACTIVE', autoAdjustment: { dark: '-0.12', light: 1-0.075 } };
+type GenericTheme = DefaultTheme<string, string, string>;
 
-type ButtonConfig = DefaultTheme["BUTTON"][keyof DefaultTheme["BUTTON"]];
+const HoverVariantSettings: VariantSettings  = { customColorProp: 'HOVER',  autoAdjustment: { dark: '*0.80', light: 0.9 } };
+const FocusVariantSettings: VariantSettings  = { customColorProp: 'FOCUS',  autoAdjustment: { dark: '*0.80', light: 0.9 } };
+const ActiveVariantSettings: VariantSettings = { customColorProp: 'ACTIVE', autoAdjustment: { dark: '*0.60', light: 0.7 } };
+
+type ButtonConfig = GenericTheme["BUTTON"][keyof GenericTheme["BUTTON"]];
 export interface VariantSettings {
   customColorProp: 'HOVER' | 'FOCUS' | 'ACTIVE',
   autoAdjustment: {
@@ -21,9 +23,9 @@ function compositeChroma(fg: string = '#000000', bg: string = '#FFFFFF'): Color 
   return chroma.mix(fgc, bgc, 1-a);
 }
 function withRelativeSign(v: string | number): string | number {
-  if(typeof v === 'number') return v;                        // passed as absolute value
-  if(v.charAt(0) === '+' || v.charAt(0) === '-') return v;   // passed as signed relative value
-  return `+${v}`;                                            // unsigned relative value treated as positive
+  if(typeof v === 'number') return v;       // passed as absolute value
+  if(/[-+*]/.test(v.charAt(0))) return v;   // passed as signed relative value
+  return `+${v}`;                           // unsigned relative value treated as positive
 }
 
 function getButtonBgVariant(config: ButtonConfig, settings: VariantSettings): string {
