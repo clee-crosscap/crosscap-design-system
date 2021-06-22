@@ -1,4 +1,5 @@
 // styled.d.ts
+import chroma from 'chroma-js';
 import 'styled-components';
 
 const WHITE = "#FFFFFF";
@@ -13,7 +14,6 @@ declare module 'styled-components' {
     FG: FG,
     BG: BG,
     HOVER?: string,
-    FOCUS?: string,
     ACTIVE?: string,
   }
   export interface DefaultTheme<PRIMARY, DARK, LIGHT> {
@@ -43,19 +43,19 @@ declare module 'styled-components' {
     DIVIDER:           GRAY_D8,
   
     HOVER:             string,
-    FOOTER_HOVER:      string,
     
     HIGHLIGHT:         "#FFDF00",
     HIGHLIGHT_FOCUS:   "#FF9100",
     BANNER:            "#FFE3A6",
 
     BUTTON: {
-      primary: ButtonConfig<PRIMARY, WHITE>,
-      secondary: ButtonConfig<GRAY_E6, GRAY_3B>,
-      tertiary: ButtonConfig<TRANSPARENT_WHITE, GRAY_3B>,
-      text: ButtonConfig<TRANSPARENT_WHITE, DARK>,
-      icon: ButtonConfig<TRANSPARENT_WHITE, GRAY_3B>,
-      custom?: ButtonConfig,
-    }
+      primary:   Required<ButtonConfig<PRIMARY, WHITE>>,
+      secondary: Required<ButtonConfig<GRAY_E6, GRAY_3B>>,
+      tertiary:  Required<ButtonConfig<TRANSPARENT_WHITE, GRAY_3B>>,
+      icon:      Required<ButtonConfig<TRANSPARENT_WHITE, GRAY_3B>>,
+      text:      Required<ButtonConfig<TRANSPARENT_WHITE, DARK>>,
+      footer:    Required<ButtonConfig<WHITE, GRAY_3B>>,
+      custom?:   ButtonConfig,
+    },
   }
 }

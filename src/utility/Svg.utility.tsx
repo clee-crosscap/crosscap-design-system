@@ -1,4 +1,4 @@
-import styled from 'styled-components/macro';
+import styled, { DefaultTheme, ThemeProvider } from 'styled-components/macro';
 
 interface Settings {
   $stroke?: string,
@@ -23,7 +23,7 @@ const getConditionalRule = (rule: string, prop: string, value?: number | string)
 }
 
 // Lowercase to override the base type
-export const styledSvg = (s?: Settings) => styled.div.attrs(props => s ?? {})<Settings>`
+export const styledSvg = (s?: Settings) => styled.svg.attrs(props => s ?? {})<Settings>`
   // For convenience so styled-components padding can be defined
   // independently of width and height component props
   box-sizing: content-box;
@@ -39,7 +39,7 @@ export const styledSvg = (s?: Settings) => styled.div.attrs(props => s ?? {})<Se
   }
 
   ${p => getConditionalRule('[stroke-width]', 'stroke-width', p.$strokeWidth)}
-  
+
   ${p => getConditionalRule('[fill="#000"]',   'fill',   p.$fill   || p.$fillStroke)}
   ${p => getConditionalRule('[stroke="#000"]', 'stroke', p.$stroke || p.$fillStroke)}
 
@@ -56,3 +56,71 @@ export const styledSvg = (s?: Settings) => styled.div.attrs(props => s ?? {})<Se
   }
 `;
 
+interface DynamicSettings {
+  strokeWidth?: number,
+  transitionMillis?: number,
+  default?: {
+    stroke?: string,
+    fill?: string,
+    color?: string,
+  },
+  disabled?: {
+    stroke?: string,
+    fill?: string,
+    color?: string,
+  },
+  hover?: {
+    stroke?: string,
+    fill?: string,
+    color?: string,
+  },
+  active?: {
+    stroke?: string,
+    fill?: string,
+    color?: string,
+  },
+}
+type GenericTheme = DefaultTheme<string, string, string>;
+export const dynamicallyStyledSvg = (settingsFn: (theme: GenericTheme) => DynamicSettings) => styled.svg`
+  ${props => {
+    const p: DynamicSettings = settingsFn(props.theme);
+    return `
+      // For convenience so styled-components padding can be defined
+      // independently of width and height component props
+      box-sizing: content-box;
+
+      > * {
+        pointer-events: none;
+        line-height: 0;
+      }
+
+      ${getConditionalRule('[stroke-width]', 'stroke-width', p.strokeWidth)}
+
+      ${!Number.isFinite(p.transitionMillis) ? '' : `
+        [fill="#000"],
+        [stroke="#000"] {
+          transition: fill ${p.transitionMillis}ms ease-in-out, stroke ${p.transitionMillis}ms ease-in-out;
+        }
+      `}
+
+      &[disabled] {
+        ${getConditionalRule('[fill="#000"]',   'fill',   p.disabled?.fill   || p.disabled?.color)}
+        ${getConditionalRule('[stroke="#000"]', 'stroke', p.disabled?.stroke || p.disabled?.color)}
+      }
+
+      &:not([disabled]) {
+        ${getConditionalRule('[fill="#000"]',   'fill',   p.default?.fill   || p.default?.color)}
+        ${getConditionalRule('[stroke="#000"]', 'stroke', p.default?.stroke || p.default?.color)}
+
+        &:hover {
+          ${getConditionalRule('[fill="#000"]',   'fill',   p.hover?.fill   || p.hover?.color)}
+          ${getConditionalRule('[stroke="#000"]', 'stroke', p.hover?.stroke || p.hover?.color)}
+        }
+        &.active {
+          ${getConditionalRule('[fill="#000"]',   'fill',   p.active?.fill   || p.active?.color)}
+          ${getConditionalRule('[stroke="#000"]', 'stroke', p.active?.stroke || p.active?.color)}
+        }
+      }
+    }
+  `}
+}`;

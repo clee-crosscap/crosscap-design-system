@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useLocation, Switch, Route, Link } from 'react-router-dom';
 import styled, { DefaultTheme, ThemeProvider } from 'styled-components/macro';
-import { Dropdown } from 'react-bootstrap';
 
 import * as FU from '@utility/Form.utility';
 import * as SU from '@utility/Svg.utility';
 import * as Assets from '@assets/.';
 import * as Themes from '@components/Theme';
+
+import DesignNotes from '@features/DesignNotes/DesignNotes';
 
 // Informational Galleries
 import PaletteGallery from '@features/PaletteGallery/PaletteGallery';
@@ -90,40 +91,7 @@ const HR = styled.hr`
   border: none;
   border-top: 1px solid ${p => p.theme.DIVIDER};
 `;
-const CommonRedSvg = styled(SU.styledSvg({ $fillStroke: Themes.CrosscapTheme.INVALID }))``;
-const RedButton = styled(FU.Button).attrs({
-  theme: { BUTTON: { custom: { FG: Themes.CrosscapTheme.INVALID, BG: 'rgba(0, 0, 0, 0)' } } }
-})`
-  display: inline-grid;
-  align-items: center;
-  grid-auto-flow: column;
-  grid-column-gap: 6px;
-`;
-interface GridProps {
-  $columns: number,
-  $inline?: boolean,
-  $columnGap?: number,
-  $rowGap?: number,
-  $justifyContent?: string,
-  $alignContent?: string,
-  $placeContent?: string,
-  $justifyItems?: string,
-  $alignItems?: string,
-  $placeItems?: string,
-}
-const SectionGrid = styled.div<GridProps>`
-  display: ${p => p.$inline ? 'inline-grid' : 'grid'};
-  grid-template-columns: ${p => 'auto '.repeat(p.$columns)};
-  grid-auto-flow: row;
-  ${p => p.$columnGap      ? `grid-column-gap: ${p.$columnGap}px;`    : ''}
-  ${p => p.$rowGap         ? `grid-row-gap:    ${p.$rowGap}px;`       : ''}
-  ${p => p.$justifyContent ? `justify-content: ${p.$justifyContent};` : ''}
-  ${p => p.$alignContent   ? `align-content:   ${p.$alignContent};`   : ''}
-  ${p => p.$placeContent   ? `place-content:   ${p.$placeContent};`   : ''}
-  ${p => p.$justifyItems   ? `justify-items:   ${p.$justifyItems};`   : ''}
-  ${p => p.$alignItems     ? `align-items:     ${p.$alignItems};`     : ''}
-  ${p => p.$placeItems     ? `place-items:     ${p.$placeItems};`     : ''}
-`;
+
 export default function RoutingComponent() {
   const location = useLocation();
   const [ theme, setTheme ] = useState<DefaultTheme<string, string, string>>(Themes.CalendarTheme);
@@ -133,7 +101,7 @@ export default function RoutingComponent() {
     type: 'link',
     path: string,
     text: string,
-    component?: React.ComponentType,
+    component: React.ComponentType,
   }
   interface HrConfig {
     type: 'hr',
@@ -145,41 +113,41 @@ export default function RoutingComponent() {
   type SectionConfig = LinkConfig | HrConfig | HeadingConfig;
   const sectionsConfig: SectionConfig[] = [
     { type: 'hr' },
-    { type: 'link',    text: 'Notes For Design',    path: `/notes-for-design` },
+    { type: 'link',    text: 'Notes For Design',        path: '/notes-for-design',   component: DesignNotes },
     { type: 'hr' },
     { type: 'heading', text: 'Informational' },
-    { type: 'link',    text: 'Palettes',                path: `/palettes`,           component: PaletteGallery },
+    { type: 'link',    text: 'Palettes',                path: '/palettes',           component: PaletteGallery },
     { type: 'link',    text: 'Tooltips',                path: '/tooltips',           component: TooltipGallery },
-    { type: 'link',    text: 'TODO: Notifications',     path: `/notifications`,      component: NotificationGallery },
-    { type: 'link',    text: 'TODO: Loading Indicator', path: `/loading-indicator`,  component: LoadingIndicatorGallery },
-    { type: 'link',    text: 'TODO: Branding',          path: `/branding`,           component: BrandingGallery },
+    { type: 'link',    text: 'TODO: Notifications',     path: '/notifications',      component: NotificationGallery },
+    { type: 'link',    text: 'TODO: Loading Indicator', path: '/loading-indicator',  component: LoadingIndicatorGallery },
+    { type: 'link',    text: 'TODO: Branding',          path: '/branding',           component: BrandingGallery },
     { type: 'hr' },
     { type: 'heading', text: 'Components' },
     { type: 'link',    text: 'Text Fields',             path: '/text-fields',        component: TextFieldGallery },
-    { type: 'link',    text: 'Selections',              path: `/selections`,         component: SelectionGallery },
+    { type: 'link',    text: 'Selections',              path: '/selections',         component: SelectionGallery },
     { type: 'link',    text: 'Buttons',                 path: '/buttons',            component: ButtonGallery },
     { type: 'link',    text: 'Badges',                  path: '/badges',             component: BadgeGallery },
-    { type: 'link',    text: 'Icons',                   path: `/icons`,              component: IconGallery },
-    { type: 'link',    text: 'TODO: Dropdowns',         path: `/dropdowns`,          component: DropdownGallery },
+    { type: 'link',    text: 'Icons',                   path: '/icons',              component: IconGallery },
+    { type: 'link',    text: 'TODO: Dropdowns',         path: '/dropdowns',          component: DropdownGallery },
     { type: 'hr' },
     { type: 'heading', text: 'Structural' },
-    { type: 'link',    text: 'Footers',                 path: `/footers`,            component: FooterGallery },
-    { type: 'link',    text: 'TODO: Modals',            path: `/modals`,             component: ModalGallery },
-    { type: 'link',    text: 'TODO: Tabs',              path: `/tabs`,               component: TabGallery },
-    { type: 'link',    text: 'TODO: Drawers',           path: `/drawers`,            component: DrawerGallery },
+    { type: 'link',    text: 'Footers',                 path: '/footers',            component: FooterGallery },
+    { type: 'link',    text: 'TODO: Modals',            path: '/modals',             component: ModalGallery },
+    { type: 'link',    text: 'TODO: Tabs',              path: '/tabs',               component: TabGallery },
+    { type: 'link',    text: 'TODO: Drawers',           path: '/drawers',            component: DrawerGallery },
     { type: 'hr' },
     { type: 'heading', text: 'Data' },
-    { type: 'link',    text: 'TODO: Trees',             path: `/trees`,              component: TreeGallery },
-    { type: 'link',    text: 'TODO: Tables',            path: `/tables`,             component: TableGallery },
-    { type: 'link',    text: 'TODO: Searchables',       path: `/searchables`,        component: SearchableGallery },
+    { type: 'link',    text: 'TODO: Trees',             path: '/trees',              component: TreeGallery },
+    { type: 'link',    text: 'TODO: Tables',            path: '/tables',             component: TableGallery },
+    { type: 'link',    text: 'TODO: Searchables',       path: '/searchables',        component: SearchableGallery },
   ];
 
   return (
     <ThemeProvider theme={theme}>
       <RoutingGrid>
         <RoutingGridLeft>
-          <Dropdown style={{ marginBottom: '4px' }}>
-            <FU.DropdownToggle $removeBorder={true}>
+          <FU.Dropdown style={{ marginBottom: '4px' }}>
+            <FU.DropdownToggle $minWidth="none" $removeBorder={true}>
               <span>Palette: {theme.NAME}</span>
               <CommonBlackSvg as={Assets.ChevronSvg} width={10} height={8} />
             </FU.DropdownToggle>
@@ -192,10 +160,10 @@ export default function RoutingComponent() {
                 ))
               }
             </FU.DropdownMenu>
-          </Dropdown>
+          </FU.Dropdown>
 
-          <Dropdown>
-            <FU.DropdownToggle $removeBorder={true}>
+          <FU.Dropdown>
+            <FU.DropdownToggle $minWidth="none" $removeBorder={true}>
               <span>BG: {galleryBG}</span>
               <CommonBlackSvg as={Assets.ChevronSvg} width={10} height={8} />
             </FU.DropdownToggle>
@@ -203,7 +171,7 @@ export default function RoutingComponent() {
               <FU.DropdownItem onClick={() => setGalleryBG('#FFFFFF')}>#FFFFFF</FU.DropdownItem>
               <FU.DropdownItem onClick={() => setGalleryBG('#F8F8F8')}>#F8F8F8</FU.DropdownItem>
             </FU.DropdownMenu>
-          </Dropdown>
+          </FU.Dropdown>
 
           {
             sectionsConfig.map((linkConfig, i) => {
@@ -238,97 +206,6 @@ export default function RoutingComponent() {
               return undefined;
             })
           }
-          <Switch>
-            <Route path="/notes-for-design">
-              <ul>
-                <li>
-                  The red color was changed to make invalid text have more contrast.  However, the "Delete" button is also tied to this red.
-                  After the change, the button looks much dimmer.  Should these two reds be split for these different use cases?
-
-                  <div style={{ padding: '20px', borderLeft: '2px solid #d8d8d8', margin: '10px 0 40px 0' }}>
-                    <div>
-                      <FU.ComponentLabel>Invalid Input</FU.ComponentLabel>
-                      <FU.Input $valid={false} defaultValue={'Sample Value'} />
-                      <div style={{ marginTop: '8px', color: Themes.CrosscapTheme.INVALID, fontSize: '12px', letterSpacing: "0.18px" }}>
-                        Value must be unique.
-                      </div>
-                    </div>
-
-                    <hr />
-
-                    <SectionGrid $inline={true} $columns={5} $columnGap={15}>
-                      <RedButton $type="custom">
-                        <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
-                        <span>Custom</span>
-                      </RedButton>
-
-                      <RedButton $type="custom">
-                        <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
-                        <span>Generously Sized</span>
-                      </RedButton>
-
-                      <RedButton $type="custom" className={`hover`}>
-                        <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
-                        <span>Hovered</span>
-                      </RedButton>
-
-                      <RedButton $type="custom" className={`active`}>
-                        <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
-                        <span>Active</span>
-                      </RedButton>
-
-                      <RedButton $type="custom" disabled>
-                        <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
-                        <span>Disabled</span>
-                      </RedButton>
-                    </SectionGrid>                
-                  </div>
-                </li>
-              </ul>
-
-              <ul>
-                <li>
-                  While not a major issue, I've also displayed a sample of the Tertiary and Custom buttons using the new systemized
-                  values (90%, 70% absolute lightness of FG) for review.
-
-                  <div style={{ padding: '20px', borderLeft: '2px solid #d8d8d8', margin: '10px 0 40px 0' }}>
-                    <SectionGrid $inline={true} $columns={5} $columnGap={15} $rowGap={12}>
-                      <FU.Button $type="tertiary">Custom</FU.Button>
-                      <FU.Button $type="tertiary">Generously Sized</FU.Button>
-                      <FU.Button $type="tertiary" className={`hover`}>Hovered</FU.Button>
-                      <FU.Button $type="tertiary" className={`active`}>Active</FU.Button>
-                      <FU.Button $type="tertiary" disabled>Disabled</FU.Button>
-
-                      <RedButton $type="custom">
-                        <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
-                        <span>Custom</span>
-                      </RedButton>
-
-                      <RedButton $type="custom">
-                        <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
-                        <span>Generously Sized</span>
-                      </RedButton>
-
-                      <RedButton $type="custom" className={`hover`}>
-                        <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
-                        <span>Hovered</span>
-                      </RedButton>
-
-                      <RedButton $type="custom" className={`active`}>
-                        <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
-                        <span>Active</span>
-                      </RedButton>
-
-                      <RedButton $type="custom" disabled>
-                        <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
-                        <span>Disabled</span>
-                      </RedButton>
-                    </SectionGrid>                
-                  </div>
-                </li>
-              </ul>
-            </Route>
-          </Switch>
         </RoutingGridRight>
       </RoutingGrid>
     </ThemeProvider>

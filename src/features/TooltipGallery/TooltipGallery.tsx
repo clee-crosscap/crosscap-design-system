@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components/macro';
-import { Tooltip, OverlayTrigger, Dropdown } from 'react-bootstrap';
+import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 
 import * as FU from '@utility/Form.utility';
 import * as SU from '@utility/Svg.utility';
@@ -11,9 +11,6 @@ const CommonBlackSvg = styled(SU.styledSvg({ $fillStroke: CrosscapTheme.ICON_DAR
   cursor: pointer;
 `;
 const CommonModuleLightSvg = styled(SU.styledSvg({ $fillStroke: CrosscapTheme.MODULE_LIGHT }))`
-`;
-const PaddedCommonBlackSvg = styled(CommonBlackSvg)`
-  padding: 6px;
 `;
 
 const Gallery = styled.div`
@@ -194,14 +191,20 @@ export default function ButtonGallery() {
           Tooltips can be used to provide information about actions associated with icons.
         </SectionHeader>
         <SectionContent>
-          <OverlayTrigger placement="bottom" overlay={<Tooltip id="IconTooltips-filter">Filters</Tooltip>}>
-            <PaddedCommonBlackSvg as={Assets.FilterSvg} width={18} height={18} />
+          <OverlayTrigger placement="bottom" delay={{ show: 500, hide: 0 }} overlay={<Tooltip id="IconTooltips-filter">Filters</Tooltip>}>
+            <FU.Button $type="icon">
+              <CommonBlackSvg as={Assets.FilterSvg} width={18} height={18} />
+            </FU.Button>
           </OverlayTrigger>
-          <OverlayTrigger placement="bottom" overlay={<Tooltip id="IconTooltips-gear">Settings</Tooltip>}>
-            <PaddedCommonBlackSvg as={Assets.GearFilledSvg} width={22} height={22} />
+          <OverlayTrigger placement="bottom" delay={{ show: 500, hide: 0 }} overlay={<Tooltip id="IconTooltips-gear">Settings</Tooltip>}>
+            <FU.Button $type="icon">
+              <CommonBlackSvg as={Assets.GearFilledSvg} width={22} height={22} />
+            </FU.Button>
           </OverlayTrigger>
-          <OverlayTrigger placement="bottom" overlay={<Tooltip id="IconTooltips-export">Export</Tooltip>}>
-            <PaddedCommonBlackSvg as={Assets.ExportSvg} width={22} height={22} />
+          <OverlayTrigger placement="bottom" delay={{ show: 500, hide: 0 }} overlay={<Tooltip id="IconTooltips-export">Export</Tooltip>}>
+            <FU.Button $type="icon">
+              <CommonBlackSvg as={Assets.ExportSvg} width={22} height={22} />
+            </FU.Button>
           </OverlayTrigger>
         </SectionContent>
       </GallerySection>
@@ -215,7 +218,7 @@ export default function ButtonGallery() {
           Tooltips may be used to provide additional information about selections or actions.
         </SectionHeader>
         <SectionContent>
-          <Dropdown>
+          <FU.Dropdown>
             <FU.DropdownToggle>
               Dropdow Actions
               <CommonBlackSvg as={Assets.ChevronSvg} width={10} height={8} />
@@ -243,14 +246,14 @@ export default function ButtonGallery() {
                 </OverlayTrigger>
               </DropdownItemWithTooltip>
             </FU.DropdownMenu>
-          </Dropdown>
+          </FU.Dropdown>
         </SectionContent>
 
         <SectionHeader>
           Overflow content in the dropdown toggle or dropdown menu may be shown with a tooltip.
         </SectionHeader>
         <SectionContent>
-          <Dropdown>
+          <FU.Dropdown>
             <FU.DropdownToggle>
               <OverlayTrigger placement="auto" overlay={
                 <Tooltip id="IconTooltips-dropdownoverflow">
@@ -283,14 +286,14 @@ export default function ButtonGallery() {
                 </OverlayTrigger>
               </FU.DropdownItem>
             </FU.DropdownMenu>
-          </Dropdown>
+          </FU.Dropdown>
         </SectionContent>
 
         <SectionHeader>
           The tooltip may be used to provide information about disabled selections or actions.
         </SectionHeader>
         <SectionContent>
-          <Dropdown>
+          <FU.Dropdown>
             <FU.DropdownToggle>
               Dropdown Selections
               <CommonBlackSvg as={Assets.ChevronSvg} width={10} height={8} />
@@ -337,7 +340,7 @@ export default function ButtonGallery() {
                 </OverlayTrigger>
               </DeleteAction>
             </FU.DropdownMenu>
-          </Dropdown>
+          </FU.Dropdown>
         </SectionContent>
       </GallerySection>
 

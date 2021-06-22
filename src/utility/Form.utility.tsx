@@ -1,6 +1,7 @@
 import styled from 'styled-components/macro';
 import { Dropdown } from 'react-bootstrap';
 import chroma from 'chroma-js';
+import { DefaultTheme } from 'styled-components/macro';
 
 import * as CU from '@utility/Color.utility'
 import * as SU from '@utility/Svg.utility';
@@ -25,6 +26,13 @@ export const ComponentLabel = styled.div`
   font-weight: 500;
   color: ${p => p.theme.TEXT_DARK};
   margin-bottom: 11px;
+`;
+export const ComponentInvalid = styled.div`
+  margin-top: 8px;
+  color: ${p => p.theme.INVALID};
+  font-size: 13px;
+  font-size: 400;
+  letter-spacing: 0.2px;
 `;
 export const Input = styled.input<ValidProp & WidthProp & MaxWidthProp & InlineIconProp>`
   max-width: ${p => ((typeof p.$maxWidth === 'string') && p.$maxWidth) || `${p.$maxWidth ?? 312}px`};
@@ -74,13 +82,13 @@ export const Textarea = styled(Input).attrs({ as: 'textarea' })<TextareaProps>`
 `;
 
 interface ButtonTypeProp {
-  $type: 'primary' | 'secondary' | 'tertiary' | 'custom',
+  $type: 'primary' | 'secondary' | 'tertiary' | 'icon' | 'custom',
 }
 
 export const Button = styled.button<ButtonTypeProp>`
-  min-width: 134px;
+  min-width: ${p => p.$type === 'icon' ? 'none' : '134px'};
   height: 36px;
-  padding: 0 8px;
+  padding: 0 ${p => p.$type === 'icon' ? 8 : 8}px;
   border-radius: 8px;
   display: inline-grid;
   place-content: center;
@@ -92,8 +100,6 @@ export const Button = styled.button<ButtonTypeProp>`
   cursor: pointer;
   
   &,
-  // &.focus,
-  // &:focus,
   &.active,
   &:active,
   &.hover,
@@ -109,10 +115,6 @@ export const Button = styled.button<ButtonTypeProp>`
   &:hover {
     ${p => p.theme.BUTTON[p.$type] ? `background: ${CU.getButtonHoverBg(p.theme.BUTTON[p.$type]!)};` : ``}
   }
-  // &.focus,
-  // &:focus {
-  //   ${p => p.theme.BUTTON[p.$type] ? `background: ${CU.getButtonFocusBg(p.theme.BUTTON[p.$type]!)};` : ``}
-  // }
   &.active,
   &:active {
     ${p => p.theme.BUTTON[p.$type] ? `background: ${CU.getButtonActiveBg(p.theme.BUTTON[p.$type]!)};` : ``}
@@ -154,8 +156,6 @@ export const FooterAction = styled.button`
   align-items: center;
   
   &,
-  // &.focus,
-  // &:focus,
   &.active,
   &:active,
   &.hover,
@@ -168,15 +168,11 @@ export const FooterAction = styled.button`
 
   &.hover,
   &:hover {
-    background: ${p => CU.getButtonHoverBg({ BG: CU.getButtonBgFromHoverVariant(p.theme.FOOTER_HOVER), FG: '' })};
+    background: ${p => CU.getButtonHoverBg(p.theme.BUTTON.footer)};
   }
-  // &.focus,
-  // &:focus {
-  //   background: ${p => CU.getButtonFocusBg({ BG: CU.getButtonBgFromHoverVariant(p.theme.FOOTER_HOVER), FG: '' })};
-  // }  
   &.active,
   &:active {
-    background: ${p => CU.getButtonActiveBg({ BG: CU.getButtonBgFromHoverVariant(p.theme.FOOTER_HOVER), FG: '' })};
+    background: ${p => CU.getButtonActiveBg(p.theme.BUTTON.footer)};
   }
   &.disabled,
   &:disabled {
@@ -199,7 +195,7 @@ export const TextButton = styled.button<TextButtonProps>`
   font-family: 'Roboto', 'Arial', sans-serif;
   font-size: ${p => p.$size ?? 12}px;
   font-weight: ${p => p.$weight ?? 500};
-  transition: opacity 0.3s ease-out;
+  transition: opacity 0.3s ease-out, color 0.3s ease-out;
 
   &,
   &.hover,
@@ -212,30 +208,62 @@ export const TextButton = styled.button<TextButtonProps>`
     background: transparent;
     border: 0px solid transparent;
     box-shadow: none;
-    color: ${p => p.$color ? p.$color: p.theme.MODULE_DARK};
   }
+  & {
+    ${p => p.theme.BUTTON.text.FG ? `color: ${p.theme.BUTTON.text.FG};` : ``}
+  }
+  &.hover,
+  &:hover {
+    ${p => `color: ${CU.getButtonHoverBg(p.theme.BUTTON.text)};`}
+  }
+  &.active,
+  &:active {
+    ${p => `color: ${CU.getButtonActiveBg(p.theme.BUTTON.text)};`}
+  }
+
   &.disabled,
   &:disabled {
     cursor: not-allowed;
     opacity: 0.5;
   }
 `;
+export { Dropdown } from 'react-bootstrap';
 interface RemoveBorderProp {
   $removeBorder?: boolean,
 }
-export const DropdownToggle = styled(Dropdown.Toggle)<RemoveBorderProp>`
-  padding: ${p => p.$removeBorder ? `0px` : `7px 8px`};
+interface MinWidthProp {
+  $minWidth?: string | number,
+}
+interface ValidProp {
+  $valid?: boolean,
+}
+export const DropdownToggle = styled(Dropdown.Toggle)<RemoveBorderProp & MinWidthProp & ValidProp>`
+  padding: ${p => p.$removeBorder ? `0px` : `0px 15px`};
+  height: 36px;
+  min-width: ${p => p.$minWidth ? ((typeof p.$minWidth === 'number') ? `${p.$minWidth}px` : p.$minWidth) : '275px'};
+  border-radius: 6px;
   display: grid;
   grid-column-gap: 8px;
   grid-auto-flow: column;
+  grid-template-columns: auto;
+  grid-auto-columns: min-content;
+  justify-content: stretch;
+  justify-items: start;
   align-items: center;
   cursor: pointer;
   font-family: 'Roboto','Arial',sans-serif;
   font-size: 15px;
-  border-radius: 6px;
-
+  max-width: 300px;
+  
   &:after {
     content: initial;
+  }
+
+  > :not(svg) {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 100%;
   }
 
   &,
@@ -247,16 +275,32 @@ export const DropdownToggle = styled(Dropdown.Toggle)<RemoveBorderProp>`
   &:focus {
     outline: none;
     background: transparent;
-    border: ${p => p.$removeBorder ? 0 : 2}px solid ${p => p.theme.GRAY_E6};
+    border: ${p => p.$removeBorder ? 0 : 2}px solid ${p => p.$valid === false ? p.theme.INVALID : p.theme.GRAY_E6};
     color: ${p => p.theme.TEXT_DARK};
     box-shadow: none;
   }
   &:disabled {
     cursor: not-allowed;
+    opacity: 0.5;
+  }
+  
+  &.active,
+  &:active,
+  &[aria-expanded="true"] {
+    border-color: ${p => p.$valid === false ? p.theme.INVALID : p.theme.TEXT_DARK};
+  }
+  
+  &[aria-expanded="true"] .cds-dropdown-chevron {
+    transform: rotate(180deg);
   }
 `;
-export const DropdownMenu = styled(Dropdown.Menu)`
-  min-width: 160px;
+export const DropdownChevron = styled(SU.styledSvg({ $fillStroke: CrosscapTheme.ICON_DARK })).attrs({ as: Assets.ChevronSvg })`
+  width: ${p => p.width ?? 10}px;
+  height: ${p => p.height ?? 8}px;
+`;
+export const DropdownMenu = styled(Dropdown.Menu).attrs(p => ({ role: 'menu' }))<MinWidthProp>`
+  min-width: ${p => p.$minWidth ? ((typeof p.$minWidth === 'number') ? `${p.$minWidth}px` : p.$minWidth) : '275px'};
+  max-height: 300px;
   padding: 8px 0;
   border: 0px solid transparent;
   border-radius: 10px;
@@ -274,7 +318,10 @@ export const DropdownMenu = styled(Dropdown.Menu)`
 interface DisableChildrenProp {
   $disableChildren?: boolean,
 }
-export const DropdownItem = styled(Dropdown.Item)<DisableChildrenProp>`
+export const DropdownItem = styled(Dropdown.Item).attrs(p => ({
+  role: 'menuitem',
+  draggable: 'false'
+}))<DisableChildrenProp>`
   width: 100%;
   padding: 5px 18px 5px 18px;
   display: block;
@@ -282,7 +329,16 @@ export const DropdownItem = styled(Dropdown.Item)<DisableChildrenProp>`
   font-size: 15px;
   line-height: 1.5;
   white-space: nowrap;
-  
+
+  display: grid;
+  grid-column-gap: 8px;
+  grid-auto-flow: column;
+  grid-template-columns: auto;
+  grid-auto-columns: min-content;
+  justify-content: stretch;
+  justify-items: start;
+  align-items: center;
+
   &,
   &.focus,
   &:focus,
@@ -311,6 +367,8 @@ export const DropdownItem = styled(Dropdown.Item)<DisableChildrenProp>`
     text-decoration: initial;
   }
   &[aria-disabled="true"] {
+    cursor: not-allowed;
+
     ${p => p.$disableChildren ? `
       > * {
         pointer-events: auto;
@@ -326,25 +384,38 @@ export const DropdownItem = styled(Dropdown.Item)<DisableChildrenProp>`
     `}
   }
 `;
+interface DisabledProp {
+  disabled?: boolean,
+}
+export const DropdownItemCheck = styled(SU.dynamicallyStyledSvg(
+  theme => ({ default: { color: theme.MODULE_PRIMARY } })
+)).attrs(p => ({ 
+  as: Assets.CheckSvg,
+  width: 15,
+  height: 10.5,
+}))<DisabledProp>`
+`;
+
 interface CheckboxProp {
   $checkbox: boolean | undefined,
 }
-interface DisabledProp {
-  $disabled?: boolean,
-}
-interface WidthHeightProp {
-  width?: number,
-  height?: number,
-}
-export const Checkbox = styled(SU.styledSvg({ $fillStroke: CrosscapTheme.ICON_DARK })).attrs({ as: Assets.CheckboxUnifiedSvg })<CheckboxProp & DisabledProp & WidthHeightProp>`
-  cursor: ${p => p.$disabled ? 'not-allowed' : 'pointer'};
-  opacity: ${p => p.$disabled ? 0.5 : 1};
-  width: ${p => p.width ?? '20px'};
-  height: ${p => p.height ?? '20px'};
+export const Checkbox = styled(SU.styledSvg({ $fillStroke: CrosscapTheme.ICON_DARK })).attrs({
+  as: Assets.CheckboxUnifiedSvg,
+  width: 20,
+  height: 20,
+})<CheckboxProp & DisabledProp>`
+  cursor: pointer;
+  opacity: 1;
 
   & {
     transition: opacity 0.3s ease-out;
   }
+
+  &[disabled] {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
   .checkbox-yes,
   .checkbox-no,
   .checkbox-maybe {

@@ -173,12 +173,7 @@ const Line = styled.div<MarginProps>`
   margin-top: ${p => p.$marginTop ?? 0}px;
   margin-bottom: ${p => p.$marginBottom ?? 0}px;
 `;
-const InputError = styled.div`
-  margin-top: 8px;
-  color: ${p => p.theme.INVALID};
-  font-size: 12px;
-  letter-spacing: 0.18px;
-`;
+
 export default function ButtonGallery() {
   const navigationRef = useRef<Record<number, HTMLDivElement>>({});
   const [ inputValue, setInputValue ] = useState<string>('');
@@ -237,7 +232,7 @@ export default function ButtonGallery() {
         <SectionContent>
           <FU.ComponentLabel>Invalid Input</FU.ComponentLabel>
           <FU.Input $valid={false} value={inputValue} onChange={e => setInputValue(e.target.value)} />
-          <InputError>
+          <FU.ComponentInvalid>
             {
               (0 >= inputLen) &&
               `Value may not be empty.`
@@ -250,7 +245,7 @@ export default function ButtonGallery() {
               (inputLen >= 3) &&
               `Value must be be 3 characters or less.`
             }
-          </InputError>
+          </FU.ComponentInvalid>
         </SectionContent>
 
         <SectionContent>
@@ -305,7 +300,7 @@ export default function ButtonGallery() {
           </InputWithIconGrid>
         </SectionContent>
         <SectionContent>
-          <SectionGrid $columns={3} $columnGap={10} $alignItems={'center'}>
+          <SectionGrid $columns={4} $columnGap={10} $alignItems={'center'}>
             <InputNavigationCursorValueContainer>
               {
                 Array(NAVIGATION_MAX).fill(0).map((v,i) => (
@@ -378,7 +373,7 @@ export default function ButtonGallery() {
           <FU.ComponentLabel>Invalid Input</FU.ComponentLabel>
           <Line>
             <FU.Textarea value={textareaValue} onChange={e => setTextareaValue(e.target.value)} $lines={3} $resize={true} $valid={false} />
-            <InputError>
+            <FU.ComponentInvalid>
             {
                 (0 >= textareaLen) &&
                 `Value may not be empty.`
@@ -391,7 +386,7 @@ export default function ButtonGallery() {
                 (textareaLen >= 3) &&
                 `Value must be be 3 characters or less.`
               }
-            </InputError>
+            </FU.ComponentInvalid>
           </Line>
         </SectionContent>
 

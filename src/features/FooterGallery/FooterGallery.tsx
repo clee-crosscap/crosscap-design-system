@@ -146,11 +146,11 @@ export default function GenericGallery() {
           <Title>Basic Footer</Title>
           <SectionGallery>
             <SectionHeader onClick={() => setBasicInformationEnabled(!basicInformationEnabled)}>Informational</SectionHeader>
-            <FU.Checkbox $checkbox={basicInformationEnabled} $disabled={false} onClick={() => setBasicInformationEnabled(!basicInformationEnabled)} />
+            <FU.Checkbox $checkbox={basicInformationEnabled} disabled={false} onClick={() => setBasicInformationEnabled(!basicInformationEnabled)} />
             <SectionHeader onClick={() => setBasicLocalActionsEnabled(!basicLocalActionsEnabled)}>Actions (Local)</SectionHeader>
-            <FU.Checkbox $checkbox={basicLocalActionsEnabled} $disabled={false} onClick={() => setBasicLocalActionsEnabled(!basicLocalActionsEnabled)} />
+            <FU.Checkbox $checkbox={basicLocalActionsEnabled} disabled={false} onClick={() => setBasicLocalActionsEnabled(!basicLocalActionsEnabled)} />
             <SectionHeader onClick={() => setBasicFormActionsEnabled(!basicFormActionsEnabled)}>Actions (Form)</SectionHeader>
-            <FU.Checkbox $checkbox={basicFormActionsEnabled} $disabled={false} onClick={() => setBasicFormActionsEnabled(!basicFormActionsEnabled)} />
+            <FU.Checkbox $checkbox={basicFormActionsEnabled} disabled={false} onClick={() => setBasicFormActionsEnabled(!basicFormActionsEnabled)} />
 
             <FU.Button $type={'primary'} onClick={toggleBasicFooter}>
               Toggle Footer
@@ -164,11 +164,11 @@ export default function GenericGallery() {
           <Title>Stacked Footer</Title>
           <SectionGallery>
           <SectionHeader>Informational</SectionHeader>
-            <FU.Checkbox $checkbox={stackedInformationEnabled} $disabled={!basicFooterOpen} onClick={() => basicFooterOpen && setStackedInformationEnabled(!stackedInformationEnabled)} />
+            <FU.Checkbox $checkbox={stackedInformationEnabled} disabled={!basicFooterOpen} onClick={() => basicFooterOpen && setStackedInformationEnabled(!stackedInformationEnabled)} />
             <SectionHeader>Actions (Local)</SectionHeader>
-            <FU.Checkbox $checkbox={stackedLocalActionsEnabled} $disabled={!basicFooterOpen} onClick={() => basicFooterOpen && setStackedLocalActionsEnabled(!stackedLocalActionsEnabled)} />
+            <FU.Checkbox $checkbox={stackedLocalActionsEnabled} disabled={!basicFooterOpen} onClick={() => basicFooterOpen && setStackedLocalActionsEnabled(!stackedLocalActionsEnabled)} />
             <SectionHeader>Actions (Form)</SectionHeader>
-            <FU.Checkbox $checkbox={stackedFormActionsEnabled} $disabled={!basicFooterOpen} onClick={() => basicFooterOpen && setStackedFormActionsEnabled(!stackedFormActionsEnabled)} />
+            <FU.Checkbox $checkbox={stackedFormActionsEnabled} disabled={!basicFooterOpen} onClick={() => basicFooterOpen && setStackedFormActionsEnabled(!stackedFormActionsEnabled)} />
             <FU.Button $type={'primary'} disabled={!basicFooterOpen} onClick={() => setStackedFooterOpen(!stackedFooterOpen)}>
               Toggle Stacked Footer
             </FU.Button>

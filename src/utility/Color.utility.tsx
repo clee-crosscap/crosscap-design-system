@@ -3,16 +3,15 @@ import { DefaultTheme } from 'styled-components/macro';
 
 type GenericTheme = DefaultTheme<string, string, string>;
 
-const HoverVariantSettings: VariantSettings  = { customColorProp: 'HOVER',  autoAdjustment: { dark: '*0.80', light: 0.9 } };
-const FocusVariantSettings: VariantSettings  = { customColorProp: 'FOCUS',  autoAdjustment: { dark: '*0.80', light: 0.9 } };
-const ActiveVariantSettings: VariantSettings = { customColorProp: 'ACTIVE', autoAdjustment: { dark: '*0.60', light: 0.7 } };
+const HoverVariantSettings: VariantSettings  = { customColorProp: 'HOVER',  autoAdjustment: { relativeLightness: 0.80, absoluteLightness: 0.9 } };
+const ActiveVariantSettings: VariantSettings = { customColorProp: 'ACTIVE', autoAdjustment: { relativeLightness: 0.60, absoluteLightness: 0.7 } };
 
 type ButtonConfig = GenericTheme["BUTTON"][keyof GenericTheme["BUTTON"]];
 export interface VariantSettings {
-  customColorProp: 'HOVER' | 'FOCUS' | 'ACTIVE',
+  customColorProp: 'HOVER' | 'ACTIVE',
   autoAdjustment: {
-    dark: number | string,
-    light: number | string,
+    relativeLightness: number,
+    absoluteLightness: number,
   },
 }
 
@@ -21,11 +20,6 @@ function compositeChroma(fg: string = '#000000', bg: string = '#FFFFFF'): Color 
   const fgc: Color = chroma(fg).alpha(1);
   const bgc: Color = chroma(bg);
   return chroma.mix(fgc, bgc, 1-a);
-}
-function withRelativeSign(v: string | number): string | number {
-  if(typeof v === 'number') return v;       // passed as absolute value
-  if(/[-+*]/.test(v.charAt(0))) return v;   // passed as signed relative value
-  return `+${v}`;                           // unsigned relative value treated as positive
 }
 
 function getButtonBgVariant(config: ButtonConfig, settings: VariantSettings): string {
@@ -42,29 +36,16 @@ function getButtonBgVariant(config: ButtonConfig, settings: VariantSettings): st
 
   // Use a lightened color variant when possible
   if(!isTransparent && !isWhite) {
-    return compositeChroma(config.BG).set('hsl.l', withRelativeSign(settings.autoAdjustment.dark)).hex();
+    return compositeChroma(config.BG).set('hsl.l', `*${settings.autoAdjustment.relativeLightness}`).hex();
   }
 
   // If BG color is white or fully transparent, use white tinted with that FG color
   // Note: Setting absolute lightness will set alpha to fully opaque
-  return chroma(config.FG).set('hsl.l', withRelativeSign(settings.autoAdjustment.light)).hex();
-}
-// Given a variant color, calculate the BG that would produce that variant
-export function getButtonBgFromHoverVariant(hoverColor: string): string {
-  return chroma(hoverColor).set('hsl.l', withRelativeSign(`${-HoverVariantSettings.autoAdjustment.dark}`)).hex();
-}
-export function getButtonBgFromFocusVariant(focusColor: string): string {
-  return chroma(focusColor).set('hsl.l', withRelativeSign(`${-FocusVariantSettings.autoAdjustment.dark}`)).hex();
-}
-export function getButtonBgFromActiveVariant(activeColor: string): string {
-  return chroma(activeColor).set('hsl.l', withRelativeSign(`${-ActiveVariantSettings.autoAdjustment.dark}`)).hex();
+  return chroma(config.FG).set('hsl.l', settings.autoAdjustment.absoluteLightness).hex();
 }
 // Given a BG and FG, calculate the variant color
 export function getButtonHoverBg(config: ButtonConfig): string {
   return getButtonBgVariant(config, HoverVariantSettings);
-}
-export function getButtonFocusBg(config: ButtonConfig): string {
-  return getButtonBgVariant(config, FocusVariantSettings);
 }
 export function getButtonActiveBg(config: ButtonConfig): string {
   return getButtonBgVariant(config, ActiveVariantSettings);
