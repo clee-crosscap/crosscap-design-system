@@ -37,8 +37,6 @@ const iconConfigs: Array<{ component: React.ComponentType, text: string }> = [
   { component: TrashSvg,           text: 'Trash'              },
 ];
 
-const CommonBlackSvg = styled(SU.styledSvg({ $fillStroke: CrosscapTheme.ICON_DARK }))`
-`;
 const Gallery = styled.div`
   width: 100%;
   height: 100%;
@@ -110,7 +108,7 @@ export default function IconGallery() {
                   placement="bottom"
                   overlay={<Tooltip id={`Icon-${iconConfig.text}`}>{iconConfig.text}</Tooltip>}
                 >
-                  <CommonBlackSvg as={iconConfig.component} />
+                  <SU.CommonBlackSvg as={iconConfig.component} />
                 </OverlayTrigger>    
               )
             })

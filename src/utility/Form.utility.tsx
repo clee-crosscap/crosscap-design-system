@@ -1,7 +1,6 @@
-import styled from 'styled-components/macro';
+import styled, { ThemeConsumer } from 'styled-components/macro';
 import { Dropdown } from 'react-bootstrap';
 import chroma from 'chroma-js';
-import { DefaultTheme } from 'styled-components/macro';
 
 import * as CU from '@utility/Color.utility'
 import * as SU from '@utility/Svg.utility';
@@ -128,7 +127,7 @@ export const Button = styled.button<ButtonTypeProp>`
 `;
 
 export const FooterAction = styled.button`
-  padding: 0 27px 0 37px;
+  padding: 0 27px;
   border-radius: 0;
   text-align: center;
   font-family: 'Roboto', 'Arial', sans-serif;
@@ -193,7 +192,7 @@ export const TextButton = styled.button<TextButtonProps>`
   cursor: pointer;
   user-select: none;
   font-family: 'Roboto', 'Arial', sans-serif;
-  font-size: ${p => p.$size ?? 12}px;
+  font-size: ${p => p.$size ?? 13}px;
   font-weight: ${p => p.$weight ?? 500};
   transition: opacity 0.3s ease-out, color 0.3s ease-out;
 
@@ -238,8 +237,7 @@ interface ValidProp {
   $valid?: boolean,
 }
 export const DropdownToggle = styled(Dropdown.Toggle)<RemoveBorderProp & MinWidthProp & ValidProp>`
-  padding: ${p => p.$removeBorder ? `0px` : `0px 15px`};
-  height: 36px;
+  padding: ${p => p.$removeBorder ? `0px` : `7px 15px`};
   min-width: ${p => p.$minWidth ? ((typeof p.$minWidth === 'number') ? `${p.$minWidth}px` : p.$minWidth) : '275px'};
   border-radius: 6px;
   display: grid;
@@ -294,9 +292,14 @@ export const DropdownToggle = styled(Dropdown.Toggle)<RemoveBorderProp & MinWidt
     transform: rotate(180deg);
   }
 `;
-export const DropdownChevron = styled(SU.styledSvg({ $fillStroke: CrosscapTheme.ICON_DARK })).attrs({ as: Assets.ChevronSvg })`
-  width: ${p => p.width ?? 10}px;
-  height: ${p => p.height ?? 8}px;
+export const DropdownChevron = styled(SU.themedSvg(
+  theme => ({ default: { color: theme.ICON_DARK} })
+)).attrs({
+  as: Assets.ChevronSvg,
+  width: 10,
+  height: 8,
+  className: 'cds-dropdown-chevron',
+})`
 `;
 export const DropdownMenu = styled(Dropdown.Menu).attrs(p => ({ role: 'menu' }))<MinWidthProp>`
   min-width: ${p => p.$minWidth ? ((typeof p.$minWidth === 'number') ? `${p.$minWidth}px` : p.$minWidth) : '275px'};
@@ -348,26 +351,19 @@ export const DropdownItem = styled(Dropdown.Item).attrs(p => ({
   &:disabled {
     outline: none;
     color: ${p => p.theme.TEXT_DARK};
-    background-color: #FFFFFF;
-  }
-  &,
-  &.focus,
-  &:focus {
-    outline: none;
+    text-decoration: initial;
   }
   &.hover,
   &:hover {
     background-color: ${p => p.theme.HOVER};
   }
-  &,
-  &.focus,
-  &:focus,
-  &.hover,
-  &:hover {
-    text-decoration: initial;
-  }
   &[aria-disabled="true"] {
     cursor: not-allowed;
+
+    &,
+    &:hover {
+      background-color: #FFFFFF;
+    }
 
     ${p => p.$disableChildren ? `
       > * {
@@ -387,7 +383,7 @@ export const DropdownItem = styled(Dropdown.Item).attrs(p => ({
 interface DisabledProp {
   disabled?: boolean,
 }
-export const DropdownItemCheck = styled(SU.dynamicallyStyledSvg(
+export const DropdownItemCheck = styled(SU.themedSvg(
   theme => ({ default: { color: theme.MODULE_PRIMARY } })
 )).attrs(p => ({ 
   as: Assets.CheckSvg,
@@ -399,7 +395,9 @@ export const DropdownItemCheck = styled(SU.dynamicallyStyledSvg(
 interface CheckboxProp {
   $checkbox: boolean | undefined,
 }
-export const Checkbox = styled(SU.styledSvg({ $fillStroke: CrosscapTheme.ICON_DARK })).attrs({
+export const Checkbox = styled(SU.themedSvg(
+  theme => ({ default: { color: theme.ICON_DARK } })
+)).attrs({
   as: Assets.CheckboxUnifiedSvg,
   width: 20,
   height: 20,

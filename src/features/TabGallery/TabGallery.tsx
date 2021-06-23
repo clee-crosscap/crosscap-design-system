@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components/macro';
 
-import * as SU from '@utility/Svg.utility';
-import CrosscapTheme from '@components/Theme/CrosscapTheme';
+import * as FU from '@utility/Form.utility';
+import * as LU from '@utility/Layout.utility';
 
 const Gallery = styled.div`
   width: 100%;
@@ -55,30 +55,49 @@ const Line = styled.div<MarginProps>`
   margin-top: ${p => p.$marginTop ?? 0}px;
   margin-bottom: ${p => p.$marginBottom ?? 0}px;
 `;
+interface Tab {
+  id: number,
+  name: string,
+  count: number,
+  disabled: boolean,
+};
+const tabsList = [
+  { id: 1, name: 'Promotions',   count: 3, disabled: false },
+  { id: 2, name: 'Partnerships', count: 1, disabled: false },
+  { id: 3, name: 'Archived',     count: 2, disabled: true },
+  { id: 4, name: 'Retention',    count: 5, disabled: false },
+];
+
 export default function GenericGallery() {
+  const [ selectedTabId, setSelectedTabId ] = useState<number>(tabsList[0].id);
+
   return (
     <Gallery>
       <GallerySection>
-        <Title>Section Title</Title>
+        <Title>Tabs</Title>
         <SectionHeader>
-          Section Text
+          Tabs have selected, hovered, and active states.
         </SectionHeader>
         <SectionGallery>
-          <span>Item</span>
-          <span>Item</span>
-        </SectionGallery>
-      </GallerySection>
-
-      <HR/>
-
-      <GallerySection>
-        <Title>Section Title</Title>
-        <SectionHeader>
-          Section Text
-        </SectionHeader>
-        <SectionGallery>
-          <span>Item</span>
-          <span>Item</span>
+          <Line>
+            <LU.TabRow $margin={-40} $columnGap={20}>
+              {
+                tabsList.map(tab => (
+                  <LU.Tab key={tab.id}
+                    $selected={selectedTabId === tab.id}
+                    disabled={tab.disabled}
+                    onClick={() => setSelectedTabId(tab.id)}
+                  >
+                    <span>{tab.name}</span>
+                    <FU.Badge
+                      $active={selectedTabId === tab.id}
+                      $count={tab.count}
+                    />
+                  </LU.Tab>
+                ))
+              }
+            </LU.TabRow>
+          </Line>
         </SectionGallery>
       </GallerySection>
     </Gallery>

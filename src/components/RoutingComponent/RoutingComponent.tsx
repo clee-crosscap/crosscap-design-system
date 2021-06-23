@@ -35,9 +35,6 @@ import TreeGallery from '@features/TreeGallery/TreeGallery';
 import TableGallery from '@features/TableGallery/TableGallery';
 import SearchableGallery from '@features/SearchableGallery/SearchableGallery';
 
-const CommonBlackSvg = styled(SU.styledSvg({ $fillStroke: Themes.CrosscapTheme.ICON_DARK }))`
-  cursor: pointer;
-`;
 const RoutingGrid = styled.div`
   width: 100%;
   height: 100%;
@@ -125,15 +122,15 @@ export default function RoutingComponent() {
     { type: 'heading', text: 'Components' },
     { type: 'link',    text: 'Text Fields',             path: '/text-fields',        component: TextFieldGallery },
     { type: 'link',    text: 'Selections',              path: '/selections',         component: SelectionGallery },
+    { type: 'link',    text: 'Dropdowns',               path: '/dropdowns',          component: DropdownGallery },
     { type: 'link',    text: 'Buttons',                 path: '/buttons',            component: ButtonGallery },
     { type: 'link',    text: 'Badges',                  path: '/badges',             component: BadgeGallery },
     { type: 'link',    text: 'Icons',                   path: '/icons',              component: IconGallery },
-    { type: 'link',    text: 'TODO: Dropdowns',         path: '/dropdowns',          component: DropdownGallery },
     { type: 'hr' },
     { type: 'heading', text: 'Structural' },
+    { type: 'link',    text: 'Tabs',                    path: '/tabs',               component: TabGallery },
     { type: 'link',    text: 'Footers',                 path: '/footers',            component: FooterGallery },
     { type: 'link',    text: 'TODO: Modals',            path: '/modals',             component: ModalGallery },
-    { type: 'link',    text: 'TODO: Tabs',              path: '/tabs',               component: TabGallery },
     { type: 'link',    text: 'TODO: Drawers',           path: '/drawers',            component: DrawerGallery },
     { type: 'hr' },
     { type: 'heading', text: 'Data' },
@@ -149,9 +146,9 @@ export default function RoutingComponent() {
           <FU.Dropdown style={{ marginBottom: '4px' }}>
             <FU.DropdownToggle $minWidth="none" $removeBorder={true}>
               <span>Palette: {theme.NAME}</span>
-              <CommonBlackSvg as={Assets.ChevronSvg} width={10} height={8} />
+              <FU.DropdownChevron />
             </FU.DropdownToggle>
-            <FU.DropdownMenu>
+            <FU.DropdownMenu $minWidth="none">
               {
                 Object.values(Themes).map((theme: DefaultTheme<string, string, string>, i) => (
                   <FU.DropdownItem key={i} onClick={() => setTheme(theme)}>
@@ -165,9 +162,9 @@ export default function RoutingComponent() {
           <FU.Dropdown>
             <FU.DropdownToggle $minWidth="none" $removeBorder={true}>
               <span>BG: {galleryBG}</span>
-              <CommonBlackSvg as={Assets.ChevronSvg} width={10} height={8} />
+              <FU.DropdownChevron />
             </FU.DropdownToggle>
-            <FU.DropdownMenu>
+            <FU.DropdownMenu $minWidth="none">
               <FU.DropdownItem onClick={() => setGalleryBG('#FFFFFF')}>#FFFFFF</FU.DropdownItem>
               <FU.DropdownItem onClick={() => setGalleryBG('#F8F8F8')}>#F8F8F8</FU.DropdownItem>
             </FU.DropdownMenu>

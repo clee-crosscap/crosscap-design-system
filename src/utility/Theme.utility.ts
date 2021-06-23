@@ -1,5 +1,5 @@
 import { DefaultTheme } from 'styled-components/macro';
-import chroma from 'chroma-js';
+import chroma, { Color } from 'chroma-js';
 
 import * as GU from '@utility/General.utility';
 
@@ -11,6 +11,8 @@ const GRAY_D8 = '#D8D8D8';
 const GRAY_E6 = '#E6E6E6';
 
 export function createTheme(name: string, primary: string, dark: string, light: string): DefaultTheme<typeof primary, typeof dark, typeof light> {
+  const hoverColor: Color = chroma(primary).set('hsl.l', GU.lerp(0.80, chroma(primary).get('hsl.l'), 1));
+
   return {
     NAME:              name,
   
@@ -37,7 +39,7 @@ export function createTheme(name: string, primary: string, dark: string, light: 
   
     DIVIDER:           GRAY_D8,
   
-    HOVER:             chroma(primary).set('hsl.l', GU.lerp(0.80, chroma(primary).get('hsl.l'), 1)).hex().toUpperCase(),
+    HOVER:             hoverColor.hex().toUpperCase(),
   
     HIGHLIGHT:         "#FFDF00",
     HIGHLIGHT_FOCUS:   "#FF9100",
@@ -77,8 +79,8 @@ export function createTheme(name: string, primary: string, dark: string, light: 
       footer: {
         BG:            WHITE,
         FG:            GRAY_3B,
-        HOVER:         chroma("#E4EBED").set('hsl.l', `*${0.8/0.8}`).hex().toUpperCase(),
-        ACTIVE:        chroma("#E4EBED").set('hsl.l', `*${0.6/0.8}`).hex().toUpperCase(),
+        HOVER:         hoverColor.set('hsl.l', `*${0.8/0.8}`).hex().toUpperCase(),
+        ACTIVE:        hoverColor.set('hsl.l', `*${0.6/0.8}`).hex().toUpperCase(),
       },
     },
   };  

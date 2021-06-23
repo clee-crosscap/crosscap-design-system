@@ -4,11 +4,9 @@ import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 import * as FU from '@utility/Form.utility';
 import * as SU from '@utility/Svg.utility';
+import * as LU from '@utility/Layout.utility';
 import CrosscapTheme from '@components/Theme/CrosscapTheme';
 import * as Assets from '@assets/.';
-
-const CommonRedSvg = styled(SU.styledSvg({ $fillStroke: CrosscapTheme.INVALID }))``;
-const CommonBlackSvg = styled(SU.styledSvg({ $fillStroke: CrosscapTheme.ICON_DARK }))``;
 
 const Gallery = styled.div`
   width: 100%;
@@ -69,31 +67,6 @@ const Line = styled.div<MarginProps>`
   margin-top: ${p => p.$marginTop ?? 0}px;
   margin-bottom: ${p => p.$marginBottom ?? 0}px;
 `;
-interface GridProps {
-  $columns: number,
-  $inline?: boolean,
-  $columnGap?: number,
-  $rowGap?: number,
-  $justifyContent?: string,
-  $alignContent?: string,
-  $placeContent?: string,
-  $justifyItems?: string,
-  $alignItems?: string,
-  $placeItems?: string,
-}
-const SectionGrid = styled.div<GridProps>`
-  display: ${p => p.$inline ? 'inline-grid' : 'grid'};
-  grid-template-columns: ${p => 'auto '.repeat(p.$columns)};
-  grid-auto-flow: row;
-  ${p => p.$columnGap      ? `grid-column-gap: ${p.$columnGap}px;`    : ''}
-  ${p => p.$rowGap         ? `grid-row-gap:    ${p.$rowGap}px;`       : ''}
-  ${p => p.$justifyContent ? `justify-content: ${p.$justifyContent};` : ''}
-  ${p => p.$alignContent   ? `align-content:   ${p.$alignContent};`   : ''}
-  ${p => p.$placeContent   ? `place-content:   ${p.$placeContent};`   : ''}
-  ${p => p.$justifyItems   ? `justify-items:   ${p.$justifyItems};`   : ''}
-  ${p => p.$alignItems     ? `align-items:     ${p.$alignItems};`     : ''}
-  ${p => p.$placeItems     ? `place-items:     ${p.$placeItems};`     : ''}
-`;
 export default function ButtonGallery() {
   return (
     <Gallery>
@@ -108,7 +81,7 @@ export default function ButtonGallery() {
           <FU.Button $type="secondary">Secondary</FU.Button>
           <FU.Button $type="tertiary">Tertiary</FU.Button>
           <RedButton $type="custom">
-            <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
+            <SU.CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
             <span>Custom</span>
           </RedButton>
         </SectionContent>
@@ -117,7 +90,7 @@ export default function ButtonGallery() {
           <FU.Button $type="secondary">Generously Sized</FU.Button>
           <FU.Button $type="tertiary">Generously Sized</FU.Button>
           <RedButton $type="custom">
-            <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
+            <SU.CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
             <span>Generously Sized</span>
           </RedButton>
         </SectionContent>
@@ -133,7 +106,7 @@ export default function ButtonGallery() {
           <FU.Button $type="secondary" className={`hover`}>Hovered</FU.Button>
           <FU.Button $type="tertiary" className={`hover`}>Hovered</FU.Button>
           <RedButton $type="custom" className={`hover`}>
-            <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
+            <SU.CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
             <span>Hovered</span>
           </RedButton>
         </SectionContent>
@@ -142,7 +115,7 @@ export default function ButtonGallery() {
           <FU.Button $type="secondary" className={`active`}>Active</FU.Button>
           <FU.Button $type="tertiary" className={`active`}>Active</FU.Button>
           <RedButton $type="custom" className={`active`}>
-            <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
+            <SU.CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
             <span>Active</span>
           </RedButton>
         </SectionContent>
@@ -151,7 +124,7 @@ export default function ButtonGallery() {
           <FU.Button $type="secondary" disabled>Disabled</FU.Button>
           <FU.Button $type="tertiary" disabled>Disabled</FU.Button>
           <RedButton $type="custom" disabled>
-            <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
+            <SU.CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
             <span>Disabled</span>
           </RedButton>
         </SectionContent>
@@ -192,75 +165,75 @@ export default function ButtonGallery() {
           Icons may also need to be offset slightly if the perceptual centroid is not at the center of the svg asset.
         </SectionHeader>
         <SectionContent>
-          <SectionGrid $inline={true} $columns={4} $alignItems="center" $columnGap={8} $rowGap={12}>
+          <LU.InlineRowMajorGrid $columns={4} $alignItems="center" $columnGap={8} $rowGap={12}>
             <span>Default</span>
             <OverlayTrigger placement="top" delay={{ show: 500, hide: 0 }} overlay={<Tooltip id="IconTooltips-filter">Filters</Tooltip>}>
               <FU.Button $type="icon">
-                <CommonBlackSvg as={Assets.FilterSvg} width={18} height={18} />
+                <SU.CommonBlackSvg as={Assets.FilterSvg} width={18} height={18} />
               </FU.Button>
             </OverlayTrigger>
             <OverlayTrigger placement="top" delay={{ show: 500, hide: 0 }} overlay={<Tooltip id="IconTooltips-gear">Settings</Tooltip>}>
               <FU.Button $type="icon">
-                <CommonBlackSvg as={Assets.GearFilledSvg} width={22} height={22} />
+                <SU.CommonBlackSvg as={Assets.GearFilledSvg} width={22} height={22} />
               </FU.Button>
             </OverlayTrigger>
             <OverlayTrigger placement="top" delay={{ show: 500, hide: 0 }} overlay={<Tooltip id="IconTooltips-export">Export</Tooltip>}>
               <FU.Button $type="icon">
-                <CommonBlackSvg as={Assets.ExportSvg} width={22} height={22} />
+                <SU.CommonBlackSvg as={Assets.ExportSvg} width={22} height={22} />
               </FU.Button>
             </OverlayTrigger>
 
             <span>Hover</span>
             <OverlayTrigger placement="top" delay={{ show: 500, hide: 0 }} overlay={<Tooltip id="IconTooltips-filter2">Filters</Tooltip>}>
               <FU.Button $type="icon" className="hover">
-                <CommonBlackSvg as={Assets.FilterSvg} width={18} height={18} />
+                <SU.CommonBlackSvg as={Assets.FilterSvg} width={18} height={18} />
               </FU.Button>
             </OverlayTrigger>
             <OverlayTrigger placement="top" delay={{ show: 500, hide: 0 }} overlay={<Tooltip id="IconTooltips-gear2">Settings</Tooltip>}>
               <FU.Button $type="icon" className="hover">
-                <CommonBlackSvg as={Assets.GearFilledSvg} width={22} height={22} />
+                <SU.CommonBlackSvg as={Assets.GearFilledSvg} width={22} height={22} />
               </FU.Button>
             </OverlayTrigger>
             <OverlayTrigger placement="top" delay={{ show: 500, hide: 0 }} overlay={<Tooltip id="IconTooltips-export2">Export</Tooltip>}>
               <FU.Button $type="icon" className="hover">
-                <CommonBlackSvg as={Assets.ExportSvg} width={22} height={22} />
+                <SU.CommonBlackSvg as={Assets.ExportSvg} width={22} height={22} />
               </FU.Button>
             </OverlayTrigger>
 
             <span>Active</span>
             <OverlayTrigger placement="top" delay={{ show: 500, hide: 0 }} overlay={<Tooltip id="IconTooltips-filter3">Filters</Tooltip>}>
               <FU.Button $type="icon" className="active">
-                <CommonBlackSvg as={Assets.FilterSvg} width={18} height={18} />
+                <SU.CommonBlackSvg as={Assets.FilterSvg} width={18} height={18} />
               </FU.Button>
             </OverlayTrigger>
             <OverlayTrigger placement="top" delay={{ show: 500, hide: 0 }} overlay={<Tooltip id="IconTooltips-gear3">Settings</Tooltip>}>
               <FU.Button $type="icon" className="active">
-                <CommonBlackSvg as={Assets.GearFilledSvg} width={22} height={22} />
+                <SU.CommonBlackSvg as={Assets.GearFilledSvg} width={22} height={22} />
               </FU.Button>
             </OverlayTrigger>
             <OverlayTrigger placement="top" delay={{ show: 500, hide: 0 }} overlay={<Tooltip id="IconTooltips-export3">Export</Tooltip>}>
               <FU.Button $type="icon" className="active">
-                <CommonBlackSvg as={Assets.ExportSvg} width={22} height={22} />
+                <SU.CommonBlackSvg as={Assets.ExportSvg} width={22} height={22} />
               </FU.Button>
             </OverlayTrigger>
 
             <span>Disabled</span>
             <OverlayTrigger placement="top" delay={{ show: 500, hide: 0 }} overlay={<Tooltip id="IconTooltips-filter4">Filters</Tooltip>}>
               <FU.Button $type="icon" disabled>
-                <CommonBlackSvg as={Assets.FilterSvg} width={18} height={18} />
+                <SU.CommonBlackSvg as={Assets.FilterSvg} width={18} height={18} />
               </FU.Button>
             </OverlayTrigger>
             <OverlayTrigger placement="top" delay={{ show: 500, hide: 0 }} overlay={<Tooltip id="IconTooltips-gear4">Settings</Tooltip>}>
               <FU.Button $type="icon" disabled>
-                <CommonBlackSvg as={Assets.GearFilledSvg} width={22} height={22} />
+                <SU.CommonBlackSvg as={Assets.GearFilledSvg} width={22} height={22} />
               </FU.Button>
             </OverlayTrigger>
             <OverlayTrigger placement="top" delay={{ show: 500, hide: 0 }} overlay={<Tooltip id="IconTooltips-export4">Export</Tooltip>}>
               <FU.Button $type="icon" disabled>
-                <CommonBlackSvg as={Assets.ExportSvg} width={22} height={22} />
+                <SU.CommonBlackSvg as={Assets.ExportSvg} width={22} height={22} />
               </FU.Button>
             </OverlayTrigger>
-          </SectionGrid>
+          </LU.InlineRowMajorGrid>
         </SectionContent>
       </GallerySection>
     </Gallery>

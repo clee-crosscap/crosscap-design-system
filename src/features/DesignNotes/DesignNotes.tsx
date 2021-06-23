@@ -3,10 +3,10 @@ import styled from 'styled-components/macro';
 
 import * as SU from '@utility/Svg.utility';
 import * as FU from '@utility/Form.utility';
+import * as LU from '@utility/Layout.utility';
 import CrosscapTheme from '@components/Theme/CrosscapTheme';
 import * as Assets from '@assets/.';
 
-const CommonRedSvg = styled(SU.styledSvg({ $fillStroke: CrosscapTheme.INVALID }))``;
 const RedButton = styled(FU.Button).attrs({
   theme: { BUTTON: { custom: { FG: CrosscapTheme.INVALID, BG: 'rgba(0, 0, 0, 0)' } } }
 })`
@@ -14,31 +14,6 @@ const RedButton = styled(FU.Button).attrs({
   align-items: center;
   grid-auto-flow: column;
   grid-column-gap: 6px;
-`;
-interface GridProps {
-  $columns: number,
-  $inline?: boolean,
-  $columnGap?: number,
-  $rowGap?: number,
-  $justifyContent?: string,
-  $alignContent?: string,
-  $placeContent?: string,
-  $justifyItems?: string,
-  $alignItems?: string,
-  $placeItems?: string,
-}
-const SectionGrid = styled.div<GridProps>`
-  display: ${p => p.$inline ? 'inline-grid' : 'grid'};
-  grid-template-columns: ${p => 'auto '.repeat(p.$columns)};
-  grid-auto-flow: row;
-  ${p => p.$columnGap      ? `grid-column-gap: ${p.$columnGap}px;`    : ''}
-  ${p => p.$rowGap         ? `grid-row-gap:    ${p.$rowGap}px;`       : ''}
-  ${p => p.$justifyContent ? `justify-content: ${p.$justifyContent};` : ''}
-  ${p => p.$alignContent   ? `align-content:   ${p.$alignContent};`   : ''}
-  ${p => p.$placeContent   ? `place-content:   ${p.$placeContent};`   : ''}
-  ${p => p.$justifyItems   ? `justify-items:   ${p.$justifyItems};`   : ''}
-  ${p => p.$alignItems     ? `align-items:     ${p.$alignItems};`     : ''}
-  ${p => p.$placeItems     ? `place-items:     ${p.$placeItems};`     : ''}
 `;
 
 const dropdownOptionMap: Record<number, { name: string }> = {
@@ -80,32 +55,32 @@ export default function DesignNotes() {
 
             <hr />
 
-            <SectionGrid $inline={true} $columns={5} $columnGap={15}>
+            <LU.InlineRowMajorGrid $columns={5} $columnGap={15}>
               <RedButton $type="custom">
-                <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
+                <SU.CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
                 <span>Custom</span>
               </RedButton>
 
               <RedButton $type="custom">
-                <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
+                <SU.CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
                 <span>Generously Sized</span>
               </RedButton>
 
               <RedButton $type="custom" className={`hover`}>
-                <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
+                <SU.CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
                 <span>Hovered</span>
               </RedButton>
 
               <RedButton $type="custom" className={`active`}>
-                <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
+                <SU.CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
                 <span>Active</span>
               </RedButton>
 
               <RedButton $type="custom" disabled>
-                <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
+                <SU.CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
                 <span>Disabled</span>
               </RedButton>
-            </SectionGrid>                
+            </LU.InlineRowMajorGrid>                
           </div>
         </li>
       </ul>
@@ -116,7 +91,7 @@ export default function DesignNotes() {
           values (90%, 70% absolute lightness of FG) for review.
 
           <div style={{ padding: '20px', borderLeft: '2px solid #d8d8d8', margin: '10px 0 40px 0' }}>
-            <SectionGrid $inline={true} $columns={5} $columnGap={15} $rowGap={12}>
+            <LU.InlineRowMajorGrid $columns={5} $columnGap={15} $rowGap={12}>
               <FU.Button $type="tertiary">Custom</FU.Button>
               <FU.Button $type="tertiary">Generously Sized</FU.Button>
               <FU.Button $type="tertiary" className={`hover`}>Hovered</FU.Button>
@@ -124,30 +99,30 @@ export default function DesignNotes() {
               <FU.Button $type="tertiary" disabled>Disabled</FU.Button>
 
               <RedButton $type="custom">
-                <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
+                <SU.CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
                 <span>Custom</span>
               </RedButton>
 
               <RedButton $type="custom">
-                <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
+                <SU.CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
                 <span>Generously Sized</span>
               </RedButton>
 
               <RedButton $type="custom" className={`hover`}>
-                <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
+                <SU.CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
                 <span>Hovered</span>
               </RedButton>
 
               <RedButton $type="custom" className={`active`}>
-                <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
+                <SU.CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
                 <span>Active</span>
               </RedButton>
 
               <RedButton $type="custom" disabled>
-                <CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
+                <SU.CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
                 <span>Disabled</span>
               </RedButton>
-            </SectionGrid>                
+            </LU.InlineRowMajorGrid>                
           </div>
         </li>
       </ul>
@@ -182,7 +157,7 @@ export default function DesignNotes() {
                     dropdownSingleSelectState !== undefined &&
                     <span>{dropdownOptionMap[dropdownSingleSelectState].name}</span>
                   }
-                  <FU.DropdownChevron width={10} height={8} className="cds-dropdown-chevron" />
+                  <FU.DropdownChevron />
               </FU.DropdownToggle>
               <FU.DropdownMenu>
                 {

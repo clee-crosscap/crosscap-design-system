@@ -7,12 +7,6 @@ import * as SU from '@utility/Svg.utility';
 import CrosscapTheme from '@components/Theme/CrosscapTheme';
 import * as Assets from '@assets/.';
 
-const CommonBlackSvg = styled(SU.styledSvg({ $fillStroke: CrosscapTheme.ICON_DARK }))`
-  cursor: pointer;
-`;
-const CommonModuleLightSvg = styled(SU.styledSvg({ $fillStroke: CrosscapTheme.MODULE_LIGHT }))`
-`;
-
 const Gallery = styled.div`
   width: 100%;
   height: 100%;
@@ -64,7 +58,7 @@ const Line = styled.div<MarginProps>`
   margin-top: ${p => p.$marginTop ?? 0}px;
   margin-bottom: ${p => p.$marginBottom ?? 0}px;
 `;
-const Info = styled(CommonBlackSvg)`
+const Info = styled(SU.CommonBlackSvg)`
   cursor: help;
 
   && {
@@ -193,17 +187,17 @@ export default function ButtonGallery() {
         <SectionContent>
           <OverlayTrigger placement="bottom" delay={{ show: 500, hide: 0 }} overlay={<Tooltip id="IconTooltips-filter">Filters</Tooltip>}>
             <FU.Button $type="icon">
-              <CommonBlackSvg as={Assets.FilterSvg} width={18} height={18} />
+              <SU.CommonBlackSvg as={Assets.FilterSvg} width={18} height={18} />
             </FU.Button>
           </OverlayTrigger>
           <OverlayTrigger placement="bottom" delay={{ show: 500, hide: 0 }} overlay={<Tooltip id="IconTooltips-gear">Settings</Tooltip>}>
             <FU.Button $type="icon">
-              <CommonBlackSvg as={Assets.GearFilledSvg} width={22} height={22} />
+              <SU.CommonBlackSvg as={Assets.GearFilledSvg} width={22} height={22} />
             </FU.Button>
           </OverlayTrigger>
           <OverlayTrigger placement="bottom" delay={{ show: 500, hide: 0 }} overlay={<Tooltip id="IconTooltips-export">Export</Tooltip>}>
             <FU.Button $type="icon">
-              <CommonBlackSvg as={Assets.ExportSvg} width={22} height={22} />
+              <SU.CommonBlackSvg as={Assets.ExportSvg} width={22} height={22} />
             </FU.Button>
           </OverlayTrigger>
         </SectionContent>
@@ -221,7 +215,7 @@ export default function ButtonGallery() {
           <FU.Dropdown>
             <FU.DropdownToggle>
               Dropdow Actions
-              <CommonBlackSvg as={Assets.ChevronSvg} width={10} height={8} />
+              <FU.DropdownChevron />
             </FU.DropdownToggle>
             <FU.DropdownMenu>
               <DropdownItemWithTooltip>
@@ -262,7 +256,7 @@ export default function ButtonGallery() {
               }>
                 <OverflowToggle>
                   <EllipsisContainer $maxWidth={250}>{LOREM_IPSUM}</EllipsisContainer>
-                  <CommonBlackSvg as={Assets.ChevronSvg} width={10} height={8} />
+                  <FU.DropdownChevron />
                 </OverflowToggle>
               </OverlayTrigger>
             </FU.DropdownToggle>
@@ -296,7 +290,7 @@ export default function ButtonGallery() {
           <FU.Dropdown>
             <FU.DropdownToggle>
               Dropdown Selections
-              <CommonBlackSvg as={Assets.ChevronSvg} width={10} height={8} />
+              <FU.DropdownChevron />
             </FU.DropdownToggle>
             <FU.DropdownMenu>
               <DropdownItemWithTooltip disabled $disableChildren={true}>
@@ -311,7 +305,7 @@ export default function ButtonGallery() {
               </DropdownItemWithTooltip>
               <DropdownItemWithTooltip>
                 <span>Selection 2</span>
-                <CommonModuleLightSvg as={Assets.CheckSvg} width={12} height={12} />
+                <FU.DropdownItemCheck />
               </DropdownItemWithTooltip>
               <DropdownItemWithTooltip>
                 <span>Selection 3</span>

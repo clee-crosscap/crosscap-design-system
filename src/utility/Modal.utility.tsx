@@ -93,9 +93,11 @@ export const ModalProps = {
   overlayElement: ((props: any, contentElement: React.ReactNode) => <ModalOverlay {...props}>{contentElement}</ModalOverlay>),
   contentElement: ((props: any, children: React.ReactNode) => <ModalContent {...props}>{children}</ModalContent>),
 };
-export const ModalAlert = styled(SU.styledSvg()).attrs({ as: Assets.AlertSvg })`
-  width: 30px;
-  height: 27px;
+export const ModalAlert = styled(SU.themedSvg()).attrs({
+  as: Assets.AlertSvg,
+  width: 30,
+  height: 27,
+})`
   margin-bottom: 15px;
   grid-area: alert;
   justify-self: center;

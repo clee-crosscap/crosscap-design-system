@@ -3,7 +3,7 @@ import styled from 'styled-components/macro';
 
 import * as FU from '@utility/Form.utility';
 import * as SU from '@utility/Svg.utility';
-import CrosscapTheme from '@components/Theme/CrosscapTheme';
+import * as LU from '@utility/Layout.utility';
 import * as Assets from '@assets/.';
 
 const Gallery = styled.div`
@@ -38,31 +38,6 @@ const SectionHeader = styled.div`
 `;
 const SectionContent = styled.div`
 `;
-interface GridProps {
-  $columns: number,
-  $inline?: boolean,
-  $columnGap?: number,
-  $rowGap?: number,
-  $justifyContent?: string,
-  $alignContent?: string,
-  $placeContent?: string,
-  $justifyItems?: string,
-  $alignItems?: string,
-  $placeItems?: string,
-}
-const SectionGrid = styled.div<GridProps>`
-  display: ${p => p.$inline ? 'inline-grid' : 'grid'};
-  grid-template-columns: ${p => 'auto '.repeat(p.$columns)};
-  grid-auto-flow: row;
-  ${p => p.$columnGap      ? `grid-column-gap: ${p.$columnGap}px;`    : ''}
-  ${p => p.$rowGap         ? `grid-row-gap:    ${p.$rowGap}px;`       : ''}
-  ${p => p.$justifyContent ? `justify-content: ${p.$justifyContent};` : ''}
-  ${p => p.$alignContent   ? `align-content:   ${p.$alignContent};`   : ''}
-  ${p => p.$placeContent   ? `place-content:   ${p.$placeContent};`   : ''}
-  ${p => p.$justifyItems   ? `justify-items:   ${p.$justifyItems};`   : ''}
-  ${p => p.$alignItems     ? `align-items:     ${p.$alignItems};`     : ''}
-  ${p => p.$placeItems     ? `place-items:     ${p.$placeItems};`     : ''}
-`;
 const InputWithIconGrid = styled.div`
   display: grid;
   justify-content: start;
@@ -86,7 +61,7 @@ const InputWithIcon = styled(FU.Input)`
     border-color: ${p => p.theme.TEXT_DARK};
   }
 `;
-const SearchIcon = styled(SU.styledSvg({ $fillStroke: '#C2C2C2' }))`
+const SearchIcon = styled(SU.CommonInlineSvg)`
   margin-left: ${0.5*(42 - 16)}px;
   align-items: center;
   justify-self: start;
@@ -131,7 +106,17 @@ const InputNavigationCursorValue = styled.div<SelectedProp>`
   background-color: ${p => p.$selected ? p.theme.HIGHLIGHT : ''};
   user-select: none;
 `;
-const InputNavigation = styled(SU.styledSvg({ $fillStroke: '#C2C2C2', $hoverFillStroke: CrosscapTheme.ICON_DARK, $disabledFillStroke: '#C2C2C2', $transitionMillis: 150 }))`
+interface DisabledProp {
+  disabled: boolean,
+}
+const InputNavigation = styled(SU.themedSvg(
+  theme => ({
+    default: { color: '#C2C2C2' },
+    hover: { color: theme.ICON_DARK },
+    disabled: { color: '#C2C2C2' },
+    transitionMillis: 150
+  })
+))<DisabledProp>`
   width: 30px;
   padding: 11px 2px;
   grid-column: 1;
@@ -139,8 +124,13 @@ const InputNavigation = styled(SU.styledSvg({ $fillStroke: '#C2C2C2', $hoverFill
   justify-self: end;
   align-items: center;
   transition: border-color 0.15s ease-out;
-  cursor: ${p => p.$disabled ? 'not-allowed' : 'pointer'};
-  opacity: ${p => p.$disabled ? 0.5 : 1};
+  cursor: pointer;
+  opacity: 1;
+
+  &[disabled] {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
 `;
 const InputNavigationLeft = styled(InputNavigation)`
   margin-right: 33px;
@@ -293,14 +283,14 @@ export default function ButtonGallery() {
                     <>0 / 0</>
                   }
                 </InputNavigationCursor>
-                <InputNavigationLeft as={Assets.ChevronSvg} width={6} height={10} onClick={onNavigationLeft} $disabled={!hasNavigationResults} />
-                <InputNavigationRight as={Assets.ChevronSvg} width={6} height={10} onClick={onNavigationRight} $disabled={!hasNavigationResults} />
+                <InputNavigationLeft as={Assets.ChevronSvg} width={6} height={10} onClick={onNavigationLeft} disabled={!hasNavigationResults} />
+                <InputNavigationRight as={Assets.ChevronSvg} width={6} height={10} onClick={onNavigationRight} disabled={!hasNavigationResults} />
               </>
             }
           </InputWithIconGrid>
         </SectionContent>
         <SectionContent>
-          <SectionGrid $columns={4} $columnGap={10} $alignItems={'center'}>
+          <LU.BlockRowMajorGrid $columns={4} $columnGap={10} $alignItems={'center'}>
             <InputNavigationCursorValueContainer>
               {
                 Array(NAVIGATION_MAX).fill(0).map((v,i) => (
@@ -316,7 +306,7 @@ export default function ButtonGallery() {
             <span></span>
             <span>Toggle Matches</span>
             <FU.Toggle $toggle={hasNavigationResults} onClick={() => setHasNavigationResults(!hasNavigationResults)} />
-          </SectionGrid>
+          </LU.BlockRowMajorGrid>
         </SectionContent>
       </GallerySection>
 

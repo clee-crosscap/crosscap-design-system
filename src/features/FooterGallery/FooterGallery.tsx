@@ -1,17 +1,13 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components/macro';
+import { CSSTransition } from 'react-transition-group';
 
 import * as SU from '@utility/Svg.utility';
 import * as CTU from '@utility/CSSTransition.utility';
 import * as FU from '@utility/Form.utility';
 import CrosscapTheme from '@components/Theme/CrosscapTheme';
-import { CSSTransition } from 'react-transition-group';
-
 import { ReactComponent as PencilSvg } from '@assets/pencil.svg';
 import { ReactComponent as CloseSvg } from '@assets/close.svg';
-
-const CommonBlackSvg = styled(SU.styledSvg({ $fillStroke: CrosscapTheme.ICON_DARK }))`
-`;
 
 const GalleryWrapper = styled.div`
   width: 100%;
@@ -197,15 +193,15 @@ export default function GenericGallery() {
             basicLocalActionsEnabled &&
             <FooterLocalActions>
               <FU.FooterAction disabled={true}>
-                <CommonBlackSvg as={PencilSvg} width={16} height={16} />
+                <SU.CommonBlackSvg as={PencilSvg} width={16} height={16} />
                 Revert
               </FU.FooterAction>
               <FU.FooterAction>
-                <CommonBlackSvg as={PencilSvg} width={16} height={16} />
+                <SU.CommonBlackSvg as={PencilSvg} width={16} height={16} />
                 Sync
               </FU.FooterAction>
               <FU.FooterAction>
-                <CommonBlackSvg as={CloseSvg} width={16} height={16} />
+                <SU.CommonBlackSvg as={CloseSvg} width={16} height={16} />
                 Remove
               </FU.FooterAction>
             </FooterLocalActions>
@@ -237,15 +233,15 @@ export default function GenericGallery() {
             stackedLocalActionsEnabled &&
             <FooterLocalActions>
               <FU.FooterAction>
-                <CommonBlackSvg as={PencilSvg} width={16} height={16} />
+                <SU.CommonBlackSvg as={PencilSvg} width={16} height={16} />
                 Collate
               </FU.FooterAction>
               <FU.FooterAction>
-                <CommonBlackSvg as={PencilSvg} width={16} height={16} />
+                <SU.CommonBlackSvg as={PencilSvg} width={16} height={16} />
                 Sort
               </FU.FooterAction>
               <FU.FooterAction disabled={true}>
-                <CommonBlackSvg as={PencilSvg} width={16} height={16} />
+                <SU.CommonBlackSvg as={PencilSvg} width={16} height={16} />
                 Pivot
               </FU.FooterAction>
             </FooterLocalActions>
