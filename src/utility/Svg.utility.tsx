@@ -72,16 +72,18 @@ export const themedSvg = (settingsFn?: (theme: GenericTheme) => ThemedSvgSetting
     }
   `}
 }`;
-
+interface DisabledProp {
+  disabled?: boolean,
+}
 export const CommonBlackSvg = styled(themedSvg(
   theme => ({ default: { color: theme.ICON_DARK } })
-))`
-  cursor: pointer
+))<DisabledProp>`
+  cursor: ${p => p.disabled ? 'not-allowed' : 'pointer'};
 `;
 export const CommonRedSvg = styled(themedSvg(
   theme => ({ default: { color: theme.INVALID } })
-))`
-  cursor: pointer
+))<DisabledProp>`
+cursor: ${p => p.disabled ? 'not-allowed' : 'pointer'};
 `;
 export const CommonInlineSvg = styled(themedSvg(
   theme => ({ default: { color: '#C2C2C2' }})

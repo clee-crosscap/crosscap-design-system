@@ -3,6 +3,7 @@ export { ReactComponent as CheckSvg } from '@assets/check.svg';
 export { ReactComponent as CheckboxUnifiedSvg } from '@assets/checkbox-unified.svg';
 export { ReactComponent as ChevronSvg } from '@assets/chevron.svg';
 export { ReactComponent as CloseSvg } from '@assets/close.svg';
+export { ReactComponent as EllipsisSvg } from '@assets/ellipsis.svg';
 export { ReactComponent as ExportSvg } from '@assets/export.svg';
 export { ReactComponent as FilterSvg } from '@assets/filter.svg';
 export { ReactComponent as GearFilledSvg } from '@assets/gear-filled.svg';

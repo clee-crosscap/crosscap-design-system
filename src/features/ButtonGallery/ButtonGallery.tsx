@@ -220,17 +220,17 @@ export default function ButtonGallery() {
             <span>Disabled</span>
             <OverlayTrigger placement="top" delay={{ show: 500, hide: 0 }} overlay={<Tooltip id="IconTooltips-filter4">Filters</Tooltip>}>
               <FU.Button $type="icon" disabled>
-                <SU.CommonBlackSvg as={Assets.FilterSvg} width={18} height={18} />
+                <SU.CommonBlackSvg as={Assets.FilterSvg} disabled={true} width={18} height={18} />
               </FU.Button>
             </OverlayTrigger>
             <OverlayTrigger placement="top" delay={{ show: 500, hide: 0 }} overlay={<Tooltip id="IconTooltips-gear4">Settings</Tooltip>}>
               <FU.Button $type="icon" disabled>
-                <SU.CommonBlackSvg as={Assets.GearFilledSvg} width={22} height={22} />
+                <SU.CommonBlackSvg as={Assets.GearFilledSvg} disabled={true} width={22} height={22} />
               </FU.Button>
             </OverlayTrigger>
             <OverlayTrigger placement="top" delay={{ show: 500, hide: 0 }} overlay={<Tooltip id="IconTooltips-export4">Export</Tooltip>}>
               <FU.Button $type="icon" disabled>
-                <SU.CommonBlackSvg as={Assets.ExportSvg} width={22} height={22} />
+                <SU.CommonBlackSvg as={Assets.ExportSvg} disabled={true} width={22} height={22} />
               </FU.Button>
             </OverlayTrigger>
           </LU.InlineRowMajorGrid>

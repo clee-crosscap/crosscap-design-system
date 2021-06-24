@@ -5,14 +5,12 @@ import chroma from 'chroma-js';
 import * as CU from '@utility/Color.utility'
 import * as SU from '@utility/Svg.utility';
 import * as Assets from '@assets/.';
-import CrosscapTheme from '@components/Theme/CrosscapTheme';
 import '@components/Tooltip/Tooltip.scss';
+
+export { Dropdown } from 'react-bootstrap';
 
 interface WidthProp {
   $width?: number | string,
-}
-interface MaxWidthProp {
-  $maxWidth?: number | string,
 }
 interface ValidProp {
   $valid?: boolean,
@@ -33,9 +31,8 @@ export const ComponentInvalid = styled.div`
   font-size: 400;
   letter-spacing: 0.2px;
 `;
-export const Input = styled.input<ValidProp & WidthProp & MaxWidthProp & InlineIconProp>`
-  max-width: ${p => ((typeof p.$maxWidth === 'string') && p.$maxWidth) || `${p.$maxWidth ?? 312}px`};
-  width: ${p => ((typeof p.$width === 'string') && p.$width) || `${p.$width ?? 274}px`};
+export const Input = styled.input<ValidProp & WidthProp & InlineIconProp>`
+  width: ${p => ((typeof p.$width === 'string') && p.$width) || `${p.$width ?? 275}px`};
   height: 36px;
   padding: 0px 18px 0 ${p => p.$inlineIcon ? 42 : 18}px;
   border: 2px solid ${p => p.$valid !== false ? p.theme.GRAY_D8 : p.theme.INVALID};
@@ -85,7 +82,7 @@ interface ButtonTypeProp {
 }
 
 export const Button = styled.button<ButtonTypeProp>`
-  min-width: ${p => p.$type === 'icon' ? 'none' : '134px'};
+  min-width: ${p => p.$type === 'icon' ? 0 : 134}px;
   height: 36px;
   padding: 0 ${p => p.$type === 'icon' ? 8 : 8}px;
   border-radius: 8px;
@@ -226,19 +223,15 @@ export const TextButton = styled.button<TextButtonProps>`
     opacity: 0.5;
   }
 `;
-export { Dropdown } from 'react-bootstrap';
 interface RemoveBorderProp {
   $removeBorder?: boolean,
-}
-interface MinWidthProp {
-  $minWidth?: string | number,
 }
 interface ValidProp {
   $valid?: boolean,
 }
-export const DropdownToggle = styled(Dropdown.Toggle)<RemoveBorderProp & MinWidthProp & ValidProp>`
+export const DropdownToggle = styled(Dropdown.Toggle)<RemoveBorderProp & WidthProp & ValidProp>`
   padding: ${p => p.$removeBorder ? `0px` : `7px 15px`};
-  min-width: ${p => p.$minWidth ? ((typeof p.$minWidth === 'number') ? `${p.$minWidth}px` : p.$minWidth) : '275px'};
+  width: ${p => p.$width ? ((typeof p.$width === 'number') ? `${p.$width}px` : p.$width) : '275px'};
   border-radius: 6px;
   display: grid;
   grid-column-gap: 8px;
@@ -251,7 +244,6 @@ export const DropdownToggle = styled(Dropdown.Toggle)<RemoveBorderProp & MinWidt
   cursor: pointer;
   font-family: 'Roboto','Arial',sans-serif;
   font-size: 15px;
-  max-width: 300px;
   
   &:after {
     content: initial;
@@ -301,8 +293,8 @@ export const DropdownChevron = styled(SU.themedSvg(
   className: 'cds-dropdown-chevron',
 })`
 `;
-export const DropdownMenu = styled(Dropdown.Menu).attrs(p => ({ role: 'menu' }))<MinWidthProp>`
-  min-width: ${p => p.$minWidth ? ((typeof p.$minWidth === 'number') ? `${p.$minWidth}px` : p.$minWidth) : '275px'};
+export const DropdownMenu = styled(Dropdown.Menu).attrs(p => ({ role: 'menu' }))<WidthProp>`
+  width: ${p => p.$width ? ((typeof p.$width === 'number') ? `${p.$width}px` : p.$width) : '275px'};
   max-height: 300px;
   padding: 8px 0;
   border: 0px solid transparent;
@@ -491,13 +483,14 @@ export const Badge = styled.div<BadgeProps>`
   line-height: 18px;
   font-size: 13px;
   font-weight: 500;
+  transition: color 0.3s ease-out, background-color 0.3s ease-out;
 
   ${p => p.$active || (p.$countAnimationId === undefined) ? '' : `
     @keyframes cdsBadgePulse-${p.$countAnimationId} {
-      ${(100 * 0    / 1600).toFixed(3)}%  { background-color: ${p.theme.GRAY_E6};     color: ${p.theme.TEXT_DARK}; }
-      ${(100 * 150  / 1600).toFixed(3)}%  { background-color: ${p.theme.MODULE_DARK}; color: #FFFFFF;              }
-      ${(100 * 250  / 1600).toFixed(3)}%  { background-color: ${p.theme.MODULE_DARK}; color: #FFFFFF;              }
-      ${(100 * 1600 / 1600).toFixed(3)}%  { background-color: ${p.theme.GRAY_E6};     color: ${p.theme.TEXT_DARK}; }
+      ${(100 * 0    / 1600).toFixed(3)}%  { background-color: ${p.theme.GRAY_E6};     color: ${p.theme.TEXT_DARK}; transition: all 0s linear; }
+      ${(100 * 150  / 1600).toFixed(3)}%  { background-color: ${p.theme.MODULE_DARK}; color: #FFFFFF;              transition: all 0s linear; }
+      ${(100 * 250  / 1600).toFixed(3)}%  { background-color: ${p.theme.MODULE_DARK}; color: #FFFFFF;              transition: all 0s linear; }
+      ${(100 * 1600 / 1600).toFixed(3)}%  { background-color: ${p.theme.GRAY_E6};     color: ${p.theme.TEXT_DARK}; transition: all 0s linear; }
     }
     animation: 1600ms cubic-bezier(0.5, 0, 0.5, 1.0) cdsBadgePulse-${p.$countAnimationId} 1;
   `}

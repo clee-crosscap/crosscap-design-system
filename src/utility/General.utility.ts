@@ -1,3 +1,5 @@
+import React from "react";
+
 // Typescript
 export function getValue<V extends keyof any>(v: V) { return v }
 export function isDefined<T>(v: T | undefined): v is T { return v !== undefined }
@@ -77,3 +79,11 @@ export function getPath(ele: PathElementType | null | undefined): PathElementTyp
   return path;
 }
 
+// User Inputs
+export function getMetakeys(e: React.MouseEvent | React.KeyboardEvent): { isShift: boolean, isCtrl: boolean } {
+  const isMac: boolean = /^mac.*$/i.test(navigator.platform);
+  return {
+    isShift: e ? e.shiftKey : false,                      // Shift
+    isCtrl: e ? (isMac ? e.metaKey : e.ctrlKey): false,  // Cmd (Mac) or Ctrl (Windows)
+  };
+}
