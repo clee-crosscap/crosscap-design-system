@@ -1,6 +1,7 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { OverlayTrigger, Popover, Tooltip } from 'react-bootstrap';
+import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components/macro';
 import chroma from 'chroma-js';
 
@@ -8,6 +9,7 @@ import * as GU from '@utility/General.utility';
 import * as IU from '@utility/Intl.utility';
 import * as FU from '@utility/Form.utility';
 import * as SU from '@utility/Svg.utility';
+import * as CTU from '@utility/CSSTransition.utility';
 import useKineticScroll from '@utility/UseKineticScroll.utility';
 import SearchableList, { SearchResults, searchText, SegmentedText } from '@components/SearchableList/SearchableList';
 import SearchableSegmentedText from '@components/SearchableList/SearchableSegmentedText';
@@ -68,7 +70,8 @@ const TabsetInner = styled.div<ColumnGapProp>`
     opacity: 1;
   }
 `;
-const TabsetInnerScrollControl = styled(SU.CommonBlackSvg).attrs(p => ({
+// @ts-ignore
+const TabsetInnerScrollControl = styled(CTU.fadeTransition(SU.CommonBlackSvg)).attrs(p => ({
   className: 'tabset-inner-scroll-control',
 }))`
   padding: 6px;
@@ -322,6 +325,9 @@ export default function Tabset(props: Props) {
   const [ canScrollLeft, setCanScrollLeft ] = useState<boolean>(false);
   const [ canScrollRight, setCanScrollRight ] = useState<boolean>(false);
 
+  const scrollLeftRef = useRef<HTMLElement>(null);
+  const scrollRightRef = useRef<HTMLElement>(null);
+
   const tabsetScrollableRef = useRef<HTMLDivElement>(null);
   const tabsetScrollableTabRefMap = useRef<Record<number, HTMLButtonElement>>({});
   const tabsetOverflowDropdownScrollableRef = useRef<HTMLDivElement>(null);
@@ -451,12 +457,29 @@ export default function Tabset(props: Props) {
       </TabsetInner>
       {
         tabsetOverflow &&
-        <>
-          <TabsetEllipsisToggleMask />
-          <TabsetInnerScrollLeft  disabled={!canScrollLeft}  onClick={() => onScrollUnit(-1)} />
-          <TabsetInnerScrollRight disabled={!canScrollRight} onClick={() => onScrollUnit( 1)} />
-        </>
+        <TabsetEllipsisToggleMask />
       }
+      <CSSTransition
+        in={tabsetOverflow && canScrollLeft}
+        timeout={150}
+        mountOnEnter
+        unmountOnExit
+        classNames="transition"
+        nodeRef={scrollLeftRef}
+      >
+        <TabsetInnerScrollLeft ref={scrollLeftRef as any} $timeout={150} onClick={() => onScrollUnit(-1)} />
+      </CSSTransition>
+      <CSSTransition
+        in={tabsetOverflow && canScrollRight}
+        timeout={150}
+        mountOnEnter
+        unmountOnExit
+        classNames="transition"
+        nodeRef={scrollRightRef}
+      >
+        <TabsetInnerScrollRight ref={scrollRightRef as any} $timeout={150} onClick={() => onScrollUnit(1)} />
+      </CSSTransition>
+
       {
         tabsetOverflow &&
         <OverlayTrigger

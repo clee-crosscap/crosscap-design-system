@@ -83,7 +83,7 @@ export const CommonBlackSvg = styled(themedSvg(
 export const CommonRedSvg = styled(themedSvg(
   theme => ({ default: { color: theme.INVALID } })
 ))<DisabledProp>`
-cursor: ${p => p.disabled ? 'not-allowed' : 'pointer'};
+  cursor: ${p => p.disabled ? 'not-allowed' : 'pointer'};
 `;
 export const CommonInlineSvg = styled(themedSvg(
   theme => ({ default: { color: '#C2C2C2' }})
