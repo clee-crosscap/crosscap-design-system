@@ -1,9 +1,10 @@
-import React, { useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import styled from 'styled-components/macro';
 
 import * as FU from '@utility/Form.utility';
 import * as SU from '@utility/Svg.utility';
 import * as LU from '@utility/Layout.utility';
+import NavigableSearchInput from '@components/NavigableSearchInput/NavigableSearchInput';
 import * as Assets from '@assets/.';
 
 const Gallery = styled.div`
@@ -31,11 +32,11 @@ const Title = styled.div`
   font-size: 24px;
   font-weight: 700;
 `;
-const SectionHeader = styled.div`
-  font-size: 18px;
-  color: ${p => p.theme.TEXT_DARK};
-  display: block;
-`;
+// const SectionHeader = styled.div`
+//   font-size: 18px;
+//   color: ${p => p.theme.TEXT_DARK};
+//   display: block;
+// `;
 const SectionContent = styled.div`
 `;
 const InputWithIconGrid = styled.div`
@@ -61,42 +62,13 @@ const InputWithIcon = styled(FU.Input)`
     border-color: ${p => p.theme.TEXT_DARK};
   }
 `;
-const SearchIcon = styled(SU.CommonInlineSvg)`
+const SearchIcon = styled(SU.CommonInlineSvg).attrs(p => Assets.MagnifyingGlassSvg.styledAttrs.default)`
   margin-left: ${0.5*(42 - 16)}px;
   align-items: center;
   justify-self: start;
   pointer-events: none;
   grid-column: 1;
   grid-row: 1;
-`;
-interface HasInputProp {
-  $hasInput: boolean
-}
-const InputWithNavigation = styled(InputWithIcon)<HasInputProp>`
-  ${p => !p.$hasInput ? `` : `padding-right: 120px;`}
-`;
-const InputNavigationCursor = styled(FU.TextButton)`
-  padding: 0 7px;
-  margin-right: 68px;
-  line-height: 36px;
-  grid-column: 1;
-  grid-row: 1;
-  justify-self: end;
-  align-items: center;
-  font-size: 13px;
-  font-weight: 300;
-  cursor: pointer;
-
-  &,
-  &:hover,
-  &:focus {
-    color: ${p => p.theme.TEXT_DARK};
-  }
-
-  &:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
-  }
 `;
 interface SelectedProp {
   $selected: boolean,
@@ -105,40 +77,6 @@ const InputNavigationCursorValue = styled.div<SelectedProp>`
   padding: 2px 8px;
   background-color: ${p => p.$selected ? p.theme.HIGHLIGHT : ''};
   user-select: none;
-`;
-interface DisabledProp {
-  disabled: boolean,
-}
-const InputNavigation = styled(SU.themedSvg(
-  theme => ({
-    default: { color: '#C2C2C2' },
-    hover: { color: theme.ICON_DARK },
-    disabled: { color: '#C2C2C2' },
-    transitionMillis: 150
-  })
-))<DisabledProp>`
-  width: 30px;
-  padding: 11px 2px;
-  grid-column: 1;
-  grid-row: 1;
-  justify-self: end;
-  align-items: center;
-  transition: border-color 0.15s ease-out;
-  cursor: pointer;
-  opacity: 1;
-
-  &[disabled] {
-    cursor: not-allowed;
-    opacity: 0.5;
-  }
-`;
-const InputNavigationLeft = styled(InputNavigation)`
-  margin-right: 33px;
-  transform: rotate(90deg);
-  border-bottom: 2px solid ${p => p.theme.GRAY_E6};
-`;
-const InputNavigationRight = styled(InputNavigation)`
-  transform: rotate(-90deg);
 `;
 const InputNavigationCursorValueContainer = styled.div`
   padding: 4px 8px;
@@ -172,26 +110,27 @@ export default function ButtonGallery() {
   const [ navigationIndex, setNavigationIndex ] = useState<number>(0);
   const [ hasNavigationResults, setHasNavigationResults ] = useState<boolean>(true);
 
-  const inputLen: number    = inputValue.trim().length;
+  const inputLen:    number = inputValue.trim().length;
   const textareaLen: number = textareaValue.trim().length;
 
   const NAVIGATION_MAX: number = 10;
 
-  const onNavigationLeft = (() => {
-    if(!hasNavigationResults) return;
-    const nextIndex = (navigationIndex-1+NAVIGATION_MAX) % NAVIGATION_MAX;
-    setNavigationIndex(nextIndex);
-    navigationRef.current[nextIndex]?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
-  });
-  const onNavigationRight = (() => {
-    if(!hasNavigationResults) return;
-    const nextIndex = (navigationIndex+1) % NAVIGATION_MAX;
-    setNavigationIndex(nextIndex);
-    navigationRef.current[nextIndex]?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
-  });
-  const onNavigationFocus = (() => {
-    if(!hasNavigationResults) return;
-    navigationRef.current[navigationIndex]?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+  const navigableSearchInputProps = useMemo<React.ComponentProps<typeof NavigableSearchInput>['inputProps']>(() => ({
+    value: navigationInput,
+    onChange: ((e: React.ChangeEvent<HTMLInputElement>) => setNavigationInput(e.target.value)),
+  }), [ navigationInput ])
+
+  const onNavigate = ((index: number) => {
+    setNavigationIndex(index);
+    const isIncrementalNavigation: boolean = Math.abs(navigationIndex - index) <= 1;
+
+    if(index !== navigationIndex) {
+      navigationRef.current[index]?.scrollIntoView({
+        behavior: isIncrementalNavigation ? 'smooth' : 'auto',
+        block: 'nearest',
+        inline: 'nearest',
+      });
+    }
   });
 
   return (
@@ -247,47 +186,17 @@ export default function ButtonGallery() {
           <FU.ComponentLabel>Input With Icon</FU.ComponentLabel>
           <InputWithIconGrid>
             <InputWithIcon $inlineIcon={true} />
-            <SearchIcon
-              as={Assets.MagnifyingGlassSvg}
-              width={16}
-              height={16}
-            />
+            <SearchIcon />
           </InputWithIconGrid>
         </SectionContent>
 
         <SectionContent>
           <FU.ComponentLabel>Input With Navigation</FU.ComponentLabel>
-          <InputWithIconGrid>
-            <InputWithNavigation
-              value={navigationInput}
-              onChange={e => setNavigationInput(e.target.value)}
-              $width={300}
-              $hasInput={navigationInput.trim().length > 0}
-              $inlineIcon={true}
-            />
-            <SearchIcon
-              as={Assets.MagnifyingGlassSvg}
-              width={16}
-              height={16}
-            />
-            {
-              navigationInput.trim().length > 0 &&
-              <>
-                <InputNavigationCursor onClick={onNavigationFocus}>
-                  {
-                    hasNavigationResults &&
-                    <>{ navigationIndex+1 } / {NAVIGATION_MAX}</>
-                  }
-                  {
-                    !hasNavigationResults &&
-                    <>0 / 0</>
-                  }
-                </InputNavigationCursor>
-                <InputNavigationLeft as={Assets.ChevronSvg} width={6} height={10} onClick={onNavigationLeft} disabled={!hasNavigationResults} />
-                <InputNavigationRight as={Assets.ChevronSvg} width={6} height={10} onClick={onNavigationRight} disabled={!hasNavigationResults} />
-              </>
-            }
-          </InputWithIconGrid>
+          <NavigableSearchInput
+            inputProps={navigableSearchInputProps} 
+            resultCount={hasNavigationResults ? NAVIGATION_MAX : 0}
+            onNavigate={onNavigate}
+          />
         </SectionContent>
         <SectionContent>
           <LU.BlockRowMajorGrid $columns={4} $columnGap={10} $alignItems={'center'}>
@@ -295,7 +204,7 @@ export default function ButtonGallery() {
               {
                 Array(NAVIGATION_MAX).fill(0).map((v,i) => (
                   <InputNavigationCursorValue
-                    $selected={hasNavigationResults && (navigationIndex === i)}
+                    $selected={hasNavigationResults && (navigationInput.trim().length > 0) && (navigationIndex === i)}
                     ref={ref => ref ? (navigationRef.current[i] = ref) : (delete navigationRef.current[i])}
                   >
                     {i+1}

@@ -1,2 +1,14 @@
 {
+  "CDS.Tabset.Dropdown.Search.Placeholder": [
+    {
+      "type": 0,
+      "value": "Search Tabs"
+    }
+  ],
+  "CDS.Tabset.Dropdown.Toggle": [
+    {
+      "type": 0,
+      "value": "More Tabs"
+    }
+  ]
 }

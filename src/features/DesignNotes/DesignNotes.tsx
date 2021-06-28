@@ -57,27 +57,27 @@ export default function DesignNotes() {
 
             <LU.InlineRowMajorGrid $columns={5} $columnGap={15}>
               <RedButton $type="custom">
-                <SU.CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
+                <SU.CommonRedSvg {...Assets.TrashSvg.styledAttrs.toWidth(19)} />
                 <span>Custom</span>
               </RedButton>
 
               <RedButton $type="custom">
-                <SU.CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
+                <SU.CommonRedSvg {...Assets.TrashSvg.styledAttrs.toWidth(19)} />
                 <span>Generously Sized</span>
               </RedButton>
 
               <RedButton $type="custom" className={`hover`}>
-                <SU.CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
+                <SU.CommonRedSvg {...Assets.TrashSvg.styledAttrs.toWidth(19)} />
                 <span>Hovered</span>
               </RedButton>
 
               <RedButton $type="custom" className={`active`}>
-                <SU.CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
+                <SU.CommonRedSvg {...Assets.TrashSvg.styledAttrs.toWidth(19)} />
                 <span>Active</span>
               </RedButton>
 
               <RedButton $type="custom" disabled>
-                <SU.CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
+                <SU.CommonRedSvg {...Assets.TrashSvg.styledAttrs.toWidth(19)} />
                 <span>Disabled</span>
               </RedButton>
             </LU.InlineRowMajorGrid>                
@@ -99,27 +99,27 @@ export default function DesignNotes() {
               <FU.Button $type="tertiary" disabled>Disabled</FU.Button>
 
               <RedButton $type="custom">
-                <SU.CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
+                <SU.CommonRedSvg {...Assets.TrashSvg.styledAttrs.toWidth(19)} />
                 <span>Custom</span>
               </RedButton>
 
               <RedButton $type="custom">
-                <SU.CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
+                <SU.CommonRedSvg {...Assets.TrashSvg.styledAttrs.toWidth(19)} />
                 <span>Generously Sized</span>
               </RedButton>
 
               <RedButton $type="custom" className={`hover`}>
-                <SU.CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
+                <SU.CommonRedSvg {...Assets.TrashSvg.styledAttrs.toWidth(19)} />
                 <span>Hovered</span>
               </RedButton>
 
               <RedButton $type="custom" className={`active`}>
-                <SU.CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
+                <SU.CommonRedSvg {...Assets.TrashSvg.styledAttrs.toWidth(19)} />
                 <span>Active</span>
               </RedButton>
 
               <RedButton $type="custom" disabled>
-                <SU.CommonRedSvg as={Assets.TrashSvg} width={19} height={19} />
+                <SU.CommonRedSvg {...Assets.TrashSvg.styledAttrs.toWidth(19)} />
                 <span>Disabled</span>
               </RedButton>
             </LU.InlineRowMajorGrid>                

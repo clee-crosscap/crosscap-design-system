@@ -5,9 +5,7 @@ import { CSSTransition } from 'react-transition-group';
 import * as SU from '@utility/Svg.utility';
 import * as CTU from '@utility/CSSTransition.utility';
 import * as FU from '@utility/Form.utility';
-import CrosscapTheme from '@components/Theme/CrosscapTheme';
-import { ReactComponent as PencilSvg } from '@assets/pencil.svg';
-import { ReactComponent as CloseSvg } from '@assets/close.svg';
+import * as Assets from '@assets/.';
 
 const GalleryWrapper = styled.div`
   width: 100%;
@@ -64,15 +62,15 @@ const HR = styled.hr`
   border: none;
   border-top: 1px solid ${p => p.theme.DIVIDER};
 `;
-interface MarginProps {
-  $marginTop?: number,
-  $marginBottom?: number,
-}
-const Line = styled.div<MarginProps>`
-  display: block;
-  margin-top: ${p => p.$marginTop ?? 0}px;
-  margin-bottom: ${p => p.$marginBottom ?? 0}px;
-`;
+// interface MarginProps {
+//   $marginTop?: number,
+//   $marginBottom?: number,
+// }
+// const Line = styled.div<MarginProps>`
+//   display: block;
+//   margin-top: ${p => p.$marginTop ?? 0}px;
+//   margin-bottom: ${p => p.$marginBottom ?? 0}px;
+// `;
 const Footer = styled(CTU.FooterTransition)`
   grid-area: footer;
   height: 75px;
@@ -193,15 +191,15 @@ export default function GenericGallery() {
             basicLocalActionsEnabled &&
             <FooterLocalActions>
               <FU.FooterAction disabled={true}>
-                <SU.CommonBlackSvg as={PencilSvg} width={16} height={16} />
+                <SU.CommonBlackSvg {...Assets.PencilSvg.styledAttrs.scale(2/3)} />
                 Revert
               </FU.FooterAction>
               <FU.FooterAction>
-                <SU.CommonBlackSvg as={PencilSvg} width={16} height={16} />
+                <SU.CommonBlackSvg {...Assets.PencilSvg.styledAttrs.scale(2/3)} />
                 Sync
               </FU.FooterAction>
               <FU.FooterAction>
-                <SU.CommonBlackSvg as={CloseSvg} width={16} height={16} />
+                <SU.CommonBlackSvg {...Assets.CloseSvg.styledAttrs.toWidth(16)} />
                 Remove
               </FU.FooterAction>
             </FooterLocalActions>
@@ -233,15 +231,15 @@ export default function GenericGallery() {
             stackedLocalActionsEnabled &&
             <FooterLocalActions>
               <FU.FooterAction>
-                <SU.CommonBlackSvg as={PencilSvg} width={16} height={16} />
+                <SU.CommonBlackSvg {...Assets.PencilSvg.styledAttrs.scale(2/3)} />
                 Collate
               </FU.FooterAction>
               <FU.FooterAction>
-                <SU.CommonBlackSvg as={PencilSvg} width={16} height={16} />
+                <SU.CommonBlackSvg {...Assets.PencilSvg.styledAttrs.scale(2/3)} />
                 Sort
               </FU.FooterAction>
               <FU.FooterAction disabled={true}>
-                <SU.CommonBlackSvg as={PencilSvg} width={16} height={16} />
+                <SU.CommonBlackSvg {...Assets.PencilSvg.styledAttrs.scale(2/3)} />
                 Pivot
               </FU.FooterAction>
             </FooterLocalActions>

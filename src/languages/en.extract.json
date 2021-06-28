@@ -1,2 +1,8 @@
 {
+  "CDS.Tabset.Dropdown.Search.Placeholder": {
+    "defaultMessage": "Search Tabs"
+  },
+  "CDS.Tabset.Dropdown.Toggle": {
+    "defaultMessage": "More Tabs"
+  }
 }

@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import { useLocation, Switch, Route, Link } from 'react-router-dom';
+import { useLocation, Route, Link } from 'react-router-dom';
 import styled, { DefaultTheme, ThemeProvider } from 'styled-components/macro';
 
 import * as FU from '@utility/Form.utility';
-import * as SU from '@utility/Svg.utility';
-import * as Assets from '@assets/.';
 import * as Themes from '@components/Theme';
 
 import DesignNotes from '@features/DesignNotes/DesignNotes';
@@ -144,11 +142,11 @@ export default function RoutingComponent() {
       <RoutingGrid>
         <RoutingGridLeft>
           <FU.Dropdown style={{ marginBottom: '4px' }}>
-            <FU.DropdownToggle $minWidth="none" $removeBorder={true}>
+            <FU.DropdownToggle $width="auto" $removeBorder={true}>
               <span>Palette: {theme.NAME}</span>
               <FU.DropdownChevron />
             </FU.DropdownToggle>
-            <FU.DropdownMenu $minWidth="none">
+            <FU.DropdownMenu $width="auto">
               {
                 Object.values(Themes).map((theme: DefaultTheme<string, string, string>, i) => (
                   <FU.DropdownItem key={i} onClick={() => setTheme(theme)}>
@@ -160,11 +158,11 @@ export default function RoutingComponent() {
           </FU.Dropdown>
 
           <FU.Dropdown>
-            <FU.DropdownToggle $minWidth="none" $removeBorder={true}>
+            <FU.DropdownToggle $width="auto" $removeBorder={true}>
               <span>BG: {galleryBG}</span>
               <FU.DropdownChevron />
             </FU.DropdownToggle>
-            <FU.DropdownMenu $minWidth="none">
+            <FU.DropdownMenu $width="auto">
               <FU.DropdownItem onClick={() => setGalleryBG('#FFFFFF')}>#FFFFFF</FU.DropdownItem>
               <FU.DropdownItem onClick={() => setGalleryBG('#F8F8F8')}>#F8F8F8</FU.DropdownItem>
             </FU.DropdownMenu>

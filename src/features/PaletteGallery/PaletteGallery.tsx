@@ -3,7 +3,7 @@ import styled, { DefaultTheme } from 'styled-components/macro';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import chroma from 'chroma-js';
 
-import * as SU from '@utility/Svg.utility';
+// import * as SU from '@utility/Svg.utility';
 import * as Themes from '@components/Theme';
 
 const Gallery = styled.div`
@@ -31,11 +31,11 @@ const Title = styled.div`
   font-size: 24px;
   font-weight: 700;
 `;
-const SectionHeader = styled.div`
-  font-size: 18px;
-  color: ${p => p.theme.TEXT_DARK};
-  display: block;
-`;
+// const SectionHeader = styled.div`
+//   font-size: 18px;
+//   color: ${p => p.theme.TEXT_DARK};
+//   display: block;
+// `;
 const SectionGallery = styled.div`
   display: inline-grid;
   grid-auto-flow: row;
@@ -53,7 +53,7 @@ const HR = styled.hr`
 interface ColorProp {
   $color: string,
 }
-const PaletteColor = styled.div<ColorProp>`
+const StyledPaletteColor = styled.div<ColorProp>`
   background-color: ${p => p.$color};
   display: grid;
   place-content: center;
@@ -105,12 +105,12 @@ export default function PaletteGallery() {
             placement="bottom"
             overlay={<Tooltip id={`Palette-${text}`}>{tooltip}</Tooltip>}
           >
-            <PaletteColor $color={color}>
+            <StyledPaletteColor $color={color}>
               <Line>
                 <Line>{color}</Line>
                 <Line>{text}</Line>
               </Line>
-            </PaletteColor>
+            </StyledPaletteColor>
           </OverlayTrigger>
         ))
       }

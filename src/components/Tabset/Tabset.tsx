@@ -1,11 +1,14 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { OverlayTrigger, Popover, Tooltip } from 'react-bootstrap';
 import styled from 'styled-components/macro';
 import chroma from 'chroma-js';
 
-import * as FU from '@utility/Form.utility';
 import * as GU from '@utility/General.utility';
+import * as IU from '@utility/Intl.utility';
+import * as FU from '@utility/Form.utility';
 import * as SU from '@utility/Svg.utility';
+import useKineticScroll from '@utility/UseKineticScroll.utility';
 import SearchableList, { SearchResults, searchText, SegmentedText } from '@components/SearchableList/SearchableList';
 import SearchableSegmentedText from '@components/SearchableList/SearchableSegmentedText';
 import NavigableSearchInput from '@components/NavigableSearchInput/NavigableSearchInput';
@@ -27,6 +30,7 @@ const TabsetRoot = styled.div<MarginProp>`
   grid-template-columns: 1fr max-content;
   position: relative;
   overflow: hidden;
+  user-select: none;
 
   :before {
     content: '';
@@ -47,17 +51,71 @@ const TabsetInner = styled.div<ColumnGapProp>`
   width: auto;
   max-width: 100%;
   display: inline-grid;
+  grid-column: 1;
+  grid-row: 1;
   grid-auto-flow: column;
   grid-column-gap: ${p => p.$columnGap ?? 0}px;
   place-content: start;
   overflow: hidden;
   position: relative;
   justify-self: start;
+
+  ~ .tabset-inner-scroll-control {
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+  }
+  &:hover ~ .tabset-inner-scroll-control {
+    opacity: 1;
+  }
+`;
+const TabsetInnerScrollControl = styled(SU.CommonBlackSvg).attrs(p => ({
+  className: 'tabset-inner-scroll-control',
+}))`
+  padding: 6px;
+  width: 26px;
+  height: 26px;
+  top: -1px;
+  position: relative;
+  grid-column: 1;
+  grid-row: 1;
+  align-self: center;
+  border-radius: 50%;
+  position: relative;   // for z-ordering atop TabsetInner
+  box-sizing: border-box;
+  background-color: #FFFFFF;
+  box-shadow: 0 0 4px rgb(0, 0, 0, 0.3), 0 0 12px 4px #FFFFFF;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  &[disabled] {
+    background-color: ${p => chroma.mix(p.theme.GRAY_D8, '#FFFFFF', 0.75).hex().toUpperCase()};
+
+    > * {
+      cursor: not-allowed;
+      opacity: 0.2;
+    }
+  }
+`
+const TabsetInnerScrollLeft = styled(TabsetInnerScrollControl).attrs(p => ({
+  as: Assets.ChevronLeftSvg,
+  width: 26,
+  height: 26,
+}))`
+  justify-self: start;
+`;
+const TabsetInnerScrollRight = styled(TabsetInnerScrollControl).attrs(p => ({
+  as: Assets.ChevronRightSvg,
+  width: 26,
+  height: 26,
+}))`
+  justify-self: end;
 `;
 interface SelectedProp {
   $selected: boolean,
 }
-const Tab = styled.button<SelectedProp>`
+export const Tab = styled.button<SelectedProp>`
   padding: 0 20px;
   height: 40px;
   display: inline-grid;
@@ -116,26 +174,32 @@ const Tab = styled.button<SelectedProp>`
     }
   }
 `;
-const TabsetEllipsisToggleWrapper = styled.div`
-  position: relative;
-`;
-const TabsetEllipsisToggleMaskWrapper = styled.div`
-  position: absolute;
-  right: 100%;
-  top: 0px;
-  bottom: 0px;
-  width: 100px;
-  overflow: hidden;
-  pointer-events: none;
-  z-index: 1;
-`;
-const TabsetEllipsisToggleMask = styled.div`
-  width: 100%;
+// If the tab is disabled and the click falls outside a child element, the mouseup event is NOT sent by the browser
+// which will break kinetic scroll event handling... Using a :before or :after pseudo-element also fails to catch
+// the event properly so we need to ensure the event is dispatched to an element that can receive the mouseup event
+// so it propagates up to document
+export const DisabledTabEventCatcher = styled.div`
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+  z-index: -1;
+`;
+const TabsetEllipsisToggleWrapper = styled.div`
+  position: relative;
+  grid-row: 1;
+  grid-column: 2;
+`;
+const TabsetEllipsisToggleMask = styled.div`
+  width: 40px;
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: end;
+  align-self: stretch;
+  position: relative;
+  overflow: hidden;
+  pointer-events: none;
   background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
 `;
 const TabsetEllipsisToggle = styled(FU.Button).attrs(p => ({ $type: 'icon' }))`
@@ -145,7 +209,7 @@ const TabsetEllipsisToggle = styled(FU.Button).attrs(p => ({ $type: 'icon' }))`
 const TabsetEllipsisOverlayOuter = styled(Popover)`
   width: auto;
   max-width: 600px;
-  padding: 8px 0;
+  padding: 0;
   border: 0px solid transparent;
   border-radius: 10px;
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.16);
@@ -158,7 +222,7 @@ const TabsetEllipsisOverlayInner = styled(Popover.Content)`
   overflow: hidden;
 `;
 const TabsetEllipsisOverlayInnerSearch = styled.div`
-  border-bottom: 1px solid ${p => p.theme.DIVIDER};
+  border-bottom: 2px solid ${p => p.theme.GRAY_E6};
 `;
 const TabsetEllipsisOverlayInnerOptions = styled(SearchableList)`
   max-height: 300px;
@@ -227,8 +291,11 @@ export const TabsetOptionName = styled.div<SelectedProp>`
   transition: color 0.3s ease-out;
 `;
 const StyledNavigableSearchInput = styled(NavigableSearchInput)`
+  grid-template-columns: 1fr;
+
   input {
     border: 0px solid transparent;
+    width: 100%;
   }
 `;
 
@@ -240,60 +307,51 @@ interface Props {
   optionSearchY1s: number[],
   equalityRef: any,
   onSelectTabId: (tabId: number) => void,
-  onRenderTab: (tabId: number) => JSX.Element,
-  onRenderTabOption: (tabId: number, renderSearchableText: (text: string, optionSearchIndex: number) => JSX.Element) => JSX.Element,
+  onRenderTab: (tabId: number, baseComponent: typeof Tab, baseProps: React.ComponentProps<typeof Tab>) => JSX.Element,
+  onRenderTabOption: (tabId: number, baseComponent: typeof TabsetOption, baseProps: React.ComponentProps<typeof TabsetOption>, renderSearchableText: (text: string, optionSearchIndex: number) => JSX.Element) => JSX.Element,
   onFocusSearchIndex?: (index: number) => void,
   margin?: number,
   gap?: number,
 }
 export default function Tabset(props: Props) {
-  const [ tabsetEllipsisShown, setTabsetEllipsisShown ] = useState<boolean>(false);
-  const [ tabsetEllipsisOverlayOpen, setTabsetEllipsisOverlayOpen ] = useState<boolean>(false);
-  const [ tabsetQuery, setTabsetQuery ] = useState<string>('');
-  const [ tabSearchResults, setTabSearchResults ] = useState<SearchResults>({ resultCount: 0, resultCursorMap: {}, resultMap: {} });
+  const [ tabsetOverflow, setTabsetOveflow ] = useState<boolean>(false);
+  const [ tabsetOverflowDropdownOpen, setTabsetOverflowDropdownOpen ] = useState<boolean>(false);
+  const [ tabsetOverflowDropdownSearchQuery, setTabsetOverflowDropdownSearchQuery ] = useState<string>('');
+  const [ tabsetOverflowDropdownSearchResults, setTabsetOverflowDropdownSearchResults ] = useState<SearchResults>({ resultCount: 0, resultCursorMap: {}, resultMap: {} });
 
-  const tabsetInnerRef = useRef<HTMLDivElement>(null);
-  const tabRefMap = useRef<Record<number, HTMLButtonElement>>({});
-  const optionsListRef = useRef<HTMLDivElement>(null);
+  const [ canScrollLeft, setCanScrollLeft ] = useState<boolean>(false);
+  const [ canScrollRight, setCanScrollRight ] = useState<boolean>(false);
 
-  const [ tabSearchCursor, setTabSearchCursor ] = useState<number>(0);
+  const tabsetScrollableRef = useRef<HTMLDivElement>(null);
+  const tabsetScrollableTabRefMap = useRef<Record<number, HTMLButtonElement>>({});
+  const tabsetOverflowDropdownScrollableRef = useRef<HTMLDivElement>(null);
 
-  const tabsetEllipsisShownRef = useRef<boolean>(false);
-  tabsetEllipsisShownRef.current = tabsetEllipsisShown;
+  const [ tabsetOverflowDropdownSearchCursor, setTabsetOverflowDropdownSearchCursor ] = useState<number>(0);
 
-  const refreshEllipsisShown = (() => {
-    const ele: HTMLDivElement | null = tabsetInnerRef.current;
-    const isOverflow: boolean = !!ele && (ele.scrollWidth > ele.clientWidth);
+  const tabsetOverflowRef = useRef<boolean>(false);
+  tabsetOverflowRef.current = tabsetOverflow;
 
-    if(isOverflow !== tabsetEllipsisShownRef.current) {
-      setTabsetEllipsisShown(isOverflow);
-    }
+  const [ stopKineticScroll ] = useKineticScroll(tabsetScrollableRef.current);
+
+  const navigableSearchInputProps = useMemo<React.ComponentProps<typeof StyledNavigableSearchInput>['inputProps']>(() => ({
+    value: tabsetOverflowDropdownSearchQuery,
+    placeholder: IU.intl.formatMessage({ id: "CDS.Tabset.Dropdown.Search.Placeholder", defaultMessage: "Search Tabs" }),
+    onChange: ((e: React.ChangeEvent<HTMLInputElement>) => onSetTabsetQuery(e.target.value)),
+    $width: '100%',
+    $borderless: true,
+  }), [ tabsetOverflowDropdownSearchQuery]);
+
+  const onScrollUnit = ((unit: number) => {
+    stopKineticScroll();
+    tabsetScrollableRef.current?.scrollBy({
+      behavior: 'smooth',
+      left: unit * tabsetScrollableRef.current?.clientWidth,
+    });
   });
-
-  // Update searchable texts when tabset client signals change in inputs
-  useEffect(() => {
-    onSetTabsetQuery('');
-  }, [ props.tabIds, props.equalityRef ]);
-
-  // Check if tabset ellipsis should be shown if tabset client signals change in inputs
-  useLayoutEffect(refreshEllipsisShown, [ props.equalityRef ]);
-
-  // Check if tabset ellipsis should be shown whenever viewport changes size
-  useEffect(() => {
-    refreshEllipsisShown();
-    window.addEventListener('resize', refreshEllipsisShown);
-    return () => window.removeEventListener('resize', refreshEllipsisShown);
-  }, []);
-
-  // Scroll the tab into view when selected id changes
-  useEffect(() => {
-    tabRefMap.current[props.selectedTabId]?.scrollIntoView({ behavior: 'smooth', inline: 'nearest' });
-    setTabsetEllipsisOverlayOpen(false);
-  }, [ props.selectedTabId ]);
 
   // Perform search query
   const onSetTabsetQuery = ((query: string) => {
-    setTabsetQuery(query);
+    setTabsetOverflowDropdownSearchQuery(query);
 
     const nextSearchResults: SearchResults = { resultCount: 0, resultCursorMap: {}, resultMap: {} };
 
@@ -312,94 +370,151 @@ export default function Tabset(props: Props) {
         }
       });
     }
-    setTabSearchResults(nextSearchResults);
+    setTabsetOverflowDropdownSearchResults(nextSearchResults);
   });
 
-  const onSelectTabByIdMap: Record<number, () => void> = useMemo(() => (
+  const onSelectTabByIdMap = useMemo<Record<number, () => void>>(() => (
     props.tabIds.reduce((acc, tabId) => (
       Object.assign(acc, { [tabId]: () => props.onSelectTabId(tabId)})
     ),{})
   ), [ props.tabIds, props.onSelectTabId ]);
 
   const getOptionSearchIndexMatchId = ((optionSearchIndex: number): number | undefined => {
-    const result = tabSearchResults.resultCursorMap[tabSearchCursor];
+    const result = tabsetOverflowDropdownSearchResults.resultCursorMap[tabsetOverflowDropdownSearchCursor];
     return result?.index === optionSearchIndex ? result.matchId : undefined;
   });
 
+  const refreshEllipsisShown = (() => {
+    const ele: HTMLDivElement | null = tabsetScrollableRef.current;
+    const tabsetOverflow: boolean = !!ele && (ele.scrollWidth > ele.clientWidth);
+
+    if(tabsetOverflow !== tabsetOverflowRef.current) {
+      setTabsetOveflow(tabsetOverflow);
+    }
+  });
+  const refreshCanScroll = (() => {
+    const scrollableEle = tabsetScrollableRef.current;
+    if(!scrollableEle) return;
+
+    const { scrollLeft, scrollWidth, clientWidth } = scrollableEle;
+    setCanScrollLeft(scrollLeft > 0)
+    setCanScrollRight(scrollLeft + clientWidth < scrollWidth);
+  });
+
+  useEffect(() => {
+    const tabsetScrollableEle: HTMLDivElement | null = tabsetScrollableRef.current;
+
+    // Carousel button checks when current scroll position changes or on resizes
+    refreshCanScroll();
+    window.addEventListener('resize', refreshCanScroll);
+    tabsetScrollableEle?.addEventListener('scroll', refreshCanScroll);
+
+    // Tabset ellipsis visibility checks when viewport changes size
+    refreshEllipsisShown();
+    window.addEventListener('resize', refreshEllipsisShown);
+
+    return () => {
+      window.removeEventListener('resize', refreshCanScroll);
+      tabsetScrollableEle?.removeEventListener('scroll', refreshCanScroll);
+      window.removeEventListener('resize', refreshEllipsisShown);
+    };
+  }, []);
+
+  // Scroll the tab into view when selected id changes
+  useEffect(() => {
+    tabsetScrollableTabRefMap.current[props.selectedTabId]?.scrollIntoView({ behavior: 'smooth', inline: 'nearest' });
+    setTabsetOverflowDropdownOpen(false);
+  }, [ props.selectedTabId ]);
+
+  // Update searchable texts when tabset client signals change in inputs
+  useEffect(() => {
+    setTabsetOverflowDropdownSearchQuery('');
+    setTabsetOverflowDropdownSearchResults({ resultCount: 0, resultCursorMap: {}, resultMap: {} });
+  }, [ props.tabIds, props.optionSearchTexts, props.equalityRef ]);
+
+  // Check if tabset ellipsis should be shown if tabset client signals change in inputs
+  useLayoutEffect(refreshEllipsisShown, [ props.equalityRef ]);
+
   return (
     <TabsetRoot $margin={props.margin}>
-      <TabsetInner $columnGap={props.gap} ref={tabsetInnerRef}>
+      <TabsetInner $columnGap={props.gap} ref={tabsetScrollableRef}>
         {
           props.tabIds.map(tabId => (
-            <Tab key={tabId}
-              $selected={props.selectedTabId === tabId}
-              ref={ref => ref ? tabRefMap.current[tabId] = ref : delete tabRefMap.current[tabId]}
-              onClick={onSelectTabByIdMap[tabId]}
-            >
-              { props.onRenderTab(tabId) }
-            </Tab>
+            props.onRenderTab(tabId, Tab, {
+              key: tabId,
+              $selected: props.selectedTabId === tabId,
+              ref: ((ref: HTMLButtonElement | null) => ref ? tabsetScrollableTabRefMap.current[tabId] = ref : delete tabsetScrollableTabRefMap.current[tabId]),
+              onClick: onSelectTabByIdMap[tabId],
+            })
           ))
         }
       </TabsetInner>
       {
-        tabsetEllipsisShown &&
+        tabsetOverflow &&
+        <>
+          <TabsetEllipsisToggleMask />
+          <TabsetInnerScrollLeft  disabled={!canScrollLeft}  onClick={() => onScrollUnit(-1)} />
+          <TabsetInnerScrollRight disabled={!canScrollRight} onClick={() => onScrollUnit( 1)} />
+        </>
+      }
+      {
+        tabsetOverflow &&
         <OverlayTrigger
           placement="bottom-end"
           trigger="click"
           rootClose={true}
-          show={tabsetEllipsisOverlayOpen}
-          onToggle={isOpen => setTabsetEllipsisOverlayOpen(isOpen)}
+          show={tabsetOverflowDropdownOpen}
+          onToggle={isOpen => setTabsetOverflowDropdownOpen(isOpen)}
           overlay={
             <TabsetEllipsisOverlayOuter id="Tabset-More-Popover-1">
               <TabsetEllipsisOverlayInner>
                 <TabsetEllipsisOverlayInnerSearch>
                   <StyledNavigableSearchInput
-                    value={tabsetQuery}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => onSetTabsetQuery(e.target.value)}
-                    placeholder="Search Tabs"
-                    resultCount={tabSearchResults.resultCount}
+                    inputProps={navigableSearchInputProps}
+                    resultCount={tabsetOverflowDropdownSearchResults.resultCount}
                     onNavigate={(cursorIndex: number) => {
-                      setTabSearchCursor(cursorIndex);
+                      setTabsetOverflowDropdownSearchCursor(cursorIndex);
 
-                      if(!optionsListRef.current) return;
+                      if(!tabsetOverflowDropdownScrollableRef.current) return;
 
-                      const { index: optionSearchIndex } = tabSearchResults.resultCursorMap[cursorIndex];
+                      const isIncrementalNavigation = (Math.abs(tabsetOverflowDropdownSearchCursor - cursorIndex) <= 1);
 
+                      const { index: optionSearchIndex } = tabsetOverflowDropdownSearchResults.resultCursorMap[cursorIndex];
 
                       const y0: number = props.optionSearchY0s[optionSearchIndex]
                       const y1: number = props.optionSearchY1s[optionSearchIndex];
                       const min: number = 0.2;
                       const max: number = 0.8;
                       const h:  number = y1 - y0;
-                      const { clientHeight, scrollTop } = optionsListRef.current;
+                      const { clientHeight, scrollTop } = tabsetOverflowDropdownScrollableRef.current;
 
                       // Note: upper limit's scroll top < lower limit's scroll top
                       const scrollTopLowerLimit = y0 + min * (-clientHeight + h);
                       const scrollTopUpperLimit = y0 + max * (-clientHeight + h);
                       const nextScrollTop = GU.clamp(scrollTop, scrollTopUpperLimit, scrollTopLowerLimit);
 
-                      optionsListRef.current.scrollTo({ top: nextScrollTop, behavior: 'smooth' });
+                      tabsetOverflowDropdownScrollableRef.current.scrollTo({ top: nextScrollTop, behavior: isIncrementalNavigation ? 'smooth' : 'auto' });
                     }}
-                    borderless={true}
                   />
                 </TabsetEllipsisOverlayInnerSearch>
                 <TabsetEllipsisOverlayInnerOptions
-                  query={tabsetQuery}
+                  query={tabsetOverflowDropdownSearchQuery}
                   texts={props.optionSearchTexts}
-                  ref={optionsListRef}
+                  ref={tabsetOverflowDropdownScrollableRef}
                 >
                   {
-                    props.tabIds.map(tabId => props.onRenderTabOption(
-                      tabId,
-                      (text: string, optionSearchIndex: number) => (
+                    props.tabIds.map(tabId => (
+                      props.onRenderTabOption(tabId, TabsetOption, {
+                        key: tabId,
+                        onClick: () => props.onSelectTabId(tabId),
+                      }, (text: string, optionSearchIndex: number) => (
                         <SearchableSegmentedText
-                          key={optionSearchIndex}
                           text={text}
                           focusedMatchId={getOptionSearchIndexMatchId(optionSearchIndex)}
-                          searchResults={tabSearchResults.resultMap[optionSearchIndex]}
+                          searchResults={tabsetOverflowDropdownSearchResults.resultMap[optionSearchIndex]}
                         />
                       ))
-                    )
+                    ))
                   }
                 </TabsetEllipsisOverlayInnerOptions>
               </TabsetEllipsisOverlayInner>
@@ -407,17 +522,20 @@ export default function Tabset(props: Props) {
           }
         >
           <TabsetEllipsisToggleWrapper>
-            <TabsetEllipsisToggleMaskWrapper>
-              <TabsetEllipsisToggleMask />
-            </TabsetEllipsisToggleMaskWrapper>
-
             <OverlayTrigger
               placement="top"
               delay={{ show: 500, hide: 0 }}
-              overlay={<Tooltip id="Tabset-More-1">More Tabs</Tooltip>}
+              overlay={
+                <Tooltip id="Tabset-More-1">
+                  <FormattedMessage
+                    id="CDS.Tabset.Dropdown.Toggle"
+                    defaultMessage={"More Tabs"}
+                  />
+                </Tooltip>
+              }
             >
               <TabsetEllipsisToggle>
-                <SU.CommonBlackSvg as={Assets.EllipsisSvg} width={20} height={4} />
+                <SU.CommonBlackSvg { ...Assets.EllipsisSvg.styledAttrs.default} />
               </TabsetEllipsisToggle>
             </OverlayTrigger>
           </TabsetEllipsisToggleWrapper>

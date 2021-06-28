@@ -1,13 +1,10 @@
-import { Popover } from 'react-bootstrap';
 import styled from 'styled-components/macro';
-import chroma from 'chroma-js';
-
-import * as FU from '@utility/Form.utility';
-
 
 interface GridProps {
   $columns?: number,
   $rows?: number,
+  $templateColumns?: string,
+  $templateRows?: string,
   $columnGap?: number,
   $rowGap?: number,
   $justifyContent?: string,
@@ -18,8 +15,8 @@ interface GridProps {
   $placeItems?: string,
 }
 const Grid = styled.div<GridProps>`
-  ${p => p.$columns        ? `grid-template-columns: ${'auto '.repeat(p.$columns)};` : ''}
-  ${p => p.$rows           ? `grid-template-rows:    ${'auto '.repeat(p.$rows)};`    : ''}
+  ${p => p.$templateColumns || p.$columns ? `grid-template-columns: ${p.$templateColumns ?? 'auto '.repeat(p.$columns ?? 0)};` : ''}
+  ${p => p.$templateRows    || p.$rows    ? `grid-template-rows:    ${p.$templateRows    ?? 'auto '.repeat(p.$rows    ?? 0)};`    : ''}
 
   ${p => p.$columnGap      ? `grid-column-gap:       ${p.$columnGap}px;`             : ''}
   ${p => p.$rowGap         ? `grid-row-gap:          ${p.$rowGap}px;`                : ''}

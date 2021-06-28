@@ -4,14 +4,17 @@ import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 import * as SU from '@utility/Svg.utility';
 import * as Assets from '@assets/.';
-import CrosscapTheme from '@components/Theme/CrosscapTheme';
 
 const {
   AlertSvg,
   CheckSvg,
   CheckboxUnifiedSvg,
-  ChevronSvg,
+  ChevronUpSvg,
+  ChevronDownSvg,
+  ChevronLeftSvg,
+  ChevronRightSvg,
   CloseSvg,
+  EllipsisSvg,
   ExportSvg,
   FilterSvg,
   GearFilledSvg,
@@ -19,15 +22,19 @@ const {
   MagnifyingGlassSvg,
   PencilSvg,
   TrashSvg,
-  ..._otherSvgs
+  // ..._otherSvgs  // Uncomment and see IDE typings to check whether any svgs are missed from @assets/index.tsx
 } = Assets;
 
 const iconConfigs: Array<{ component: React.ComponentType, text: string }> = [
   { component: AlertSvg,           text: 'Alert'              },
   { component: CheckSvg,           text: 'Check'              },
   { component: CheckboxUnifiedSvg, text: 'Checkbox (unified)' },
-  { component: ChevronSvg,         text: 'Chevron'            },
+  { component: ChevronUpSvg,       text: 'Chevron (Up)'       },
+  { component: ChevronDownSvg,     text: 'Chevron (Down)'     },
+  { component: ChevronLeftSvg,     text: 'Chevron (Left)'     },
+  { component: ChevronRightSvg,    text: 'Chevron (Right)'    },
   { component: CloseSvg,           text: 'Close'              },
+  { component: EllipsisSvg,        text: 'Ellipsis'           },
   { component: ExportSvg,          text: 'Export'             },
   { component: FilterSvg,          text: 'Filter'             },
   { component: GearFilledSvg,      text: 'Gear (Filled)'      },
@@ -73,24 +80,24 @@ const SectionGallery = styled.div`
   grid-column-gap: 20px;
   grid-row-gap: 20px;
   justify-content: start;
-  align-items: center;
+  place-items: stretch;
   grid-template-columns: repeat(10, 40px);
   grid-auto-rows: 40px;
 `;
-const HR = styled.hr`
-  width: 100%;
-  border: none;
-  border-top: 1px solid ${p => p.theme.DIVIDER};
-`;
-interface MarginProps {
-  $marginTop?: number,
-  $marginBottom?: number,
-}
-const Line = styled.div<MarginProps>`
-  display: block;
-  margin-top: ${p => p.$marginTop ?? 0}px;
-  margin-bottom: ${p => p.$marginBottom ?? 0}px;
-`;
+// const HR = styled.hr`
+//   width: 100%;
+//   border: none;
+//   border-top: 1px solid ${p => p.theme.DIVIDER};
+// `;
+// interface MarginProps {
+//   $marginTop?: number,
+//   $marginBottom?: number,
+// }
+// const Line = styled.div<MarginProps>`
+//   display: block;
+//   margin-top: ${p => p.$marginTop ?? 0}px;
+//   margin-bottom: ${p => p.$marginBottom ?? 0}px;
+// `;
 export default function IconGallery() {
   return (
     <Gallery>

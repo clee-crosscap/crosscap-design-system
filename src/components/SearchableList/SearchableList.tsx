@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useRef } from 'react';
+import React, { PropsWithChildren } from 'react';
 import styled from 'styled-components/macro';
 import kmpMatcher from 'kmp-matcher';
 

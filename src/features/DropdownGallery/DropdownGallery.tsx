@@ -5,7 +5,7 @@ import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import * as GU from '@utility/General.utility';
 import * as SU from '@utility/Svg.utility';
 import * as FU from '@utility/Form.utility';
-import CrosscapTheme from '@components/Theme/CrosscapTheme';
+// import CrosscapTheme from '@components/Theme/CrosscapTheme';
 import * as Assets from '@assets/.';
 
 const Gallery = styled.div`
@@ -154,7 +154,7 @@ export default function GenericGallery() {
                       {
                         o.disabled &&
                         <OverlayTrigger placement="top" overlay={<Tooltip id="IconTooltips-auto">This option is unavailable.</Tooltip>}>
-                          <DisabledInfo as={Assets.InfoSvg} width={14} height={14} />
+                          <DisabledInfo {...Assets.InfoSvg.styledAttrs.default} />
                         </OverlayTrigger>
                       }
                       {
@@ -194,7 +194,7 @@ export default function GenericGallery() {
                       {
                         o.disabled &&
                         <OverlayTrigger placement="top" overlay={<Tooltip id="IconTooltips-auto">This option is unavailable.</Tooltip>}>
-                          <DisabledInfo as={Assets.InfoSvg} width={14} height={14} />
+                          <DisabledInfo {...Assets.InfoSvg.styledAttrs.default} />
                         </OverlayTrigger>
                       }
                       {
@@ -234,7 +234,7 @@ export default function GenericGallery() {
                       {
                         o.disabled &&
                         <OverlayTrigger placement="top" overlay={<Tooltip id="IconTooltips-auto">This option is unavailable.</Tooltip>}>
-                          <DisabledInfo as={Assets.InfoSvg} width={14} height={14} />
+                          <DisabledInfo {...Assets.InfoSvg.styledAttrs.default} />
                         </OverlayTrigger>          
                       }
                       {
@@ -282,7 +282,7 @@ export default function GenericGallery() {
                       {
                         o.disabled &&
                         <OverlayTrigger placement="top" overlay={<Tooltip id="IconTooltips-auto">This option is unavailable.</Tooltip>}>
-                          <DisabledInfo as={Assets.InfoSvg} width={14} height={14} />
+                          <DisabledInfo {...Assets.InfoSvg.styledAttrs.default} />
                         </OverlayTrigger>
                       }
                       {
@@ -337,7 +337,7 @@ export default function GenericGallery() {
                       {
                         o.disabled &&
                         <OverlayTrigger placement="top" overlay={<Tooltip id="IconTooltips-auto">This option is unavailable.</Tooltip>}>
-                          <DisabledInfo as={Assets.InfoSvg} width={14} height={14} />
+                          <DisabledInfo {...Assets.InfoSvg.styledAttrs.default} />
                         </OverlayTrigger>
                       }
                       {
@@ -377,7 +377,7 @@ export default function GenericGallery() {
                       {
                         o.disabled &&
                         <OverlayTrigger placement="top" overlay={<Tooltip id="IconTooltips-auto">This option is unavailable.</Tooltip>}>
-                          <DisabledInfo as={Assets.InfoSvg} width={14} height={14} />
+                          <DisabledInfo {...Assets.InfoSvg.styledAttrs.default} />
                         </OverlayTrigger>
                       }
                       {
@@ -417,7 +417,7 @@ export default function GenericGallery() {
                       {
                         o.disabled &&
                         <OverlayTrigger placement="top" overlay={<Tooltip id="IconTooltips-auto">This option is unavailable.</Tooltip>}>
-                          <DisabledInfo as={Assets.InfoSvg} width={14} height={14} />
+                          <DisabledInfo {...Assets.InfoSvg.styledAttrs.default} />
                         </OverlayTrigger>
                       }
                       {
@@ -465,7 +465,7 @@ export default function GenericGallery() {
                       {
                         o.disabled &&
                         <OverlayTrigger placement="top" overlay={<Tooltip id="IconTooltips-auto">This option is unavailable.</Tooltip>}>
-                          <DisabledInfo as={Assets.InfoSvg} width={14} height={14} />
+                          <DisabledInfo {...Assets.InfoSvg.styledAttrs.default} />
                         </OverlayTrigger>
                       }
                       {

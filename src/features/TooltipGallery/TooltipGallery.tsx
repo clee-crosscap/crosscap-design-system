@@ -4,7 +4,6 @@ import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 
 import * as FU from '@utility/Form.utility';
 import * as SU from '@utility/Svg.utility';
-import CrosscapTheme from '@components/Theme/CrosscapTheme';
 import * as Assets from '@assets/.';
 
 const Gallery = styled.div`
@@ -58,7 +57,7 @@ const Line = styled.div<MarginProps>`
   margin-top: ${p => p.$marginTop ?? 0}px;
   margin-bottom: ${p => p.$marginBottom ?? 0}px;
 `;
-const Info = styled(SU.CommonBlackSvg)`
+const Info = styled(SU.CommonBlackSvg).attrs(p => Assets.InfoSvg.styledAttrs.default)`
   cursor: help;
 
   && {
@@ -112,6 +111,9 @@ const LabelledCheckbox = styled.div`
   grid-column-gap: 8px;
   cursor: pointer;
 `;
+const FilterIcon     = styled(SU.CommonBlackSvg).attrs(p => Assets.FilterSvg.styledAttrs.toWidth(18))``;
+const GearFilledIcon = styled(SU.CommonBlackSvg).attrs(p => Assets.GearFilledSvg.styledAttrs.toWidth(22))``;
+const ExportIcon     = styled(SU.CommonBlackSvg).attrs(p => Assets.ExportSvg.styledAttrs.toWidth(22))``;
 
 const LOREM_IPSUM = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse vel est felis. Mauris ipsum ligula, accumsan vel fermentum sit amet, sodales eu augue. Maecenas vulputate malesuada mi eu blandit. Nullam at facilisis est. Duis a consequat ipsum. Maecenas ultrices in nibh quis laoreet. Praesent ante diam, placerat eleifend velit ac, iaculis tincidunt nisi. Nulla pharetra enim ac urna scelerisque, et iaculis magna sagittis. Fusce lectus nunc, aliquet quis elementum vel, facilisis nec sapien. Pellentesque eget magna eget orci eleifend commodo. Quisque ac nibh dignissim, convallis risus posuere, aliquam leo. Nullam commodo id massa sed sodales.`;
 
@@ -130,36 +132,28 @@ export default function ButtonGallery() {
         <SectionContent>
           <LabelledTooltip>
             <span>Auto</span>
-            <OverlayTrigger placement="auto" overlay={<Tooltip id="IconTooltips-auto">Tooltip Content</Tooltip>}>
-              <Info as={Assets.InfoSvg} width={14} height={14} />
-            </OverlayTrigger>
+            <OverlayTrigger placement="auto" overlay={<Tooltip id="IconTooltips-auto">Tooltip Content</Tooltip>}><Info /></OverlayTrigger>
           </LabelledTooltip>
 
           <LabelledTooltip>
             <span>Above</span>
-            <OverlayTrigger placement="top" overlay={<Tooltip id="IconTooltips-top">Tooltip Content</Tooltip>}>
-              <Info as={Assets.InfoSvg} width={14} height={14} />
-            </OverlayTrigger>
+            <OverlayTrigger placement="top" overlay={<Tooltip id="IconTooltips-top">Tooltip Content</Tooltip>}><Info /></OverlayTrigger>
           </LabelledTooltip>
 
           <LabelledTooltip>
             <span>Below</span>
-            <OverlayTrigger placement="bottom" overlay={<Tooltip id="IconTooltips-bottom">Tooltip Content</Tooltip>}>
-              <Info as={Assets.InfoSvg} width={14} height={14} />
-            </OverlayTrigger>
+            <OverlayTrigger placement="bottom" overlay={<Tooltip id="IconTooltips-bottom">Tooltip Content</Tooltip>}><Info /></OverlayTrigger>
           </LabelledTooltip>
 
           <LabelledTooltip>
             <span>Left</span>
-            <OverlayTrigger placement="left" overlay={<Tooltip id="IconTooltips-left">Tooltip Content</Tooltip>}>
-              <Info as={Assets.InfoSvg} width={14} height={14} />
-            </OverlayTrigger>
+            <OverlayTrigger placement="left" overlay={<Tooltip id="IconTooltips-left">Tooltip Content</Tooltip>}><Info /></OverlayTrigger>
           </LabelledTooltip>
         
           <LabelledTooltip>
             <span>Tooltip Right</span>
             <OverlayTrigger placement="right" overlay={<Tooltip id="IconTooltips-right">Tooltip Content</Tooltip>}>
-              <Info as={Assets.InfoSvg} width={14} height={14} />
+              <Info />
             </OverlayTrigger>
           </LabelledTooltip>
         </SectionContent>
@@ -171,7 +165,7 @@ export default function ButtonGallery() {
                 {LOREM_IPSUM}
               </Tooltip>
             }>
-              <Info as={Assets.InfoSvg} width={14} height={14} />
+              <Info />
             </OverlayTrigger>
           </LabelledTooltip>
         </SectionContent>
@@ -186,19 +180,13 @@ export default function ButtonGallery() {
         </SectionHeader>
         <SectionContent>
           <OverlayTrigger placement="bottom" delay={{ show: 500, hide: 0 }} overlay={<Tooltip id="IconTooltips-filter">Filters</Tooltip>}>
-            <FU.Button $type="icon">
-              <SU.CommonBlackSvg as={Assets.FilterSvg} width={18} height={18} />
-            </FU.Button>
+            <FU.Button $type="icon"><FilterIcon /></FU.Button>
           </OverlayTrigger>
           <OverlayTrigger placement="bottom" delay={{ show: 500, hide: 0 }} overlay={<Tooltip id="IconTooltips-gear">Settings</Tooltip>}>
-            <FU.Button $type="icon">
-              <SU.CommonBlackSvg as={Assets.GearFilledSvg} width={22} height={22} />
-            </FU.Button>
+            <FU.Button $type="icon"><GearFilledIcon /></FU.Button>
           </OverlayTrigger>
           <OverlayTrigger placement="bottom" delay={{ show: 500, hide: 0 }} overlay={<Tooltip id="IconTooltips-export">Export</Tooltip>}>
-            <FU.Button $type="icon">
-              <SU.CommonBlackSvg as={Assets.ExportSvg} width={22} height={22} />
-            </FU.Button>
+            <FU.Button $type="icon"><ExportIcon /></FU.Button>
           </OverlayTrigger>
         </SectionContent>
       </GallerySection>
@@ -225,7 +213,7 @@ export default function ButtonGallery() {
                     This action does something.
                   </Tooltip>
                 }>
-                  <Info as={Assets.InfoSvg} width={14} height={14} />
+                  <Info />
                 </OverlayTrigger>
               </DropdownItemWithTooltip>
               <FU.DropdownItem>Action 2</FU.DropdownItem>
@@ -236,7 +224,7 @@ export default function ButtonGallery() {
                     This action does a different thing.
                   </Tooltip>
                 }>
-                  <Info as={Assets.InfoSvg} width={14} height={14} />
+                  <Info />
                 </OverlayTrigger>
               </DropdownItemWithTooltip>
             </FU.DropdownMenu>
@@ -300,7 +288,7 @@ export default function ButtonGallery() {
                     This item may not be selected right now.
                   </Tooltip>
                 }>
-                  <Info as={Assets.InfoSvg} width={14} height={14} />
+                  <Info />
                 </OverlayTrigger>
               </DropdownItemWithTooltip>
               <DropdownItemWithTooltip>
@@ -317,7 +305,7 @@ export default function ButtonGallery() {
                     This item is unavailable.
                   </Tooltip>
                 }>
-                  <Info as={Assets.InfoSvg} width={14} height={14} />
+                  <Info />
                 </OverlayTrigger>
               </DropdownItemWithTooltip>
 
@@ -330,7 +318,7 @@ export default function ButtonGallery() {
                     This action is unavailable.
                   </Tooltip>
                 }>
-                  <Info as={Assets.InfoSvg} width={14} height={14} />
+                  <Info />
                 </OverlayTrigger>
               </DeleteAction>
             </FU.DropdownMenu>

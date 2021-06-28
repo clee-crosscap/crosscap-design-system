@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components/macro';
 
-import * as SU from '@utility/Svg.utility';
-import CrosscapTheme from '@components/Theme/CrosscapTheme';
+// import * as SU from '@utility/Svg.utility';
+// import CrosscapTheme from '@components/Theme/CrosscapTheme';
 
 const Gallery = styled.div`
   width: 100%;
@@ -46,15 +46,15 @@ const HR = styled.hr`
   border: none;
   border-top: 1px solid ${p => p.theme.DIVIDER};
 `;
-interface MarginProps {
-  $marginTop?: number,
-  $marginBottom?: number,
-}
-const Line = styled.div<MarginProps>`
-  display: block;
-  margin-top: ${p => p.$marginTop ?? 0}px;
-  margin-bottom: ${p => p.$marginBottom ?? 0}px;
-`;
+// interface MarginProps {
+//   $marginTop?: number,
+//   $marginBottom?: number,
+// }
+// const Line = styled.div<MarginProps>`
+//   display: block;
+//   margin-top: ${p => p.$marginTop ?? 0}px;
+//   margin-bottom: ${p => p.$marginBottom ?? 0}px;
+// `;
 export default function GenericGallery() {
   return (
     <Gallery>

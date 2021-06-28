@@ -31,7 +31,7 @@ const InputWithIcon = styled(FU.Input)<BorderlessProp>`
     border-color: ${p => p.$borderless ? p.theme.GRAY_E6 : p.theme.TEXT_DARK};
   }
 `;
-const SearchIcon = styled(SU.CommonInlineSvg)`
+const SearchIcon = styled(SU.CommonInlineSvg).attrs(Assets.MagnifyingGlassSvg.styledAttrs.default)`
   margin-left: ${0.5*(42 - 16)}px;
   align-items: center;
   justify-self: start;
@@ -69,6 +69,9 @@ const InputNavigationCursor = styled(FU.TextButton)`
     opacity: 0.5;
   }
 `;
+interface DisabledProp {
+  disabled?: boolean,
+}
 const InputNavigation = styled(SU.themedSvg(
   theme => ({
     default: { color: '#C2C2C2' },
@@ -76,13 +79,7 @@ const InputNavigation = styled(SU.themedSvg(
     disabled: { color: '#C2C2C2' },
     transitionMillis: 150
   })
-)).attrs(p => ({
-  as: Assets.ChevronSvg,
-  width: 6,
-  height: 10,
-}))`
-  width: 30px;
-  padding: 11px 2px;
+))<DisabledProp>`
   grid-column: 1;
   grid-row: 1;
   justify-self: end;
@@ -91,24 +88,24 @@ const InputNavigation = styled(SU.themedSvg(
   cursor: pointer;
   opacity: 1;
 
+  height: 100%;
+  padding: 0 11px;
+
   &[disabled] {
     cursor: not-allowed;
     opacity: 0.5;
   }
 `;
-const InputNavigationLeft = styled(InputNavigation)`
-  transform: rotate(90deg);
+const InputNavigationLeft = styled(InputNavigation).attrs(p => Assets.ChevronLeftSvg.styledAttrs.default)`
   margin-right: 33px;
-  border-bottom: 2px solid ${p => p.theme.GRAY_E6};
+  border-left: 2px solid ${p => p.theme.GRAY_E6};
 `;
-const InputNavigationRight = styled(InputNavigation)`
-  transform: rotate(-90deg);
+const InputNavigationRight = styled(InputNavigation).attrs(p => Assets.ChevronRightSvg.styledAttrs.default)`
 `;
 
-interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
-  borderless?: boolean,
+interface Props {
+  inputProps: React.ComponentProps<typeof InputWithNavigation>,
   resultCount: number,
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
   onNavigate: (index: number) => void,
   className?: string,
 }
@@ -126,71 +123,67 @@ export default function ButtonGallery(props: Props) {
     props.onNavigate(index);
   });
 
-  const onInputKeydown = ((e: React.KeyboardEvent<HTMLInputElement>) => {
-    switch(e.keyCode) {
-				// Enter: Cycle through search results
-				case 13:
-					if(props.resultCount) {
-						if(!e.shiftKey) {
-							// Increment and modulus
+  const onInputKeydown = ((e: React.KeyboardEvent<any>) => {
+    switch(e.key) {
+        // Enter: Cycle through search results
+        case 'Enter':
+          if(props.resultCount) {
+            if(!e.shiftKey) {
+              // Increment and modulus
               setIndex(getNextIndex());
-						} else {
-							// Decrement and modulus
+            } else {
+              // Decrement and modulus
               setIndex(getPrevIndex());
-						}
-					}
-					break;
-				// Escape: Clear search results
-				case 27:
+            }
+          }
+          break;
+        // Escape: Clear search results
+        case 'Escape':
           setNavigationIndex(0);
-		
-					// Prevent the popover from closing
-					e.stopPropagation();
-					e.preventDefault();
-					break;
-				// Ctrl + F: Suppress loading browser's search while focused on the search field
-				case 70:
-					const { isCtrl } = GU.getMetakeys(e);
-					if(isCtrl) {
-						e.stopPropagation();
-						e.preventDefault();
-					}
+    
+          // Prevent the popover from closing
+          e.stopPropagation();
+          e.preventDefault();
+          break;
+        // Ctrl + F: Suppress loading browser's search while focused on the search field
+        case 'f':
+        case 'F':
+          const { isCtrl } = GU.getMetakeys(e);
+          if(isCtrl) {
+            e.stopPropagation();
+            e.preventDefault();
+          }
     }
   });
 
   // Reset the cursor if the query changes
-  useEffect(() => setNavigationIndex(0), [ props.value ]);
+  useEffect(() => setNavigationIndex(0), [ props.inputProps.value ]);
+
+  const hasResults: boolean = props.resultCount > 0;
 
   return (
     <LU.BlockColumnMajorGrid
       $justifyContent="start"
       $alignItems="center"
-      style={{ gridTemplateColumns: '1fr' }}
+      $templateColumns="min-content"
       className={props.className}
     >
       <InputWithNavigation
-        value={props.value}
-        placeholder={props.placeholder}
-        onChange={props.onChange}
         onKeyDown={onInputKeydown}
         $width={300}
-        $hasInput={`${props.value ?? ''}`.trim().length > 0}
+        $hasInput={`${props.inputProps.value ?? ''}`.trim().length > 0}
         $inlineIcon={true}
-        $borderless={props.borderless}
+        {...props.inputProps}
       />
-      <SearchIcon
-        as={Assets.MagnifyingGlassSvg}
-        width={16}
-        height={16}
-      />
+      <SearchIcon />
       {
-        `${props.value ?? ''}`.trim().length > 0 &&
+        `${props.inputProps.value ?? ''}`.trim().length > 0 &&
         <>
           <InputNavigationCursor onClick={() => setIndex(getCurrIndex())}>
-            { props.resultCount > 0 ? (getCurrIndex()+1) : 0 } / {props.resultCount}
+            { hasResults ? (getCurrIndex()+1) : 0 } / {props.resultCount}
           </InputNavigationCursor>
-          <InputNavigationLeft onClick={() => setIndex(getPrevIndex())} />
-          <InputNavigationRight onClick={() => setIndex(getNextIndex())} />
+          <InputNavigationLeft  disabled={!hasResults} onClick={hasResults ? () => setIndex(getPrevIndex()) : undefined} />
+          <InputNavigationRight disabled={!hasResults} onClick={hasResults ? () => setIndex(getNextIndex()) : undefined} />
         </>
       }
     </LU.BlockColumnMajorGrid>

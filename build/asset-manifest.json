@@ -1,19 +1,22 @@
 {
   "files": {
     "main.css": "/crosscap-design-system/build/static/css/main.043ea6ce.chunk.css",
-    "main.js": "/crosscap-design-system/build/static/js/main.96673387.chunk.js",
-    "main.js.map": "/crosscap-design-system/build/static/js/main.96673387.chunk.js.map",
+    "main.js": "/crosscap-design-system/build/static/js/main.9df7bc8e.chunk.js",
+    "main.js.map": "/crosscap-design-system/build/static/js/main.9df7bc8e.chunk.js.map",
     "runtime-main.js": "/crosscap-design-system/build/static/js/runtime-main.59010a4c.js",
     "runtime-main.js.map": "/crosscap-design-system/build/static/js/runtime-main.59010a4c.js.map",
-    "static/js/2.ea87f1ec.chunk.js": "/crosscap-design-system/build/static/js/2.ea87f1ec.chunk.js",
-    "static/js/2.ea87f1ec.chunk.js.map": "/crosscap-design-system/build/static/js/2.ea87f1ec.chunk.js.map",
+    "static/js/2.aa9b7bfc.chunk.js": "/crosscap-design-system/build/static/js/2.aa9b7bfc.chunk.js",
+    "static/js/2.aa9b7bfc.chunk.js.map": "/crosscap-design-system/build/static/js/2.aa9b7bfc.chunk.js.map",
     "index.html": "/crosscap-design-system/build/index.html",
     "static/css/main.043ea6ce.chunk.css.map": "/crosscap-design-system/build/static/css/main.043ea6ce.chunk.css.map",
-    "static/js/2.ea87f1ec.chunk.js.LICENSE.txt": "/crosscap-design-system/build/static/js/2.ea87f1ec.chunk.js.LICENSE.txt",
+    "static/js/2.aa9b7bfc.chunk.js.LICENSE.txt": "/crosscap-design-system/build/static/js/2.aa9b7bfc.chunk.js.LICENSE.txt",
     "static/media/alert.425a049a.svg": "/crosscap-design-system/build/static/media/alert.425a049a.svg",
     "static/media/check.87649c88.svg": "/crosscap-design-system/build/static/media/check.87649c88.svg",
     "static/media/checkbox-unified.28ab8714.svg": "/crosscap-design-system/build/static/media/checkbox-unified.28ab8714.svg",
-    "static/media/chevron.f51d91b7.svg": "/crosscap-design-system/build/static/media/chevron.f51d91b7.svg",
+    "static/media/chevron-down.f51d91b7.svg": "/crosscap-design-system/build/static/media/chevron-down.f51d91b7.svg",
+    "static/media/chevron-left.2cafc3ab.svg": "/crosscap-design-system/build/static/media/chevron-left.2cafc3ab.svg",
+    "static/media/chevron-right.596d700d.svg": "/crosscap-design-system/build/static/media/chevron-right.596d700d.svg",
+    "static/media/chevron-up.b01f16a7.svg": "/crosscap-design-system/build/static/media/chevron-up.b01f16a7.svg",
     "static/media/close.dc8149f0.svg": "/crosscap-design-system/build/static/media/close.dc8149f0.svg",
     "static/media/ellipsis.4eae55b3.svg": "/crosscap-design-system/build/static/media/ellipsis.4eae55b3.svg",
     "static/media/export.d494e8ef.svg": "/crosscap-design-system/build/static/media/export.d494e8ef.svg",
@@ -26,8 +29,8 @@
   },
   "entrypoints": [
     "static/js/runtime-main.59010a4c.js",
-    "static/js/2.ea87f1ec.chunk.js",
+    "static/js/2.aa9b7bfc.chunk.js",
     "static/css/main.043ea6ce.chunk.css",
-    "static/js/main.96673387.chunk.js"
+    "static/js/main.9df7bc8e.chunk.js"
   ]
 }

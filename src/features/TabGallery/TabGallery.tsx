@@ -1,10 +1,9 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import styled from 'styled-components/macro';
 
 import * as FU from '@utility/Form.utility';
 import * as LU from '@utility/Layout.utility';
-import Tabset, { TabsetOption, TabsetOptionName } from '@components/Tabset/Tabset';
-import * as Assets from '@assets/.';
+import Tabset, { Tab, DisabledTabEventCatcher, TabsetOption, TabsetOptionName } from '@components/Tabset/Tabset';
 
 const Gallery = styled.div`
   width: 100%;
@@ -36,27 +35,27 @@ const SectionHeader = styled.div`
   color: ${p => p.theme.TEXT_DARK};
   display: block;
 `;
-const SectionGallery = styled.div`
-  display: inline-grid;
-  grid-auto-flow: column;
-  grid-column-gap: 12px;
-  justify-content: start;
-  align-items: center;
-`;
+// const SectionGallery = styled.div`
+//   display: inline-grid;
+//   grid-auto-flow: column;
+//   grid-column-gap: 12px;
+//   justify-content: start;
+//   align-items: center;
+// `;
 const HR = styled.hr`
   width: 100%;
   border: none;
   border-top: 1px solid ${p => p.theme.DIVIDER};
 `;
-interface MarginProps {
-  $marginTop?: number,
-  $marginBottom?: number,
-}
-const Line = styled.div<MarginProps>`
-  display: block;
-  margin-top: ${p => p.$marginTop ?? 0}px;
-  margin-bottom: ${p => p.$marginBottom ?? 0}px;
-`;
+// interface MarginProps {
+//   $marginTop?: number,
+//   $marginBottom?: number,
+// }
+// const Line = styled.div<MarginProps>`
+//   display: block;
+//   margin-top: ${p => p.$marginTop ?? 0}px;
+//   margin-bottom: ${p => p.$marginBottom ?? 0}px;
+// `;
 
 const FolderTabsetOption = styled(TabsetOption)`
   height: 50px;
@@ -73,14 +72,14 @@ const TabsetPath = styled.div`
   font-size: 12px;
   font-weight: 400;
 `;
-interface Tab {
+interface TabData {
   id: number,
   name: string,
   path: string,
   count: number,
   disabled: boolean,
 };
-const baseTabList: Tab[] = [
+const baseTabList: TabData[] = [
   { "id": 124, "disabled": false, "count": 22, "name": "World Topic Days", "path": "Ottobock > Global > World Topic Days" },
   { "id": 126, "disabled": false, "count": 6,  "name": "Global Events & Exhibitions", "path": "Ottobock > Global > Global Events & Exhibitions" },
   { "id": 96,  "disabled": true,  "count": 10, "name": "Key Strategic Initiatives", "path": "Ottobock > Global > Key Strategic Initiatives" },
@@ -108,16 +107,16 @@ const baseTabList: Tab[] = [
   { "id": 115, "disabled": false, "count": 14, "name": "OBA Communication", "path": "Ottobock > Internal MKT Communication Steering > OBA Communication" }
 ];
 const baseTabIds: number[] = baseTabList.map(tab => tab.id);
-const baseTabMap: Record<number, Tab> = baseTabList.reduce((acc, tab) => Object.assign(acc, { [tab.id]: tab }), {});
+const baseTabMap: Record<number, TabData> = baseTabList.reduce((acc, tab) => Object.assign(acc, { [tab.id]: tab }), {});
 
 export default function GenericGallery() {
   const [ tabIds, setTabIds ] = useState<number[]>(baseTabIds);
   const [ selectedTabId, setSelectedTabId ] = useState<number>(tabIds[0]);
-  const tabTexts: string[] = useMemo(() => tabIds.map(id => baseTabMap[id]).flatMap(tab => [ tab.name, tab.path ]), [ tabIds, baseTabMap ]);
-  const tabTextY0s: number[] = useMemo(() => tabIds.map((_,i) =>  i   *50).flatMap(v => [ v, v ]), [ tabIds.length ]);
-  const tabTextY1s: number[] = useMemo(() => tabIds.map((_,i) => (i+1)*50).flatMap(v => [ v, v ]), [ tabIds.length ]);
-  const tabOrderMap: Record<number, number> = useMemo(() => tabIds.reduce((acc, tabId, i) => Object.assign(acc, { [tabId]: i }), {}), [ tabIds ]);
-  const tabsetEqualityRef: {} = useMemo(() => ({}), [ tabIds, baseTabMap ]);
+  const tabTexts = useMemo<string[]>(() => tabIds.map(id => baseTabMap[id]).flatMap(tab => [ tab.name, tab.path ]), [ tabIds ]);
+  const tabTextY0s = useMemo<number[]>(() => tabIds.map((_,i) =>  i   *50).flatMap(v => [ v, v ]), [ tabIds ]);
+  const tabTextY1s = useMemo<number[]>(() => tabIds.map((_,i) => (i+1)*50).flatMap(v => [ v, v ]), [ tabIds ]);
+  const tabOrderMap = useMemo<Record<number, number>>(() => tabIds.reduce((acc, tabId, i) => Object.assign(acc, { [tabId]: i }), {}), [ tabIds ]);
+  const tabsetEqualityRef = useMemo(() => ({ tabIds }), [ tabIds ]);
 
   return (
     <Gallery>
@@ -125,7 +124,7 @@ export default function GenericGallery() {
         <Title>Header Tabset</Title>
         <SectionHeader>
           Header tabsets have a drop shadow unlike footer tabsets.
-          Tabs have selected, hovered, and active states.
+          Tabs have selected, hovered, active, and disabled states.
           <HR />
           Header tabs allow for horiontal mouse dragging.
           Hovering the tab set with horizontally overflowing content
@@ -148,31 +147,32 @@ export default function GenericGallery() {
           optionSearchY0s={tabTextY0s}
           optionSearchY1s={tabTextY1s}
           equalityRef={tabsetEqualityRef}
-          onRenderTab={
-            (tabId: number) =>
-            <>
+          onSelectTabId={tabId => setSelectedTabId(tabId)}
+          onRenderTab={(tabId: number, Component: typeof Tab, componentProps: React.ComponentProps<typeof Tab>) => (
+            <Component disabled={baseTabMap[tabId].disabled} {...componentProps}>
+              {
+                baseTabMap[tabId].disabled &&
+                <DisabledTabEventCatcher />
+              }
               <span>{baseTabMap[tabId].name}</span>
               <FU.Badge $active={tabId === selectedTabId} $count={baseTabMap[tabId].count} />
-            </>
-          }
-          onRenderTabOption={
-            (tabId: number, renderSearchableText: (text: string, optionSearchIndex: number) => JSX.Element) => <>
-              <FolderTabsetOption key={tabId} disabled={baseTabMap[tabId].disabled} onClick={() => setSelectedTabId(tabId)}>
-                <LU.BlockRowMajorGrid $rows={2} $justifyContent="start">
-                  <LU.BlockColumnMajorGrid $columns={2} $columnGap={6} $justifyContent="start" $alignItems="center">
-                    <TabsetOptionName $selected={selectedTabId === tabId}>
-                      { renderSearchableText(baseTabMap[tabId].name, (2*tabOrderMap[tabId])+0) }
-                    </TabsetOptionName>
-                    <FU.Badge $active={tabId === selectedTabId} $count={baseTabMap[tabId].count} />
-                  </LU.BlockColumnMajorGrid>
-                  <TabsetPath>
-                    { renderSearchableText(baseTabMap[tabId].path, (2*tabOrderMap[tabId])+1) }
-                  </TabsetPath>
-                </LU.BlockRowMajorGrid>
-              </FolderTabsetOption>
-            </>
-          }
-          onSelectTabId={tabId => setSelectedTabId(tabId)}
+            </Component>
+          )}
+          onRenderTabOption={(tabId: number, Component: typeof TabsetOption, componentProps: React.ComponentProps<typeof TabsetOption>, renderSearchableText: (text: string, optionSearchIndex: number) => JSX.Element) => (
+            <FolderTabsetOption disabled={baseTabMap[tabId].disabled} {...componentProps}>
+              <LU.BlockRowMajorGrid $rows={2} $justifyContent="start">
+                <LU.BlockColumnMajorGrid $columns={2} $columnGap={6} $justifyContent="start" $alignItems="center">
+                  <TabsetOptionName $selected={tabId === selectedTabId}>
+                    { renderSearchableText(baseTabMap[tabId].name, (2*tabOrderMap[tabId])+0) }
+                  </TabsetOptionName>
+                  <FU.Badge $active={tabId === selectedTabId} $count={baseTabMap[tabId].count} />
+                </LU.BlockColumnMajorGrid>
+                <TabsetPath>
+                  { renderSearchableText(baseTabMap[tabId].path, (2*tabOrderMap[tabId])+1) }
+                </TabsetPath>
+              </LU.BlockRowMajorGrid>
+            </FolderTabsetOption>
+          )}
         />
 
         <LU.BlockRowMajorGrid $columns={2} $columnGap={20}>

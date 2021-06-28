@@ -1,4 +1,4 @@
-import styled, { ThemeConsumer } from 'styled-components/macro';
+import styled from 'styled-components/macro';
 import { Dropdown } from 'react-bootstrap';
 import chroma from 'chroma-js';
 
@@ -286,12 +286,10 @@ export const DropdownToggle = styled(Dropdown.Toggle)<RemoveBorderProp & WidthPr
 `;
 export const DropdownChevron = styled(SU.themedSvg(
   theme => ({ default: { color: theme.ICON_DARK} })
-)).attrs({
-  as: Assets.ChevronSvg,
-  width: 10,
-  height: 8,
+)).attrs(p => ({
+  ...Assets.ChevronDownSvg.styledAttrs.toWidth(10),
   className: 'cds-dropdown-chevron',
-})`
+}))`
 `;
 export const DropdownMenu = styled(Dropdown.Menu).attrs(p => ({ role: 'menu' }))<WidthProp>`
   width: ${p => p.$width ? ((typeof p.$width === 'number') ? `${p.$width}px` : p.$width) : '275px'};
