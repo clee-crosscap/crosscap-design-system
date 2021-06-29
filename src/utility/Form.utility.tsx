@@ -2,6 +2,7 @@ import styled from 'styled-components/macro';
 import { Dropdown } from 'react-bootstrap';
 import chroma from 'chroma-js';
 
+import * as GU from '@utility/General.utility'
 import * as CU from '@utility/Color.utility'
 import * as SU from '@utility/Svg.utility';
 import * as Assets from '@assets/.';
@@ -421,7 +422,7 @@ export const Toggle = styled.button<ToggleProp>`
   width: 60px;
   height: 30px;
   border-radius: 15px;
-  background-color: ${p => chroma.mix('#FFFFFF', p.theme.MODULE_DARK, p.$toggle ? 1 : 0.24).hex().toUpperCase()};
+  background-color: ${p => chroma(p.theme.MODULE_DARK).set('hsl.l', GU.lerp(p.$toggle ? 0 : 0.75, chroma(p.theme.MODULE_DARK).get('hsl.l'), 1)).hex().toUpperCase()};
   position: relative;
   cursor: pointer;
   opacity: 1;

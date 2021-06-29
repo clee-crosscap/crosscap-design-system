@@ -49,7 +49,10 @@ const TabsetRoot = styled.div<MarginProp>`
 interface ColumnGapProp {
   $columnGap?: number,
 }
-const TabsetInner = styled.div<ColumnGapProp>`
+interface OverflowProp {
+  $overflow: boolean,
+}
+const TabsetInner = styled.div<ColumnGapProp & OverflowProp>`
   width: auto;
   max-width: 100%;
   display: inline-grid;
@@ -69,6 +72,13 @@ const TabsetInner = styled.div<ColumnGapProp>`
   &:hover ~ .tabset-inner-scroll-control {
     opacity: 1;
   }
+
+  ${p => !p.$overflow ? '' : `
+    mask-image: linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 90%, rgba(0,0,0,0) 100%);
+    mask-size: 100% 100%;
+    mask-repeat: no-repeat;
+    mask-position: left top, left bottom;
+  `}
 `;
 // @ts-ignore
 const TabsetInnerScrollControl = styled(CTU.fadeTransition(SU.CommonBlackSvg)).attrs(p => ({
@@ -180,7 +190,7 @@ export const Tab = styled.button<SelectedProp>`
 // If the tab is disabled and the click falls outside a child element, the mouseup event is NOT sent by the browser
 // which will break kinetic scroll event handling... Using a :before or :after pseudo-element also fails to catch
 // the event properly so we need to ensure the event is dispatched to an element that can receive the mouseup event
-// so it propagates up to document
+// so it $overflow={tabsetOverflow} propagates up to document
 export const DisabledTabEventCatcher = styled.div`
   position: absolute;
   top: 0;
@@ -193,17 +203,6 @@ const TabsetEllipsisToggleWrapper = styled.div`
   position: relative;
   grid-row: 1;
   grid-column: 2;
-`;
-const TabsetEllipsisToggleMask = styled.div`
-  width: 40px;
-  grid-column: 1;
-  grid-row: 1;
-  justify-self: end;
-  align-self: stretch;
-  position: relative;
-  overflow: hidden;
-  pointer-events: none;
-  background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
 `;
 const TabsetEllipsisToggle = styled(FU.Button).attrs(p => ({ $type: 'icon' }))`
   margin: 0 20px;
@@ -339,15 +338,40 @@ export default function Tabset(props: Props) {
 
   const [ stopKineticScroll ] = useKineticScroll(tabsetScrollableRef.current);
 
+  const { optionSearchTexts, tabIds, onSelectTabId } = props;
+
   const navigableSearchInputProps = useMemo<React.ComponentProps<typeof StyledNavigableSearchInput>['inputProps']>(() => ({
     value: tabsetOverflowDropdownSearchQuery,
     placeholder: IU.intl.formatMessage({ id: "CDS.Tabset.Dropdown.Search.Placeholder", defaultMessage: "Search Tabs" }),
-    onChange: ((e: React.ChangeEvent<HTMLInputElement>) => onSetTabsetQuery(e.target.value)),
+    onChange: ((e: React.ChangeEvent<HTMLInputElement>) => {
+      // Perform search query
+      const query: string = e.target.value;
+      setTabsetOverflowDropdownSearchQuery(query);
+
+      const nextSearchResults: SearchResults = { resultCount: 0, resultCursorMap: {}, resultMap: {} };
+  
+      if(query.length) {
+        optionSearchTexts.forEach((text, i) => {
+          const { count, segments }: SegmentedText = searchText(query, text);
+          if(count > 0) {
+            for(let j=0; j<count; ++j) {
+              nextSearchResults.resultCursorMap[nextSearchResults.resultCount + j] = {
+                index: i,
+                matchId: j,
+              };
+            }
+            nextSearchResults.resultMap[i] = { count, segments, index: nextSearchResults.resultCount };
+            nextSearchResults.resultCount += count;
+          }
+        });
+      }
+      setTabsetOverflowDropdownSearchResults(nextSearchResults);
+    }),
     $width: '100%',
     $borderless: true,
-  }), [ tabsetOverflowDropdownSearchQuery]);
+  }), [ tabsetOverflowDropdownSearchQuery, optionSearchTexts ]);
 
-  const onScrollUnit = ((unit: number) => {
+  const onScrollByUnit = ((unit: number) => {
     stopKineticScroll();
     tabsetScrollableRef.current?.scrollBy({
       behavior: 'smooth',
@@ -355,35 +379,10 @@ export default function Tabset(props: Props) {
     });
   });
 
-  // Perform search query
-  const onSetTabsetQuery = ((query: string) => {
-    setTabsetOverflowDropdownSearchQuery(query);
-
-    const nextSearchResults: SearchResults = { resultCount: 0, resultCursorMap: {}, resultMap: {} };
-
-    if(query.length) {
-      props.optionSearchTexts.forEach((text, i) => {
-        const { count, segments }: SegmentedText = searchText(query, text);
-        if(count > 0) {
-          for(let j=0; j<count; ++j) {
-            nextSearchResults.resultCursorMap[nextSearchResults.resultCount + j] = {
-              index: i,
-              matchId: j,
-            };
-          }
-          nextSearchResults.resultMap[i] = { count, segments, index: nextSearchResults.resultCount };
-          nextSearchResults.resultCount += count;
-        }
-      });
-    }
-    setTabsetOverflowDropdownSearchResults(nextSearchResults);
-  });
-
+  // Memoized callback callbacks so searchable options avoid rerenders due to prop changes
   const onSelectTabByIdMap = useMemo<Record<number, () => void>>(() => (
-    props.tabIds.reduce((acc, tabId) => (
-      Object.assign(acc, { [tabId]: () => props.onSelectTabId(tabId)})
-    ),{})
-  ), [ props.tabIds, props.onSelectTabId ]);
+    tabIds.reduce((acc, tabId) => Object.assign(acc, { [tabId]: () => onSelectTabId(tabId)}),{})
+  ), [ tabIds, onSelectTabId ]);
 
   const getOptionSearchIndexMatchId = ((optionSearchIndex: number): number | undefined => {
     const result = tabsetOverflowDropdownSearchResults.resultCursorMap[tabsetOverflowDropdownSearchCursor];
@@ -443,7 +442,7 @@ export default function Tabset(props: Props) {
 
   return (
     <TabsetRoot $margin={props.margin}>
-      <TabsetInner $columnGap={props.gap} ref={tabsetScrollableRef}>
+      <TabsetInner $columnGap={props.gap} $overflow={tabsetOverflow} ref={tabsetScrollableRef}>
         {
           props.tabIds.map(tabId => (
             props.onRenderTab(tabId, Tab, {
@@ -455,10 +454,6 @@ export default function Tabset(props: Props) {
           ))
         }
       </TabsetInner>
-      {
-        tabsetOverflow &&
-        <TabsetEllipsisToggleMask />
-      }
       <CSSTransition
         in={tabsetOverflow && canScrollLeft}
         timeout={150}
@@ -467,7 +462,7 @@ export default function Tabset(props: Props) {
         classNames="transition"
         nodeRef={scrollLeftRef}
       >
-        <TabsetInnerScrollLeft ref={scrollLeftRef as any} $timeout={150} onClick={() => onScrollUnit(-1)} />
+        <TabsetInnerScrollLeft ref={scrollLeftRef as any} $timeout={150} onClick={() => onScrollByUnit(-1)} />
       </CSSTransition>
       <CSSTransition
         in={tabsetOverflow && canScrollRight}
@@ -477,7 +472,7 @@ export default function Tabset(props: Props) {
         classNames="transition"
         nodeRef={scrollRightRef}
       >
-        <TabsetInnerScrollRight ref={scrollRightRef as any} $timeout={150} onClick={() => onScrollUnit(1)} />
+        <TabsetInnerScrollRight ref={scrollRightRef as any} $timeout={150} onClick={() => onScrollByUnit(1)} />
       </CSSTransition>
 
       {

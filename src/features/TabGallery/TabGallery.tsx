@@ -127,11 +127,11 @@ export default function GenericGallery() {
           Tabs have selected, hovered, active, and disabled states.
           <HR />
           Header tabs allow for horiontal mouse dragging.
-          Hovering the tab set with horizontally overflowing content
+          Hovering the tabset with horizontally overflowing content
           displays overlaid navigation chevrons.
           <HR />
           If the tabs overflow, an ellipsis icon dropdown dynamically appears
-          aligned to the right of the tab set which opens a dropdown displaying
+          aligned to the right of the tabset which opens a dropdown displaying
           a scrollable, searchable dropdown menu of all tabs.  Each dropdown
           item may display metadata related to what the tab represents below
           each item such as a breadcrumb of the tab's folder path.
@@ -175,20 +175,21 @@ export default function GenericGallery() {
           )}
         />
 
-        <LU.BlockRowMajorGrid $columns={2} $columnGap={20}>
-          <FU.Button $type="primary"
-            disabled={tabIds.length >= baseTabIds.length}
-            onClick={() => setTabIds(baseTabIds.slice(0, tabIds.length+1))}
-          >
-            Add Tab ({tabIds.length}+1 / {baseTabIds.length})
-          </FU.Button>
-          <FU.Button $type="secondary"
-            disabled={tabIds.length <= 1}
-            onClick={() => setTabIds(baseTabIds.slice(0, tabIds.length-1))}
-          >
-            Remove Tab ({tabIds.length}-1 / {baseTabIds.length})
-          </FU.Button>
-        </LU.BlockRowMajorGrid>
+        <HR />
+
+        <div>
+          <FU.ComponentLabel>Adjust Shown Tabs (Max {baseTabIds.length})</FU.ComponentLabel>
+          <FU.Input
+            value={tabIds.length}
+            onChange={({ target: { value: v }}: React.ChangeEvent<HTMLInputElement>) => (
+              (0 < +v) && (+v <= baseTabIds.length) &&
+              setTabIds(baseTabIds.slice(0, +v))
+            )}
+            min={1}
+            max={baseTabIds.length}
+            type="number"
+          />
+        </div>
       </GallerySection>
     </Gallery>
   );

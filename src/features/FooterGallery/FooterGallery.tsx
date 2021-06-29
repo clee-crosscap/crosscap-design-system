@@ -101,6 +101,12 @@ const FooterLocalActions = styled.div`
   grid-auto-flow: column;
   align-content: stretch;
   overflow-x: auto;
+  height: 100%;
+  border-right: 1px solid ${p => p.theme.DIVIDER};
+
+  > :last-child {
+    border-right: 0px solid transparent;
+  }
 `;
 const FooterFormActions = styled.div`
   display: grid;
