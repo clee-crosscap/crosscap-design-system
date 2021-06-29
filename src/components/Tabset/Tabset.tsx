@@ -50,7 +50,8 @@ interface ColumnGapProp {
   $columnGap?: number,
 }
 interface OverflowProp {
-  $overflow: boolean,
+  $overflowLeft: boolean,
+  $overflowRight: boolean,
 }
 const TabsetInner = styled.div<ColumnGapProp & OverflowProp>`
   width: auto;
@@ -73,8 +74,14 @@ const TabsetInner = styled.div<ColumnGapProp & OverflowProp>`
     opacity: 1;
   }
 
-  ${p => !p.$overflow ? '' : `
-    mask-image: linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 90%, rgba(0,0,0,0) 100%);
+  ${p => !p.$overflowLeft && !p.$overflowRight ? '' : `
+    mask-image: linear-gradient(
+      to right,
+      rgba(0,0,0,0) 0%,
+      rgba(0,0,0,1) ${0   + (p.$overflowLeft  ? 10 : 0)}%,
+      rgba(0,0,0,1) ${100 - (p.$overflowRight ? 10 : 0)}%,
+      rgba(0,0,0,0) 100%
+    );
     mask-size: 100% 100%;
     mask-repeat: no-repeat;
     mask-position: left top, left bottom;
@@ -442,7 +449,12 @@ export default function Tabset(props: Props) {
 
   return (
     <TabsetRoot $margin={props.margin}>
-      <TabsetInner $columnGap={props.gap} $overflow={tabsetOverflow} ref={tabsetScrollableRef}>
+      <TabsetInner
+        $columnGap={props.gap}
+        $overflowLeft={tabsetOverflow && canScrollLeft}
+        $overflowRight={tabsetOverflow && canScrollRight}
+        ref={tabsetScrollableRef}
+      >
         {
           props.tabIds.map(tabId => (
             props.onRenderTab(tabId, Tab, {

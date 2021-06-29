@@ -181,8 +181,6 @@ export const FooterAction = styled.button`
 
 interface TextButtonProps {
   $color?: string,
-  $weight?: number,
-  $size?: number,
 }
 export const TextButton = styled.button<TextButtonProps>`
   padding: 0;
@@ -190,8 +188,8 @@ export const TextButton = styled.button<TextButtonProps>`
   cursor: pointer;
   user-select: none;
   font-family: 'Roboto', 'Arial', sans-serif;
-  font-size: ${p => p.$size ?? 13}px;
-  font-weight: ${p => p.$weight ?? 500};
+  font-size: 13px;
+  font-weight: 500;
   transition: opacity 0.3s ease-out, color 0.3s ease-out;
 
   &,
@@ -245,6 +243,7 @@ export const DropdownToggle = styled(Dropdown.Toggle)<RemoveBorderProp & WidthPr
   cursor: pointer;
   font-family: 'Roboto','Arial',sans-serif;
   font-size: 15px;
+  transition: border-color 0.3s ease-out;
   
   &:after {
     content: initial;
@@ -265,8 +264,8 @@ export const DropdownToggle = styled(Dropdown.Toggle)<RemoveBorderProp & WidthPr
   &.focus,
   &:focus {
     outline: none;
-    background: transparent;
-    border: ${p => p.$removeBorder ? 0 : 2}px solid ${p => p.$valid === false ? p.theme.INVALID : p.theme.GRAY_E6};
+    background-color: #FFFFFF;
+    border: ${p => p.$removeBorder ? 0 : 2}px solid ${p => p.$valid === false ? p.theme.INVALID : p.theme.GRAY_D8};
     color: ${p => p.theme.TEXT_DARK};
     box-shadow: none;
   }
@@ -298,7 +297,7 @@ export const DropdownMenu = styled(Dropdown.Menu).attrs(p => ({ role: 'menu' }))
   padding: 8px 0;
   border: 0px solid transparent;
   border-radius: 10px;
-  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.16);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   background-color: #FFFFFF;
   overflow-y: auto;
 
